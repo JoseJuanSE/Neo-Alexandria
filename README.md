@@ -27,24 +27,24 @@ A free and open virtual library, where you will be able to find news, music, vid
 ### 1. User Stories (Required and Optional)
 
 **Required Must-have Stories**
-* [] User can sign up to create a new account using Parse authentication
-* [] User can log in to his or her account
-* [] User can log out to his or her account
-* [] The current signed in user is persisted across app restarts
-* [] User will be able to search the resources they want and will see them diplayed.
-* [] User can view the last 20 posts submitted by the community
-* [] User can pull to refresh the last 20 posts submitted
-* [] User can tap a post to go to a Post Details activity
-  * [] PostDetails includes all the data of the Post
-  * [] User PostDetails can see displayed the comments for that post
-* [] User can use some gesture to do something
-* [] User sees app icon in home screen
+* [ ] User can sign up to create a new account using Parse authentication
+* [ ] User can log in to his or her account
+* [ ] User can log out to his or her account
+* [ ] The current signed in user is persisted across app restarts
+* [ ] User will be able to search the resources they want and will see them diplayed.
+* [ ] User can view the last 20 posts submitted by the community
+* [ ] User can pull to refresh the last 20 posts submitted
+* [ ] User can tap a post to go to a Post Details activity
+  * [ ] PostDetails includes all the data of the Post
+  * [ ] User PostDetails can see displayed the comments for that post
+* [ ] User can use some gesture to do something
+* [ ] User sees app icon in home screen
 
 **Optional Nice-to-have Stories**
 
-* [] Great app UI design
-* [] App include animations while interacting
-* [] Infinite pagination
+* [ ] Great app UI design
+* [ ] App include animations while interacting
+* [ ] Infinite pagination
 
 ### 2. Screen Archetypes
 
