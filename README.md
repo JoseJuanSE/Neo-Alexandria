@@ -244,7 +244,7 @@ I did it directly on digital using Figma.
 
 ### [BONUS] Interactive Prototype
 <img src="InteractiveConnections.png" width=600>
-<img src='prototype.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='Prototype.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 
 ## Schema
