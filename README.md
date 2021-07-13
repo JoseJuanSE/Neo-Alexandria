@@ -61,6 +61,7 @@ A free and open virtual library, where you will be able to find news, music, vid
 * [ ] Custom Toolbar
 * [ ] Commentaries can only be liked
 * [ ] Use a gesture
+* [ ] The app incorporates at least one external library to add visual polish
 
 **Optional Nice-to-have Stories**
 * [ ] Spanish and English available for the app depending of the smartphone configuration language
@@ -93,6 +94,7 @@ A free and open virtual library, where you will be able to find news, music, vid
   * [ ] Always a resource preview has rating, comment icon and number of commentaries, and saved icon with number of times the resources has been saved.
   * [ ] Always a post has like, comment and save icon and numbers of each one.
   * [ ] Use a gesture
+  * [ ] The app incorporates at least one external library to add visual polish
 
 * Login
   * [ ] User can log in to his or her account
