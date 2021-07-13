@@ -71,6 +71,7 @@ A free and open virtual library, where you will be able to find news, music, vid
 * [ ] Easter egg EUREKA
 * [ ] Custom app icon
 * [ ] Blur video as background in login and signup
+* [ ] User can hear the music in the app
 * [ ] Users can login with at least one third party service.
 * [ ] While sign up assigned predefined random names and profile images
 * [ ] Sort and filter resources by rating
@@ -168,6 +169,8 @@ A free and open virtual library, where you will be able to find news, music, vid
   * [ ] While sign up assigned predefined random names and profile images
 * Search
   * [ ] Sort and filter resources by rating
+  * [ ] User can play music in the item view 
+  * [ ] User can play music in the details view
 * Saved
   * [ ] Users can filter resources just like in the search view.
 * Profile
