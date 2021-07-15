@@ -74,14 +74,11 @@ A free and open virtual library, where you will be able to find news, music, vid
 * [ ] User can log out to his or her account
 * [ ] User can change the profile image
 ---
-
 * [ ] Bottom navigation bar
 * [ ] Custom Toolbar
 * [ ] Use a gesture
 * [ ] The app incorporates at least one external library to add visual polish
 * [ ] Spanish and English available for the app depending of the smartphone configuration language <span style="color:red">*</span>
-
-
 
 **Optional Nice-to-have Stories**
 * [ ] Users can see other users' profile
@@ -127,24 +124,24 @@ A free and open virtual library, where you will be able to find news, music, vid
 * Feed
   * [ ] User can see other users posts
   * [ ] User can see other users resources
-  * [ ] Everything posted includes: photo and name of the user who posted it, timestamp and content (it can include pictures).
-  * [ ] Every post has like icon(actionable) and like count.
-  * [ ] Every post has comment icon(actionable) and comment count.
-  * [ ] Every post has save icon(actionable) and saved count.
-  * [ ] Posts have the same 3 past user stories in details view.
-  * [ ] Every resource has a rating(actionable)
-  * [ ] Every resource has comment icon(actionable) and comment count.
-  * [ ] Every resource has save icon(actionable) and saved count.
-  * [ ] Resources have the same 3 past user stories in details view.
-  * [ ] Every resource or post is clickable, and when it is clicked, you go to the detail view of that item.
-  * [ ] In detail view you can see the commentaries of the resource
-  * [ ] Commentaries can only be liked
-  * [ ] User can see the last 20 items (posts, resources, commentaries) where needed.
-  * [ ] User can pull down to refresh the last 20 items.
-  * [ ] The layout of every item as well as the detail view depends on the type of item (music, news, books, etc). <span style="color:red">*</span>
-  * [ ] Music Item is playable in the style is like a media player in both item and details view. <span style="color:red">*</span>
-  * [ ] Music is running even with app at background or/and the smartphone on standby status. <span style="color:red">*</span>
-  * [ ] User can open a pdf reader view in book deatails book in the same app. <span style="color:red">*</span>
+  * [ ] Everything posted includes: photo and name of the user who posted it, timestamp and content (it can include pictures). **FEED SAVED**
+  * [ ] Every post has like icon(actionable) and like count. **FEED SAVED**
+  * [ ] Every post has comment icon(actionable) and comment count. **FEED SAVED**
+  * [ ] Every post has save icon(actionable) and saved count. **FEED SAVED**
+  * [ ] Posts have the same 3 past user stories in details view. **FEED SAVED**
+  * [ ] Every resource has a rating(actionable) **FEED SEARCH SAVED**
+  * [ ] Every resource has comment icon(actionable) and comment count. **FEED SEARCH SAVED**
+  * [ ] Every resource has save icon(actionable) and saved count. **FEED SEARCH SAVED**
+  * [ ] Resources have the same 3 past user stories in details view. **FEED SEARCH SAVED**
+  * [ ] Every resource or post is clickable, and when it is clicked, you go to the detail view of that item.**FEED SEARCH SAVED**
+  * [ ] In detail view you can see the commentaries of the resource**FEED SEARCH SAVED**
+  * [ ] Commentaries can only be liked**FEED SEARCH SAVED**
+  * [ ] User can see the last 20 items (posts, resources, commentaries) where needed. **FEED SEARCH SAVED**
+  * [ ] User can pull down to refresh the last 20 items. **FEED SEARCH SAVED**
+  * [ ] The layout of every item as well as the detail view depends on the type of item (music, news, books, etc). <span style="color:red">*</span> **FEED SEARCH SAVED**
+  * [ ] Music Item is playable in the style is like a media player in both item and details view. <span style="color:red">*</span> **FEED SEARCH SAVED**
+  * [ ] Music is running even with app at background or/and the smartphone on standby status. <span style="color:red">*</span>**FEED SEARCH SAVED**
+  * [ ] User can open a pdf reader view in book deatails book in the same app. <span style="color:red">*</span>**FEED SEARCH SAVED**
 
 * Compose Activity
   * [ ] User can compose posts
@@ -153,47 +150,43 @@ A free and open virtual library, where you will be able to find news, music, vid
 * Search
   * [ ] Users will be able to search the resources they want by title and will see them displayed.
   * [ ] In Search view you can filter the results by category (All (default), books, music, news,  videos and posts by other users). <span style="color:red">*</span>
-  * [ ] Every resource has a rating(actionable)
-  * [ ] Every resource has comment icon(actionable) and comment count.
-  * [ ] Every resource has save icon(actionable) and saved count.
-  * [ ] Every resource or post is clickable, and when it is clicked, you go to the detail view of that item.
-  * [ ] In detail view you can see the commentaries of the resource
-  * [ ] Commentaries can only be liked
-  * [ ] User can see the last 20 items (posts, resources, commentaries) where needed.
-  * [ ] User can pull down to refresh the last 20 items.
-  * [ ] The layout of every item as well as the detail view depends on the type of item (music, news, books, etc). <span style="color:red">*</span>
-  * [ ] Music Item is playable in the style is like a media player in both item and details view. <span style="color:red">*</span>
-  * [ ] Music is running even with app at background or/and the smartphone on standby status. <span style="color:red">*</span>
-  * [ ] User can open a pdf reader view in book deatails book in the same app. <span style="color:red">*</span>
+  * [ ] Every resource has a rating(actionable) **FEED SEARCH SAVED**
+  * [ ] Every resource has comment icon(actionable) and comment count. **FEED SEARCH SAVED**
+  * [ ] Every resource has save icon(actionable) and saved count. **FEED SEARCH SAVED**
+  * [ ] Every resource or post is clickable, and when it is clicked, you go to the detail view of that item. **FEED SEARCH SAVED**
+  * [ ] In detail view you can see the commentaries of the resource**FEED SEARCH SAVED**
+  * [ ] Commentaries can only be liked**FEED SEARCH SAVED**
+  * [ ] User can see the last 20 items (posts, resources, commentaries) where needed. **FEED SEARCH SAVED**
+  * [ ] User can pull down to refresh the last 20 items.**FEED SEARCH SAVED**
+  * [ ] The layout of every item as well as the detail view depends on the type of item (music, news, books, etc). <span style="color:red">*</span> **FEED SEARCH SAVED**
+  * [ ] Music Item is playable in the style is like a media player in both item and details view. <span style="color:red">*</span> **FEED SEARCH SAVED**
+  * [ ] Music is running even with app at background or/and the smartphone on standby status. <span style="color:red">*</span>**FEED SEARCH SAVED**
+  * [ ] User can open a pdf reader view in book deatails book in the same app. <span style="color:red">*</span>**FEED SEARCH SAVED**
 
 * Saved
-  * [ ] Everything posted includes: photo and name of the user who posted it, timestamp and content (it can include pictures).
-  * [ ] Every post has like icon(actionable) and like count.
-  * [ ] Every post has comment icon(actionable) and comment count.
-  * [ ] Every post has save icon(actionable) and saved count.
-  * [ ] Posts have the same 3 past user stories in details view.
-  * [ ] Every resource has a rating(actionable)
-  * [ ] Every resource has comment icon(actionable) and comment count.
-  * [ ] Every resource has save icon(actionable) and saved count.
-  * [ ] Resources have the same 3 past user stories in details view.
-  * [ ] User can see the last 20 items (posts, resources, commentaries) where needed.
-  * [ ] User can pull down to refresh the last 20 items.
-  * [ ] Every resource or post is clickable, and when it is clicked, you go to the detail view of that item.
-  * [ ] In detail view you can see the commentaries of the resource
-  * [ ] Commentaries can only be liked
-  * [ ] The layout of every item as well as the detail view depends on the type of item (music, news, books, etc). <span style="color:red">*</span>
-  * [ ] Music Item is playable in the style is like a media player in both item and details view. <span style="color:red">*</span>
-  * [ ] Music is running even with app at background or/and the smartphone on standby status. <span style="color:red">*</span>
-  * [ ] User can open a pdf reader view in book deatails book in the same app. <span style="color:red">*</span>
+  * [ ] Saved resources can be view without internet connection if the user want to save them (download button) <span style="color:red">*</span>
+  * [ ] Everything posted includes: photo and name of the user who posted it, timestamp and content (it can include pictures). **FEED SAVED**
+  * [ ] Every post has like icon(actionable) and like count. **FEED SAVED**
+  * [ ] Every post has comment icon(actionable) and comment count. **FEED SAVED**
+  * [ ] Every post has save icon(actionable) and saved count. **FEED SAVED**
+  * [ ] Posts have the same 3 past user stories in details view. **FEED SAVED**
+  * [ ] Every resource has a rating(actionable) **FEED SEARCH SAVED**
+  * [ ] Every resource has comment icon(actionable) and comment count. **FEED SEARCH SAVED**
+  * [ ] Every resource has save icon(actionable) and saved count. **FEED SEARCH SAVED**
+  * [ ] Every resource or post is clickable, and when it is clicked, you go to the detail view of that item. **FEED SEARCH SAVED**
+  * [ ] Resources have the same 3 past user stories in details view.**FEED SEARCH SAVED**
+  * [ ] User can see the last 20 items (posts, resources, commentaries) where needed. **FEED SEARCH SAVED**
+  * [ ] User can pull down to refresh the last 20 items. **FEED SEARCH SAVED**
+  * [ ] In detail view you can see the commentaries of the resource**FEED SEARCH SAVED**
+  * [ ] Commentaries can only be liked**FEED SEARCH SAVED**
+  * [ ] The layout of every item as well as the detail view depends on the type of item (music, news, books, etc). <span style="color:red">*</span> **FEED SEARCH SAVED**
+  * [ ] Music Item is playable in the style is like a media player in both item and details view. <span style="color:red">*</span> **FEED SEARCH SAVED**
+  * [ ] Music is running even with app at background or/and the smartphone on standby status. <span style="color:red">*</span>**FEED SEARCH SAVED**
+  * [ ] User can open a pdf reader view in book deatails book in the same app. <span style="color:red">*</span>**FEED SEARCH SAVED**
 
-* Profile
+* Configuration
   * [ ] User can log out to his or her account
   * [ ] User can change the profile image
-
-
-* Settings
-  * [ ] Users can see the resources he or she saved with the same layout and details view used in search activity in saved activity.
-  * [ ] Saved resources can be view without internet connection if the user want to save them (download button) <span style="color:red">*</span>
 
 **Optional Nice-to-have Stories**
 * No specific view
@@ -210,15 +203,16 @@ A free and open virtual library, where you will be able to find news, music, vid
   * [ ] Blur video as background in login and signup
   * [ ] While sign up assigned predefined random names and profile images
 * Search
-  * [ ] Users can see other users' profile
+  * [ ] Users can see other users' profile **SEARCH SAVED FEED**
   * [ ] Sort and filter resources by rating
 * Saved
-  * [ ] Users can see other users' profile
+  * [ ] Users can see other users' profile **SEARCH SAVED FEED**
   * [ ] Users can filter resources just like in the search view in saved items.
 * Profile
   * [ ] User can see the description of the user, number of posts and user's posts.
   * [ ] User can follow other users
   * [ ] Users can see the number of followers and followers, as well as have a follow button in every profile.
+
 * Settings
   * [ ] User can set night/dark mode <span style="color:red">*</span>
   * [ ] Users can choose their main color (color used in their posts and profile). <span style="color:red">*</span>
@@ -226,7 +220,7 @@ A free and open virtual library, where you will be able to find news, music, vid
   * [ ] User can see notifications about commentaries in his or her posts.
   * [ ] User receive a notification every time a user's follow account post something (depends of follow bonus activity) <span style="color:red">*</span>
 * Feed
-  * [ ] Users can see other users' profile
+  * [ ] Users can see other users' profile **SEARCH SAVED FEED**
 
 
 ### 3. Navigation
