@@ -305,7 +305,7 @@ Model: User
   | profilePicture| File     | picture that will be display as the profile picture |
   | password      | String   | string to login |
   | nightMode      | Boolean   | boolean to know what style display |
-  | mainColor      | String   | the main color preference for styles |
+  | mainColor      | Number   | the main color preference for styles |
 
 Model: Post
   | Property      | Type     | Description |
@@ -367,7 +367,7 @@ Model: Comment
   | author | pointer to user     | person who did the comment |
   | content      | String   | what author commented |
   | isLiked      | Boolean   | this tell us if the user liked this post |
-  | likesCount      | Number   | number of likes |
+  | likeCount      | Number   | number of likes |
 
 
 ### Networking
