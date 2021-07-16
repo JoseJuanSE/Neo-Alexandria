@@ -301,8 +301,9 @@ Model: User
   | Property      | Type     | Description |
   | ------------- | -------- | ------------|
   | objectId      | String   | unique id for the user (default field) |
-  | name          | String   | user's name |
+  | username          | String   | user's name |
   | profilePicture| File     | picture that will be display as the profile picture |
+  | email      | String   | email to login | 
   | password      | String   | string to login |
   | nightMode      | Boolean   | boolean to know what style display |
   | mainColor      | Number   | the main color preference for styles |
