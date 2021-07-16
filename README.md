@@ -328,10 +328,10 @@ Model: Resource
   | objectId      | String   | unique id for the user (default field) |
   | title      | String   | title of resource |
   | picture | File     | every kind of resource use an image |
-  | raiting      | Number   | resource raiting out of 5 |
   | commentCount      | Number   | number of commentaries |
   | saveCount      | Number   | number of saves |
   | isSaved      | Boolean   | this tell us if the user saved this post |
+  | rating          | Number   | rating out of 5 |
   | author          | String   | composed by |
 
 Model: Book
@@ -346,6 +346,7 @@ Model: Book
 Model: Song
   | Property      | Type     | Description |
   | ------------- | -------- | ------------|
+  | objectId      | String   | unique id for the user (default field) |
   | resource      | pointer to Resource   | all the general information as resource |
   | durationInSeconds          | number   | how long does song is in seconds |
 
@@ -353,11 +354,11 @@ Model: Song
 Model: News
   | Property      | Type     | Description |
   | ------------- | -------- | ------------|
+  | objectId      | String   | unique id for the user (default field) |
   | resource      | pointer to Resource   | all the general information as resource |
   | NewsURL          | String   | url of direction |
   | date      | String   | creation date |
   | description | String     | string for post's description |
-
 
 Model: Comment
   | Property      | Type     | Description |
@@ -369,12 +370,298 @@ Model: Comment
   | isLiked      | Boolean   | this tell us if the user liked this post |
   | likeCount      | Number   | number of likes |
 
-
 ### Networking
 - [Add list of network requests by screen ]
+  * Login
+    * (READ/GET) get user data to compare password.
+  * Signup
+    * (WRITE/POST) create a new user
+  * Feed
+    * (READ/GET) gets all the posts for feed.
+    * (WRITE/POST) likes and saves
+  * Compose
+    * (WRITE/POST) create new post/resource
+  * Notifications
+    * (READ/GET) user's notifications
+  * Search
+    * (UPDATE/PUT) update raiting putuation
+    * (WRITE/POST) write if some resource was saved
+    * (READ/GET) get all the resources using the title
+  * Saved
+    * (UPDATE/PUT) update raiting putuation
+    * (delete/DELETE) delete if some item was unsaved
+    * (READ/GET) get all the resources saved by user
+  * Profile
+    * (READ/GET) user data
+  * Configuration
+    * (READ/GET) user configuration
+    * (UPDATE/PUT) update user's configuration
+  * Details View
+    * (UPDATE/PUT) update raiting putuation if it is resource
+    * (READ/GET) comments
+    * (WRITE/POST) new comment
+
 - [Create basic snippets for each Parse network request]
 
-* Login (Read/GET)
+* Post
+```java
+public void createObject() {
+  ParseObject entity = new ParseObject("Post");
+
+  entity.put("author", ParseUser.getCurrentUser());
+  entity.put("description", "A string");
+  entity.put("picture", new ParseFile("resume.txt", "My string content".getBytes()));
+  entity.put("likesCount", 1);
+  entity.put("commentCount", 1);
+  entity.put("saveCount", 1);
+  entity.put("isSaved", true);
+  entity.put("isLiked", true);
+
+  // Saves the new object.
+  // Notice that the SaveCallback is totally optional!
+  entity.saveInBackground(e -> {
+    if (e==null){
+      //Save was done
+    }else{
+      //Something went wrong
+      Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+  });
+}
+```
+```java
+public void createObject() {
+  ParseObject entity = new ParseObject("Post");
+
+  entity.put("author", ParseUser.getCurrentUser());
+  entity.put("description", "A string");
+  entity.put("picture", new ParseFile("resume.txt", "My string content".getBytes()));
+  entity.put("likesCount", 1);
+  entity.put("commentCount", 1);
+  entity.put("saveCount", 1);
+  entity.put("isSaved", true);
+  entity.put("isLiked", true);
+
+  // Saves the new object.
+  // Notice that the SaveCallback is totally optional!
+  entity.saveInBackground(e -> {
+    if (e==null){
+      //Save was done
+    }else{
+      //Something went wrong
+      Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+  });
+}
+```
+* Resource
+```java
+public void createObject() {
+  ParseObject entity = new ParseObject("Post");
+
+  entity.put("author", ParseUser.getCurrentUser());
+  entity.put("description", "A string");
+  entity.put("picture", new ParseFile("resume.txt", "My string content".getBytes()));
+  entity.put("likesCount", 1);
+  entity.put("commentCount", 1);
+  entity.put("saveCount", 1);
+  entity.put("isSaved", true);
+  entity.put("isLiked", true);
+
+  // Saves the new object.
+  // Notice that the SaveCallback is totally optional!
+  entity.saveInBackground(e -> {
+    if (e==null){
+      //Save was done
+    }else{
+      //Something went wrong
+      Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+  });
+}
+```
+```java
+public void readObject() {
+  ParseQuery<ParseObject> query = ParseQuery.getQuery("Resource");
+
+  // The query will search for a ParseObject, given its objectId.
+  // When the query finishes running, it will invoke the GetCallback
+  // with either the object, or the exception thrown
+  query.getInBackground("<PARSE_OBJECT_ID>", (object, e) -> {
+        if (e == null) {
+        //Object was successfully retrieved
+      } else {
+        // something went wrong
+        Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+      }
+  });
+```
+* Book
+```java
+public void createObject() {
+  ParseObject entity = new ParseObject("Book");
+
+  entity.put("resource", new ParseObject("Resource"));
+  entity.put("description", "A string");
+  entity.put("source", "A string");
+  entity.put("date", "A string");
+  entity.put("bookURL", "A string");
+
+  // Saves the new object.
+  // Notice that the SaveCallback is totally optional!
+  entity.saveInBackground(e -> {
+    if (e==null){
+      //Save was done
+    }else{
+      //Something went wrong
+      Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+  });
+
+}
+```
+```java
+public void readObject() {
+  ParseQuery<ParseObject> query = ParseQuery.getQuery("Resource");
+
+  // The query will search for a ParseObject, given its objectId.
+  // When the query finishes running, it will invoke the GetCallback
+  // with either the object, or the exception thrown
+  query.getInBackground("<PARSE_OBJECT_ID>", (object, e) -> {
+        if (e == null) {
+        //Object was successfully retrieved
+      } else {
+        // something went wrong
+        Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+      }
+  });
+}
+```
+* Song
+```java
+public void createObject() {
+  ParseObject entity = new ParseObject("Song");
+
+  entity.put("resource", new ParseObject("Resource"));
+  entity.put("durationInSeconds", 1);
+
+  // Saves the new object.
+  // Notice that the SaveCallback is totally optional!
+  entity.saveInBackground(e -> {
+    if (e==null){
+      //Save was done
+    }else{
+      //Something went wrong
+      Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+  });
+
+}
+```
+```java
+public void readObject() {
+  ParseQuery<ParseObject> query = ParseQuery.getQuery("Song");
+
+  // The query will search for a ParseObject, given its objectId.
+  // When the query finishes running, it will invoke the GetCallback
+  // with either the object, or the exception thrown
+  query.getInBackground("<PARSE_OBJECT_ID>", (object, e) -> {
+        if (e == null) {
+        //Object was successfully retrieved
+      } else {
+        // something went wrong
+        Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+      }
+  });
+}
+```
+* News
+POST
+```java
+public void createObject() {
+  ParseObject entity = new ParseObject("News");
+
+  entity.put("resource", new ParseObject("Resource"));
+  entity.put("newsURL", "A string");
+  entity.put("date", "A string");
+  entity.put("description", "A string");
+
+  // Saves the new object.
+  // Notice that the SaveCallback is totally optional!
+  entity.saveInBackground(e -> {
+    if (e==null){
+      //Save was done
+    }else{
+      //Something went wrong
+      Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+  });
+
+}
+```
+GET
+```java
+public void readObject() {
+  ParseQuery<ParseObject> query = ParseQuery.getQuery("News");
+
+  // The query will search for a ParseObject, given its objectId.
+  // When the query finishes running, it will invoke the GetCallback
+  // with either the object, or the exception thrown
+  query.getInBackground("<PARSE_OBJECT_ID>", (object, e) -> {
+        if (e == null) {
+        //Object was successfully retrieved
+      } else {
+        // something went wrong
+        Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+      }
+  });
+}
+```
+* Comment
+POST
+```java
+public void createObject() {
+  ParseObject entity = new ParseObject("comment");
+
+  entity.put("repliedPost", new ParseObject("Post"));
+  entity.put("author", ParseUser.getCurrentUser());
+  entity.put("content", "A string");
+  entity.put("likeCount", 1);
+  entity.put("isLiked", true);
+
+  // Saves the new object.
+  // Notice that the SaveCallback is totally optional!
+  entity.saveInBackground(e -> {
+    if (e==null){
+      //Save was done
+    }else{
+      //Something went wrong
+      Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+  });
+
+}
+```
+GET
+```java
+public void readObject() {
+  ParseQuery<ParseObject> query = ParseQuery.getQuery("comment");
+
+  // The query will search for a ParseObject, given its objectId.
+  // When the query finishes running, it will invoke the GetCallback
+  // with either the object, or the exception thrown
+  query.getInBackground("<PARSE_OBJECT_ID>", (object, e) -> {
+        if (e == null) {
+        //Object was successfully retrieved
+      } else {
+        // something went wrong
+        Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+      }
+  });
+}
+```
+* User
+  Login (Read/GET)
 ```java
 ParseUser.logInInBackground("<userName>", "<password>", (user, e) -> {
     if (user != null) {
@@ -385,7 +672,7 @@ ParseUser.logInInBackground("<userName>", "<password>", (user, e) -> {
     }
 });
 ```
-* Signup (Create/POST)
+  Signup (Create/POST)
 ```java
 ParseUser user = new ParseUser();
 user.setUsername("my name");
