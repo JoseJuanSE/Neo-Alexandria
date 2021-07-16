@@ -11,7 +11,7 @@ App Design Project
 
 ## Overview
 ### Description
-A free and open virtual library, where you will be able to find news, music, videos and of course books, for free. Users can share their opinion of the content with commentaries and give them punctuation that will help the community to find better content. You can also build your personal library, saving all those resources in your account.
+A free and open virtual library, where you will be able to find news, music and of course books, for free. Users can share their opinion of the content with commentaries and give them punctuation that will help the community to find better content. You can also build your personal library, saving all those resources in your account.
 
 ### App Evaluation
 
@@ -60,7 +60,7 @@ A free and open virtual library, where you will be able to find news, music, vid
 * [ ] Commentaries can only be liked
 ---
 * [ ] User will be able to search the resources they want by title and will see them displayed.
-* [ ] In Search view you can filter the results by category (All (default), books, music, news,  videos and posts by other users). <span style="color:red">*</span>
+* [ ] In Search view you can filter the results by category (All (default), books, music, news and posts by other users). <span style="color:red">*</span>
 ---
 * [ ] The layout of every item as well as the detail view depends on the type of item (music, news, books, etc). <span style="color:red">*</span>
 * [ ] Music Item is playable in the style is like a media player in both item and details view. <span style="color:red">*</span>
@@ -149,7 +149,7 @@ A free and open virtual library, where you will be able to find news, music, vid
 
 * Search
   * [ ] Users will be able to search the resources they want by title and will see them displayed.
-  * [ ] In Search view you can filter the results by category (All (default), books, music, news,  videos and posts by other users). <span style="color:red">*</span>
+  * [ ] In Search view you can filter the results by category (All (default), books, music, news and posts by other users). <span style="color:red">*</span>
   * [ ] Every resource has a rating(actionable) **FEED SEARCH SAVED**
   * [ ] Every resource has a comment icon(actionable) and comment count. **FEED SEARCH SAVED**
   * [ ] Every resource has a save icon(actionable) and saved count. **FEED SEARCH SAVED**
@@ -296,7 +296,80 @@ I did it directly on digital using Figma.
 [This section will be completed in Unit 9]
 
 ### Models
-[Add table of models]
+
+Model: User
+  | Property      | Type     | Description |
+  | ------------- | -------- | ------------|
+  | objectId      | String   | unique id for the user (default field) |
+  | name          | String   | user's name |
+  | profilePicture| File     | picture that will be display as the profile picture |
+  | password      | String   | string to login |
+  | nightMode      | Boolean   | boolean to know what style display |
+  | mainColor      | String   | the main color preference for styles |
+
+Model: Post
+  | Property      | Type     | Description |
+  | ------------- | -------- | ------------|
+  | objectId      | String   | unique id for the user (default field) |
+  | author          | pointer to User   | user who created the post |
+  | timeStamp      | String   |  how many time ago it was published |
+  | description | String     | string for post's description |
+  | picture | File     | picture upload by user as part of post |
+  | likesCount      | Number   | number of likes |
+  | commentCount      | Number   | number of commentaries |
+  | saveCount      | Number   | number of saves |
+  | isLiked      | Boolean   | this tell us if the user liked this post |
+  | isSaved      | Boolean   | this tell us if the user saved this post |
+
+
+Model: Resource
+  | Property      | Type     | Description |
+  | ------------- | -------- | ------------|
+  | objectId      | String   | unique id for the user (default field) |
+  | title      | String   | title of resource |
+  | picture | File     | every kind of resource use an image |
+  | raiting      | Number   | resource raiting out of 5 |
+  | commentCount      | Number   | number of commentaries |
+  | saveCount      | Number   | number of saves |
+  | isSaved      | Boolean   | this tell us if the user saved this post |
+  | author          | String   | composed by |
+
+Model: Book
+  | Property      | Type     | Description |
+  | ------------- | -------- | ------------|
+  | resource      | pointer to Resource   | all the general information as resource |
+  | description | String     | string for post's description |
+  | source          | String   | resource source |
+  | date      | String   | creation date |
+  | bookURL      | String   | book url |
+
+Model: Song
+  | Property      | Type     | Description |
+  | ------------- | -------- | ------------|
+  | resource      | pointer to Resource   | all the general information as resource |
+  | durationInSeconds          | number   | how long does song is in seconds |
+
+
+Model: News
+  | Property      | Type     | Description |
+  | ------------- | -------- | ------------|
+  | resource      | pointer to Resource   | all the general information as resource |
+  | NewsURL          | String   | url of direction |
+  | date      | String   | creation date |
+  | description | String     | string for post's description |
+
+
+Model: Comment
+  | Property      | Type     | Description |
+  | ------------- | -------- | ------------|
+  | objectId      | String   | unique id for the user (default field) |
+  | repliedPost          | pointer to Post   | post that was commented |
+  | author | pointer to user     | person who did the comment |
+  | content      | String   | what author commented |
+  | isLiked      | Boolean   | this tell us if the user liked this post |
+  | likesCount      | Number   | number of likes |
+
+
 ### Networking
 - [Add list of network requests by screen ]
 - [Create basic snippets for each Parse network request]
@@ -515,95 +588,3 @@ public void startMuPDFActivityWithExampleFile() {
 ```
 
 More information on: https://mupdf.com/docs/android-sdk.html
-
-* ## Youtube
-```java
-/**
-* Sample Java code for youtube.search.list
-* See instructions for running these code samples locally:
-* https://developers.google.com/explorer-help/guides/code_samples#java
-*/
-
-import com.google.api.client.auth.oauth2.Credential;
-import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
-import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
-import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
-import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
-import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
-import com.google.api.client.googleapis.json.GoogleJsonResponseException;
-import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.jackson2.JacksonFactory;
-
-import com.google.api.services.youtube.YouTube;
-import com.google.api.services.youtube.model.SearchListResponse;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.security.GeneralSecurityException;
-import java.util.Arrays;
-import java.util.Collection;
-
-public class ApiExample {
-   private static final String CLIENT_SECRETS= "client_secret.json";
-   private static final Collection<String> SCOPES =
-       Arrays.asList("https://www.googleapis.com/auth/youtube.force-ssl");
-
-   private static final String APPLICATION_NAME = "API code samples";
-   private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
-
-   /**
-    * Create an authorized Credential object.
-    *
-    * @return an authorized Credential object.
-    * @throws IOException
-    */
-   public static Credential authorize(final NetHttpTransport httpTransport) throws IOException {
-       // Load client secrets.
-       InputStream in = ApiExample.class.getResourceAsStream(CLIENT_SECRETS);
-       GoogleClientSecrets clientSecrets =
-         GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
-       // Build flow and trigger user authorization request.
-       GoogleAuthorizationCodeFlow flow =
-           new GoogleAuthorizationCodeFlow.Builder(httpTransport, JSON_FACTORY, clientSecrets, SCOPES)
-           .build();
-       Credential credential =
-           new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize("user");
-       return credential;
-   }
-
-   /**
-    * Build and return an authorized API client service.
-    *
-    * @return an authorized API client service
-    * @throws GeneralSecurityException, IOException
-    */
-   public static YouTube getService() throws GeneralSecurityException, IOException {
-       final NetHttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
-       Credential credential = authorize(httpTransport);
-       return new YouTube.Builder(httpTransport, JSON_FACTORY, credential)
-           .setApplicationName(APPLICATION_NAME)
-           .build();
-   }
-
-   /**
-    * Call function to create API service object. Define and
-    * execute API request. Print API response.
-    *
-    * @throws GeneralSecurityException, IOException, GoogleJsonResponseException
-    */
-   public static void main(String[] args)
-       throws GeneralSecurityException, IOException, GoogleJsonResponseException {
-       YouTube youtubeService = getService();
-       // Define and execute the API request
-       YouTube.Search.List request = youtubeService.search()
-           .list("snippet");
-       SearchListResponse response = request.setMaxResults(25L)
-           .setQ("surfing")
-           .execute();
-       System.out.println(response);
-   }
-}
-```
-More information on: https://developers.google.com/youtube/v3/docs/search
