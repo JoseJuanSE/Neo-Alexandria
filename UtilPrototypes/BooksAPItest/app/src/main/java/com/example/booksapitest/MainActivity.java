@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
         String url = "https://bookmeth1.p.rapidapi.com/";
         AsyncHttpClient client = new AsyncHttpClient();
-        client.addHeader("x-rapidapi-key", "96259269bdmshadba53da4a39f86p158ad6jsn7d1a8811c352");
+        client.addHeader("x-rapidapi-key", BuildConfig.RAPID_APIKEY);
         client.addHeader("x-rapidapi-host", "bookmeth1.p.rapidapi.com");
         RequestParams params = new RequestParams();
         params.put("q", "Harry Potter");

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <!--  darker white that outside of edittext-->
+            <solid android:color="@color/lightgray"/>
+            <!-- Like in the real instagram a stroke margin more gray than inside-->
+            <stroke
+                android:color="@color/lightgray2"
+                android:width="0.5dp"
+                />
+            <!--  Rounded corners  -->
+            <corners android:radius="7dp"/>
+        </shape>
+    </item>
+</selector>

@@ -9,26 +9,135 @@
 
     <ImageView
         android:id="@+id/ivlogo"
-        android:layout_width="300dp"
+        android:layout_width="250dp"
         android:layout_height="300dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="90dp"
         app:srcCompat="@drawable/logo"
-        tools:src="@tools:sample/avatars" />
+        tools:src="@tools:sample/avatars"/>
 
     <TextView
         android:id="@+id/tvLogo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/ivlogo"
+        android:layout_alignParentEnd="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="-100dp"
+        android:layout_marginEnd="98dp"
+        android:fontFamily="@font/redressed"
+        android:text="Neo Alexandria"
+        android:textColor="@color/black"
+        android:textSize="40sp"/>
+
+    <EditText
+        android:id="@+id/etEmail"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvLogo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/custom_edittext"
+        android:hint="@string/email"
+        android:padding="10sp"
+        android:paddingStart="15dp"
+        android:textSize="15sp"/>
+    <EditText
+        android:id="@+id/etPassword"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etEmail"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/custom_edittext"
+        android:hint="@string/password"
+        android:padding="10sp"
+        android:paddingStart="15dp"
+        android:textSize="15sp"/>
+
+    <TextView
+        android:id="@+id/tvforgotpass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etPassword"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="7dp"
+        android:layout_marginEnd="30dp"
+        android:text="@string/forgot_your_password"
+        android:textColor="@color/blue"
+        android:textSize="12sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvSignUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginEnd="98dp"
-        android:layout_marginBottom="357dp"
-        android:fontFamily="@font/redressed"
-        android:text="NeoAlexandria"
-        android:textColor="@color/black"
-        android:textSize="40sp" />
+        android:layout_marginEnd="120dp"
+        android:layout_marginBottom="10dp"
+        android:text="@string/sign_up"
+        android:textColor="@color/blue"
+        android:textSize="12sp"
+        android:textStyle="bold" />
 
+    <TextView
+        android:id="@+id/tvdonthavepass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_toStartOf="@+id/tvSignUp"
+        android:text="@string/don_t_have_an_account"
+        android:textColor="@color/black"
+        android:textSize="12sp" />
+
+    <Button
+        android:id="@+id/btnLogin"
+        android:layout_width="350dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/tvforgotpass"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/mybutton"
+        android:fontFamily="@font/roboto"
+        android:text="Login"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="17sp"
+        android:textStyle="bold" />
+
+    <View
+        android:id="@+id/stripeLeft"
+        android:layout_width="150dp"
+        android:layout_height="1.5dp"
+        android:layout_below="@+id/btnLogin"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="30dp"
+        android:background="@android:color/black"/>
+
+    <TextView
+        android:id="@+id/tvOr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnLogin"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="-30dp"
+        android:layout_toStartOf="@+id/stripeRight"
+        android:fontFamily="@font/roboto"
+        android:text="or"
+        android:textColor="@color/black"
+        android:textSize="15sp" />
+
+    <View
+        android:id="@+id/stripeRight"
+        android:layout_width="150dp"
+        android:layout_height="1.5dp"
+        android:layout_toRightOf="@+id/stripeLeft"
+        android:layout_below="@+id/btnLogin"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="50dp"
+        android:background="@android:color/black"/>
 </RelativeLayout>

@@ -1,6 +1,6 @@
 plugins {
     id 'com.android.application'
-    id 'com.google.secrets_gradle_plugin' version '0.4'
+    id 'com.google.secrets_glade_plugin' version '0.4'
 }
 
 android {
@@ -8,7 +8,7 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "com.example.neo_alexandria_app"
+        applicationId "com.example.gettingdatafromapisexamples"
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
@@ -37,4 +37,7 @@ dependencies {
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+
+    //news
+    implementation 'com.github.KwabenBerko:News-API-Java:1.0.0'
 }
