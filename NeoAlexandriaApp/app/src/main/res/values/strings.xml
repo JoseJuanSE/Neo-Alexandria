@@ -5,4 +5,7 @@
     <string name="forgot_your_password"><u>Forgot your password?</u></string>
     <string name="sign_up"><u>Sign Up</u></string>
     <string name="don_t_have_an_account">Don\'t have an account?</string>
+    <string name="username">Username</string>
+    <string name="login">Login</string>
+    <string name="or">or</string>
 </resources>

@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Neo-Alexandria-App</string>
+    <string name="email">Correo electronico</string>
+    <string name="password">Contraseña</string>
+    <string name="forgot_your_password"><u>Olvidaste tu contraseña?</u></string>
+    <string name="sign_up"><u>Registrate</u></string>
+    <string name="don_t_have_an_account">¿No tienes una cuenta?</string>
+    <string name="username">Nombre de usuario</string>
+    <string name="login">Ingresar</string>
+    <string name="or">o</string>
+</resources>

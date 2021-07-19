@@ -13,8 +13,7 @@
         android:layout_height="300dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        app:srcCompat="@drawable/logo"
-        tools:src="@tools:sample/avatars"/>
+        app:srcCompat="@drawable/logo" />
 
     <TextView
         android:id="@+id/tvLogo"
@@ -42,6 +41,7 @@
         android:padding="10sp"
         android:paddingStart="15dp"
         android:textSize="15sp"/>
+
     <EditText
         android:id="@+id/etPassword"
         android:layout_width="350dp"
@@ -51,9 +51,10 @@
         android:layout_marginTop="30dp"
         android:background="@drawable/custom_edittext"
         android:hint="@string/password"
+        android:inputType="textPassword"
         android:padding="10sp"
         android:paddingStart="15dp"
-        android:textSize="15sp"/>
+        android:textSize="15sp" />
 
     <TextView
         android:id="@+id/tvforgotpass"
@@ -103,7 +104,7 @@
         android:layout_marginTop="30dp"
         android:background="@drawable/mybutton"
         android:fontFamily="@font/roboto"
-        android:text="Login"
+        android:text="@string/login"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="17sp"
@@ -127,7 +128,7 @@
         android:layout_marginEnd="-30dp"
         android:layout_toStartOf="@+id/stripeRight"
         android:fontFamily="@font/roboto"
-        android:text="or"
+        android:text="@string/or"
         android:textColor="@color/black"
         android:textSize="15sp" />
 
@@ -135,9 +136,10 @@
         android:id="@+id/stripeRight"
         android:layout_width="150dp"
         android:layout_height="1.5dp"
-        android:layout_toRightOf="@+id/stripeLeft"
         android:layout_below="@+id/btnLogin"
-        android:layout_marginTop="20dp"
         android:layout_marginStart="50dp"
-        android:background="@android:color/black"/>
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="20dp"
+        android:layout_toRightOf="@+id/stripeLeft"
+        android:background="@android:color/black" />
 </RelativeLayout>

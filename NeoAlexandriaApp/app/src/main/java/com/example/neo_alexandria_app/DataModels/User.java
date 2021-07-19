@@ -1,16 +1,9 @@
 package com.example.neo_alexandria_app.DataModels;
 
-import java.io.File;
-
 public class User {
-    private String id;
-    private String name;
-    private File profilePicture;
-    private String password;
-    private boolean nightMode;
-    private int mainColor;
+    public static final String KEY_PROFILEIMAGE = "profilePicture";
+    public static final String KEY_NIGHTMODE = "nightMode";
+    public static final String KEY_MAINCOLOR = "mainColor";
 
-    public User () {
-
-    }
+    public User () {}
 }
