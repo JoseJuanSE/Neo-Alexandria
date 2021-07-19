@@ -13,9 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NeoAlexandriaApp"
         android:name=".ParseApplication">
-        <activity android:name=".SignupActivity"></activity>
-        <activity android:name=".MainActivity" />
-        <activity android:name=".LoginActivity">
+        <activity android:name=".Activities.SignupActivity"></activity>
+        <activity android:name=".Activities.MainActivity" />
+        <activity android:name=".Activities.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

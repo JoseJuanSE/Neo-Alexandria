@@ -1,4 +1,4 @@
-package com.example.neo_alexandria_app;
+package com.example.neo_alexandria_app.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,12 +8,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.neo_alexandria_app.DataModels.User;
+import com.example.neo_alexandria_app.R;
 import com.parse.ParseException;
-import com.parse.ParseFile;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
@@ -45,6 +43,7 @@ public class SignupActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //Abrir imagenes y escojer una, tambien camara.
                 //ponerla en ivProfile
+                Toast.makeText(SignupActivity.this,"add",Toast.LENGTH_LONG).show();
             }
         });
 
@@ -70,12 +69,12 @@ public class SignupActivity extends AppCompatActivity {
         user.signUpInBackground(new SignUpCallback() {
             @Override
             public void done(ParseException e) {
-                if (e == null) {
+                if (e != null) {
+                    Toast.makeText(SignupActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                    Log.e(TAG, "error find: " + e);
+                } else {
                     Toast.makeText(SignupActivity.this, "User successful signed up", Toast.LENGTH_LONG).show();
                     finish();
-                } else {
-                    Toast.makeText(SignupActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
-                    Log.e(TAG, "error find: "+e);
                 }
             }
         });

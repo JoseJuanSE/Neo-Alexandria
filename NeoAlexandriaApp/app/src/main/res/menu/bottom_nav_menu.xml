@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/feedFragment"
+        android:icon="@drawable/house"
+        android:title="feed" />
+    <item
+        android:id="@+id/notificationsFragment"
+        android:icon="@drawable/notification"
+        android:title="notification" />
+    <item
+        android:id="@+id/searchFragment"
+        android:icon="@drawable/search"
+        android:title="search" />
+    <item
+        android:id="@+id/saveFragment"
+        android:icon="@drawable/save"
+        android:title="save" />
+    <item
+        android:id="@+id/profileFragment"
+        android:icon="@drawable/placeholderprofile"
+        android:title="profile" />
+</menu>
