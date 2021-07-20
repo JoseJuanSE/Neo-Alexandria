@@ -30,9 +30,9 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.login_activity);
 
         // If we are already log in, we have to skip the log in.
-        if (ParseUser.getCurrentUser() != null) {
-            goToMainActivity();
-        }
+//        if (ParseUser.getCurrentUser() != null) {
+//            goToMainActivity();
+//        }
 
         etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);

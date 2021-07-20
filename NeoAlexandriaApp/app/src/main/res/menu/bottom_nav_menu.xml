@@ -19,6 +19,6 @@
         android:title="save" />
     <item
         android:id="@+id/profileFragment"
-        android:icon="@drawable/placeholderprofile"
+        android:icon="@drawable/profile"
         android:title="profile" />
 </menu>

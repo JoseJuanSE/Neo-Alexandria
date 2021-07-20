@@ -54,4 +54,10 @@ dependencies {
 
     //Circular imageView
     implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+    //Get images and photos
+    implementation 'com.github.dhaval2404:imagepicker:2.1'
+
+    //async-https request
+    implementation 'com.loopj.android:android-async-http:1.4.9'
 }

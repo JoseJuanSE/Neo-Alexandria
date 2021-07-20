@@ -86,14 +86,14 @@
         android:textSize="17sp"
         android:textStyle="bold" />
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/ivProfile"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_below="@+id/tvLogo"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        app:srcCompat="@drawable/placeholderprofile" />
+        android:src="@drawable/placeholderprofile" />
 
     <ImageView
         android:id="@+id/ivAdd"
