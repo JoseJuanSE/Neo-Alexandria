@@ -5,7 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.LoginActivity">
+    tools:context=".Activities.LoginActivity"
+    android:paddingEnd="20dp"
+    android:paddingStart="20dp">
 
     <ImageView
         android:id="@+id/ivlogo"
@@ -13,6 +15,7 @@
         android:layout_height="300dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
+        android:transitionName="logoImageTrans"
         app:srcCompat="@drawable/logo" />
 
     <TextView
@@ -20,12 +23,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ivlogo"
-        android:layout_alignParentEnd="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="-100dp"
-        android:layout_marginEnd="98dp"
         android:fontFamily="@font/redressed"
         android:text="Neo Alexandria"
+        android:transitionName="textTrans"
         android:textColor="@color/black"
         android:textSize="40sp"/>
 
@@ -39,6 +41,7 @@
         android:background="@drawable/custom_edittext"
         android:hint="@string/email"
         android:padding="10sp"
+        android:inputType="textEmailAddress"
         android:paddingStart="15dp"
         android:textSize="15sp"/>
 
@@ -63,37 +66,42 @@
         android:layout_below="@+id/etPassword"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="7dp"
-        android:layout_marginEnd="30dp"
         android:text="@string/forgot_your_password"
         android:textColor="@color/blue"
         android:textSize="12sp"
         android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/tvSignUp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
+
+    <RelativeLayout
+        android:layout_width="210dp"
+        android:layout_height="20dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginEnd="120dp"
-        android:layout_marginBottom="10dp"
-        android:text="@string/sign_up"
-        android:textColor="@color/blue"
-        android:textSize="12sp"
-        android:textStyle="bold" />
+        android:layout_marginBottom="10dp">
 
-    <TextView
-        android:id="@+id/tvdonthavepass"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
-        android:layout_toStartOf="@+id/tvSignUp"
-        android:text="@string/don_t_have_an_account"
-        android:textColor="@color/black"
-        android:textSize="12sp" />
+        <TextView
+            android:id="@+id/tvdonthavepass"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="10dp"
+            android:text="@string/don_t_have_an_account"
+            android:textColor="@color/black"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/tvSignUp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="10dp"
+            android:text="@string/sign_up"
+            android:textColor="@color/blue"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
 
     <Button
         android:id="@+id/btnLogin"
@@ -115,8 +123,9 @@
         android:layout_width="150dp"
         android:layout_height="1.5dp"
         android:layout_below="@+id/btnLogin"
+        android:layout_toStartOf="@+id/tvOr"
+        android:layout_marginEnd="20dp"
         android:layout_marginTop="20dp"
-        android:layout_marginStart="30dp"
         android:background="@android:color/black"/>
 
     <TextView
@@ -125,8 +134,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/btnLogin"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="-30dp"
-        android:layout_toStartOf="@+id/stripeRight"
+        android:layout_centerHorizontal="true"
         android:fontFamily="@font/roboto"
         android:text="@string/or"
         android:textColor="@color/black"
@@ -137,9 +145,8 @@
         android:layout_width="150dp"
         android:layout_height="1.5dp"
         android:layout_below="@+id/btnLogin"
-        android:layout_marginStart="50dp"
-        android:layout_marginLeft="50dp"
         android:layout_marginTop="20dp"
-        android:layout_toRightOf="@+id/stripeLeft"
+        android:layout_toEndOf="@+id/tvOr"
+        android:layout_marginStart="20dp"
         android:background="@android:color/black" />
 </RelativeLayout>

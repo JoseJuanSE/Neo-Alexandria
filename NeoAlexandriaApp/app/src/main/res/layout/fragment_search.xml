@@ -1,14 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- Here we have the main RelativeLayout that will hold all the elements-->
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.SearchFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    android:fitsSystemWindows="true"
+    tools:context=".Activities.MainActivity">
+    <!-- Here we use Coordinator Layout in order to be able to hide our toolbar and
+             move our floating button if and snackbar appears
+         -->
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/main_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="SEARCH" />
+        android:layout_height="match_parent">
 
-</FrameLayout>
+        <!--  Instead of use an Action bar we use the newer AppBarLayout -->
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBar"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:padding="5dp">
+
+            <!-- Toolbar is the actual app bar with text and the action items -->
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="?attr/actionBarSize"
+                android:background="@color/white"
+                app:layout_scrollFlags="scroll|enterAlways">
+
+                <!-- here we have out instagram icon -->
+
+                <ImageView
+                    android:id="@+id/InstagramLogo"
+                    android:background="@drawable/logo"
+                    android:layout_width="57dp"
+                    android:layout_height="30dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_gravity="left"/>
+                <TextView
+                    android:id="@+id/tvLogo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/redressed"
+                    android:text="Neo Alexandria"
+                    android:textColor="@color/black"
+                    android:textSize="25sp"
+                    />
+
+            </androidx.appcompat.widget.Toolbar>
+            <!--            TODO: if there is time add this progress bar-->
+            <!--            <com.daimajia.numberprogressbar.NumberProgressBar-->
+            <!--                android:id="@+id/number_progress_bar"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:visibility="visible"-->
+            <!--                />-->
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <!--   Here we use this layout to let us update by scrolling      -->
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeContainer"
+            android:layout_width="match_parent"
+            android:layout_height="666dp"
+            app:layout_anchor="@+id/swipeContainer"
+            app:layout_anchorGravity="center"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <!--      here we have the design core of our app, the recycle view      -->
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvPosts"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="false"
+                android:layout_alignParentTop="false"
+                android:layout_alignParentBottom="false" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</RelativeLayout>

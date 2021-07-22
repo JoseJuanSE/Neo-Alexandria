@@ -42,6 +42,7 @@
                     android:layout_width="57dp"
                     android:layout_height="30dp"
                     android:layout_marginEnd="10dp"
+                    android:transitionName="logoImageTrans"
                     android:layout_gravity="left"/>
                 <TextView
                     android:id="@+id/tvLogo"
@@ -49,6 +50,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/redressed"
                     android:text="Neo Alexandria"
+                    android:transitionName="textTrans"
                     android:textColor="@color/black"
                     android:textSize="25sp"
                     />

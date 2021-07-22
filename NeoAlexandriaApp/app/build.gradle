@@ -60,4 +60,10 @@ dependencies {
 
     //async-https request
     implementation 'com.loopj.android:android-async-http:1.4.9'
+
+    //POST requests
+    implementation 'com.amitshekhar.android:android-networking:1.0.2'
+
+    //Sweet alert dialog
+    implementation 'com.github.f0ris.sweetalert:library:1.6.2'
 }

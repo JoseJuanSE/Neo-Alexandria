@@ -2,15 +2,19 @@ package com.example.neo_alexandria_app.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.neo_alexandria_app.R;
+import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
@@ -28,11 +32,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
-
-        // If we are already log in, we have to skip the log in.
-//        if (ParseUser.getCurrentUser() != null) {
-//            goToMainActivity();
-//        }
 
         etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
@@ -73,11 +72,16 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-
-
     private void goToMainActivity() {
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-        startActivity(intent);
+        TextView tvNeo = findViewById(R.id.tvLogo);
+        ImageView ivLogo = findViewById(R.id.ivlogo);
+        Pair[] pairs = new Pair[2];
+        pairs[0] = new Pair<View, String>(ivLogo, "logoImageTrans");
+        pairs[1] = new Pair<View, String>(tvNeo, "textTrans");
+
+        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(LoginActivity.this, pairs);
+        startActivity(intent, options.toBundle());
     }
 
     private void goToSignupActivity() {

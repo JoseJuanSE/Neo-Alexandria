@@ -5,7 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.SignupActivity">
+    tools:context=".Activities.SignupActivity"
+    android:paddingEnd="20dp"
+    android:paddingStart="20dp">
 
     <ImageView
         android:id="@+id/ivlogo"
@@ -22,10 +24,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ivlogo"
-        android:layout_alignParentEnd="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="-100dp"
-        android:layout_marginEnd="98dp"
         android:fontFamily="@font/redressed"
         android:text="Neo Alexandria"
         android:textColor="@color/black"
@@ -41,6 +41,7 @@
         android:background="@drawable/custom_edittext"
         android:hint="@string/email"
         android:padding="10sp"
+        android:inputType="textEmailAddress"
         android:paddingStart="15dp"
         android:textSize="15sp" />
 
@@ -53,8 +54,8 @@
         android:layout_marginTop="30dp"
         android:background="@drawable/custom_edittext"
         android:hint="@string/username"
+        android:inputType="textPersonName"
         android:padding="10sp"
-        android:paddingStart="15dp"
         android:textSize="15sp" />
 
     <EditText
@@ -68,7 +69,6 @@
         android:hint="@string/password"
         android:inputType="textPassword"
         android:padding="10sp"
-        android:paddingStart="15dp"
         android:textSize="15sp" />
 
     <Button
