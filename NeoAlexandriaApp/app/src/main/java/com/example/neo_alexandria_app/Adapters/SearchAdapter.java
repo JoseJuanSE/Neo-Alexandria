@@ -2,14 +2,14 @@ package com.example.neo_alexandria_app.Adapters;
 
 import android.content.Context;
 
-import android.net.Uri;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
@@ -19,17 +19,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.MultiTransformation;
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.example.neo_alexandria_app.DataModels.Song;
 import com.example.neo_alexandria_app.R;
+import com.example.neo_alexandria_app.Activities.Song_Details;
 
 import org.jetbrains.annotations.NotNull;
+import org.parceler.Parcels;
 
 
 import java.util.List;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
+
+import static androidx.core.content.ContextCompat.startActivity;
 
 // Here we manage how we display the items in recycler views
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder> {
@@ -79,11 +81,11 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         TextView tvTitle;
         TextView tvNumCom;
         TextView tvNumSav;
-        RatingBar ratingBar;
-        Button btnPlay;
-        ProgressBar progressBar;
-        TextView elapsedTimeLabel;
-        TextView remainingTimeLabel;
+        RatingBar rbStars;
+        TextView tvAlbum;
+        TextView tvAuthor;
+        TextView tvExplicit;
+        RelativeLayout relative;
 
 
         //Here I got all the items that I need from layout
@@ -97,23 +99,54 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             tvTitle = itemView.findViewById(R.id.tvTitle);
             tvNumCom = itemView.findViewById(R.id.tvNumberComments);
             tvNumSav = itemView.findViewById(R.id.tvNumberSaves);
-            ratingBar = itemView.findViewById(R.id.rbStars);
-            btnPlay = itemView.findViewById(R.id.playBtn);
-            progressBar = itemView.findViewById(R.id.positionBar);
-            elapsedTimeLabel = itemView.findViewById(R.id.elapsedTimeLabel);
-            remainingTimeLabel = itemView.findViewById(R.id.remainingTimeLabel);
+            rbStars = itemView.findViewById(R.id.rbStars);
+            tvAlbum = itemView.findViewById(R.id.tvAlbum);
+            tvAuthor = itemView.findViewById(R.id.tvAuthor);
+            relative = itemView.findViewById(R.id.relative);
+            tvExplicit = itemView.findViewById(R.id.tvExplicit);
 
         }
         //Set all the information into the layout, also set the MediaPlayer
         public void bind(Song song) {
-            if (!song.getImageLink().isEmpty()){
+            if (!song.getImageLink().isEmpty()) {
                 Glide.with(context)
                         .load(song.getImageLink())
-                        .transform(new MultiTransformation(new FitCenter(), new RoundedCornersTransformation(40,5)))
+                        .transform(new MultiTransformation(new FitCenter(), new RoundedCornersTransformation(40, 5)))
                         .into(ivCover);
             }
+            tvTitle.setText(limited(song.getTitle(),13));
+            tvAlbum.setText(limited(song.getAlbumTitle(),22));
+            tvAuthor.setText(limited(song.getAuthorName(),25));
+            tvNumCom.setText(String.valueOf(song.getCommentCount()));
+            tvNumSav.setText(String.valueOf(song.getSaveCount()));
+            rbStars.setRating(song.getRating());
+            if ( song.isExplicitContent() == true) {
+                tvExplicit.setText("Explicit");
+            } else {
+                tvExplicit.setText("");
+            }
 
-            tvTitle.setText(song.getTitle());
+            relative.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, Song_Details.class);
+                    intent.putExtra("song", Parcels.wrap(song));
+                    startActivity(context, intent, new Bundle());
+                }
+            });
+        }
+
+        private String limited(String title, int lit) {
+            String ans="";
+
+            for (int i=0; i < Math.min(lit,title.length()); i++) {
+                ans += title.charAt(i);
+            }
+            if (title.length() > lit) {
+                ans += "...";
+            }
+
+            return ans;
         }
     }
     // Clean all elements of the recycler
@@ -127,4 +160,5 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         songs.addAll(list);
         notifyDataSetChanged();
     }
+
 }

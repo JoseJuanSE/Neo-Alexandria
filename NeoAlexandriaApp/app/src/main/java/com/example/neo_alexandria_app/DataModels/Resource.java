@@ -9,7 +9,7 @@ public class Resource {
     int commentCount;
     int saveCount;
     boolean isSaved;
-    double rating;
+    float rating;
 
     public Resource () {
 
@@ -47,7 +47,7 @@ public class Resource {
         return isSaved;
     }
 
-    public double getRating() {
+    public float getRating() {
         return rating;
     }
 }

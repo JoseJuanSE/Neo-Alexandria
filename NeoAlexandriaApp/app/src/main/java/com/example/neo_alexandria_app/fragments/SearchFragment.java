@@ -1,5 +1,6 @@
 package com.example.neo_alexandria_app.fragments;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -52,6 +53,7 @@ public class SearchFragment extends Fragment {
     List<Song> songs;
     SearchAdapter searchAdapter;
     RecyclerView recyclerView;
+    public MediaPlayer mp;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
