@@ -38,7 +38,6 @@ public class SplashActivity extends AppCompatActivity {
         ivlogos.setAnimation(animation1);
         tvSearch.setAnimation(animation2);
 
-        ParseUser.logOut();
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

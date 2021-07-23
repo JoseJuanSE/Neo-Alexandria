@@ -8,8 +8,11 @@ import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,7 +21,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.neo_alexandria_app.Adapters.SearchAdapter;
+import com.example.neo_alexandria_app.DataModels.Song;
+import com.example.neo_alexandria_app.Handlers.Deezerhandler;
 import com.example.neo_alexandria_app.R;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
+
+import cz.msebera.android.httpclient.Header;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,7 +46,12 @@ import com.example.neo_alexandria_app.R;
  */
 public class SearchFragment extends Fragment {
 
-    private Toolbar toolbar;
+    public static final String TAG = "SearchFragment";
+
+    Toolbar toolbar;
+    List<Song> songs;
+    SearchAdapter searchAdapter;
+    RecyclerView recyclerView;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -90,6 +114,7 @@ public class SearchFragment extends Fragment {
 ////                android.R.color.holo_green_light,
 ////                android.R.color.holo_orange_light,
 ////                android.R.color.holo_red_light);
+        // Find the recycler view
     }
 
     @Override
@@ -100,6 +125,14 @@ public class SearchFragment extends Fragment {
         toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         activity.setSupportActionBar(toolbar);
         activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        recyclerView = view.findViewById(R.id.rvSearch);
+        // Init the list of tweets and adapter
+        songs = new ArrayList<>();
+        searchAdapter = new SearchAdapter(getContext(), songs);
+        // Recycler view setup: layout manager and the adapter
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(searchAdapter);
         return view;
     }
 
@@ -110,11 +143,32 @@ public class SearchFragment extends Fragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                // perform query here
-                // fetchBooks(query);
-                // workaround to avoid issues with some emulators and keyboard devices firing twice if a keyboard enter is used
-                // see https://code.google.com/p/android/issues/detail?id=24599
-                Toast.makeText(getContext(), query, Toast.LENGTH_LONG).show();
+
+                String url = "https://api.deezer.com/search";
+                AsyncHttpClient client = new AsyncHttpClient();
+                RequestParams params = new RequestParams();
+                params.put("q", query);
+
+                client.get(url, params, new JsonHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, JSONObject response){
+                        super.onSuccess(statusCode, headers, response);
+                        searchAdapter.clear();
+                        try {
+                            JSONArray jsonArray = new JSONArray(response.getString("data"));
+                            songs.addAll(Song.fromJsonArray(jsonArray));
+                            searchAdapter.notifyDataSetChanged();
+                        } catch (JSONException | ParseException e) {
+                            Log.e("onSuccess Deezerhandler",e.getMessage());
+                        }
+                    }
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String res, Throwable t) {
+                        // called when response HTTP status is "4XX" (eg. 401, 403, 404)
+                        Log.e("dsa","AQUI NO");
+                    }
+                });
+
                 searchView.clearFocus();
                 return true;
             }
@@ -131,4 +185,5 @@ public class SearchFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         return super.onOptionsItemSelected(item);
     }
+
 }

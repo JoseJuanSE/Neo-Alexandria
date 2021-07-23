@@ -1,11 +1,9 @@
 package com.example.neo_alexandria_app.Activities;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,13 +14,11 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.neo_alexandria_app.DataModels.User;
-import com.example.neo_alexandria_app.NSFWhandler;
+import com.example.neo_alexandria_app.Handlers.NSFWhandler;
 import com.example.neo_alexandria_app.R;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.parse.ParseException;
 import com.parse.ParseFile;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
