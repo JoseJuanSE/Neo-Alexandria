@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Parcel
-public class Song extends Resource{
+public class Song extends Resource {
 
     public static final String TAG = "Song";
 
@@ -37,7 +37,7 @@ public class Song extends Resource{
     String albumTitle;
     String albumTracksLinkAPIQuery;
 
-    public Song () {
+    public Song() {
 
     }
 
@@ -76,7 +76,7 @@ public class Song extends Resource{
 
         List<Song> songs = new ArrayList<>();
 
-        for (int i=0; i < jsonArray.length(); i++) {
+        for (int i = 0; i < jsonArray.length(); i++) {
             songs.add(fromJson(jsonArray.getJSONObject(i)));
         }
 
@@ -103,5 +103,7 @@ public class Song extends Resource{
         return albumTracksLinkAPIQuery;
     }
 
-    public String getCoverBig() { return coverBig; }
+    public String getCoverBig() {
+        return coverBig;
+    }
 }

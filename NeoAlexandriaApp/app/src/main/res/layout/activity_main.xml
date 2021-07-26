@@ -8,9 +8,6 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:context=".Activities.MainActivity">
-    <!-- Here we use Coordinator Layout in order to be able to hide our toolbar and
-         move our floating button if and snackbar appears
-     -->
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"

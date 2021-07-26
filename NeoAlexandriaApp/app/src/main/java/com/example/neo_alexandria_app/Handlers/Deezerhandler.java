@@ -22,7 +22,7 @@ import cz.msebera.android.httpclient.Header;
 
 public class Deezerhandler {
 
-    //TODO: TRY TO DO IT IN THIS WAY
+    //TODO: TRY TO DO IT IN THIS WAY, FOR NOW THIS IS NOT WORKING
 
     static JSONArray jsonArray;
     static Timer timer;
@@ -30,7 +30,7 @@ public class Deezerhandler {
     static RequestParams params;
     static String url;
 
-    public static JSONArray getSongs(String title){
+    public static JSONArray getSongs(String title) {
 
         url = "https://api.deezer.com/search";
         client = new AsyncHttpClient();
@@ -42,29 +42,30 @@ public class Deezerhandler {
         return jsonArray;
     }
 
-    static void WaitForAPIresponose(){
+    static void WaitForAPIresponose() {
         timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
                 client.get(url, params, new JsonHttpResponseHandler() {
                     @Override
-                    public void onSuccess(int statusCode, Header[] headers, JSONObject response){
+                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                         super.onSuccess(statusCode, headers, response);
                         try {
                             jsonArray = new JSONArray(response.getString("data"));
                         } catch (JSONException e) {
-                            Log.e("onSuccess Deezerhandler",e.getMessage());
+                            Log.e("onSuccess Deezerhandler", e.getMessage());
                         }
                     }
+
                     @Override
                     public void onFailure(int statusCode, Header[] headers, String res, Throwable t) {
                         // called when response HTTP status is "4XX" (eg. 401, 403, 404)
-                        Log.e("dsa","AQUI NO");
+                        Log.e("dsa", "AQUI NO");
                     }
                 });
             }
-        },2000);
+        }, 2000);
     }
 
 }

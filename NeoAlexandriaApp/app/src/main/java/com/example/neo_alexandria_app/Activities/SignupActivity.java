@@ -55,15 +55,17 @@ public class SignupActivity extends AppCompatActivity {
         etUsername = findViewById(R.id.etUsername);
         btnSignup = findViewById(R.id.btnSignup);
 
+
         ivAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 photoFile = null;
                 photo = null;
+                //This is possible thanks to https://github.com/Dhaval2404/ImagePicker
                 ImagePicker.with(SignupActivity.this)
-                        .crop()	    			//Crop image(Optional), Check Customization for more option
-                        .compress(1024)			//Final image size will be less than 1 MB(Optional)
-                        .maxResultSize(1080, 1080)	//Final image resolution will be less than 1080 x 1080(Optional)
+                        .crop()                    //Crop image(Optional), Check Customization for more option
+                        .compress(1024)            //Final image size will be less than 1 MB(Optional)
+                        .maxResultSize(1080, 1080)    //Final image resolution will be less than 1080 x 1080(Optional)
                         .start();
             }
         });
@@ -72,8 +74,8 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 signupUser(etUsername.getText().toString(),
-                           etPassword.getText().toString(),
-                           etEmail.getText().toString());
+                        etPassword.getText().toString(),
+                        etEmail.getText().toString());
             }
         });
     }
@@ -84,7 +86,7 @@ public class SignupActivity extends AppCompatActivity {
         user.setUsername(userName);
         user.setPassword(password);
         user.setEmail(email);
-        // if there is not image, I will display a placeholder
+        // if there is not image, I will display a placeholder so I can upload nothing
         if (photoFile != null) {
             user.put(User.KEY_PROFILEIMAGE, photo);
         }
@@ -105,23 +107,19 @@ public class SignupActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         Uri uri = data.getData();
         photoFile = new File(uri.getPath());
-//        File newFile = new File(photoFile.getParent()+ File.separator + "photo.jpg");
-//        if ( !rename(photoFile, newFile) ) {
-//            Log.e(TAG, "error rename photoFile");
-//        }
-//        photoFile = newFile;
-        if(photoFile != null){
+
+        if (photoFile != null) {
             photo = new ParseFile(photoFile);
             photo.saveInBackground(new SaveCallback() {
                 @Override
                 public void done(ParseException e) {
                     if (e != null) {
-                        Log.e(TAG, "Error while saving"+e);
+                        Log.e(TAG, "Error while saving" + e);
                         return;
-                    }
-                    else {
+                    } else {
                         if (photoFile != null) {
                             NSFWhandler.get(photo.getUrl());
                             WaitForAPIresponose();
@@ -130,11 +128,17 @@ public class SignupActivity extends AppCompatActivity {
                 }
             });
         }
+
     }
-    private boolean rename(File from, File to) {
-        return from.getParentFile().exists() && from.exists() && from.renameTo(to);
-    }
-    void WaitForAPIresponose(){
+
+//    I created this function to rename internal files, but I realize I won't need it
+//    private boolean rename(File from, File to) {
+//        return from.getParentFile().exists() && from.exists() && from.renameTo(to);
+//    }
+
+
+    //TODO: This is not the best way to handle async request, then I will figure out the best investigating.
+    void WaitForAPIresponose() {
         timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
@@ -143,16 +147,18 @@ public class SignupActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         if (NSFWhandler.getProbability() > 0.9) {
+                            //TODO: if there is time change this kind of sweetalerdialog to this ones https://github.com/pedant/sweet-alert-dialog
                             new SweetAlertDialog(SignupActivity.this, SweetAlertDialog.WARNING_TYPE)
                                     .setTitleText("nsfw detected")
                                     .setContentText("Your profile image was identified as NSFW, select another one.").show();
                         } else {
                             ivProfile.setImageURI(Uri.fromFile(photoFile));
                         }
-                        return ;
+                        return;
                     }
                 });
             }
         }, 1500);
     }
+
 }

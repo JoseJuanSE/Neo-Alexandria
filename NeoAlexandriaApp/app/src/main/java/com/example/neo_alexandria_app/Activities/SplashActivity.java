@@ -37,6 +37,7 @@ public class SplashActivity extends AppCompatActivity {
         tvNeo.setAnimation(animation1);
         ivlogos.setAnimation(animation1);
         tvSearch.setAnimation(animation2);
+        ParseUser.logOut();
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -48,7 +49,7 @@ public class SplashActivity extends AppCompatActivity {
                 } else {
                     intent = new Intent(SplashActivity.this, MainActivity.class);
                 }
-
+                //This is for transition animation
                 Pair[] pairs = new Pair[2];
                 pairs[0] = new Pair<View, String>(ivlogos, "logoImageTrans");
                 pairs[1] = new Pair<View, String>(tvNeo, "textTrans");

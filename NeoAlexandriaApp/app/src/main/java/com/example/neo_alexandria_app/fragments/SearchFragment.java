@@ -23,6 +23,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.neo_alexandria_app.Adapters.SearchAdapter;
+import com.example.neo_alexandria_app.BuildConfig;
+import com.example.neo_alexandria_app.DataModels.Book;
 import com.example.neo_alexandria_app.DataModels.Song;
 import com.example.neo_alexandria_app.Handlers.Deezerhandler;
 import com.example.neo_alexandria_app.R;
@@ -51,6 +53,7 @@ public class SearchFragment extends Fragment {
 
     Toolbar toolbar;
     List<Song> songs;
+    List<Book> books;
     SearchAdapter searchAdapter;
     RecyclerView recyclerView;
     public MediaPlayer mp;
@@ -94,29 +97,6 @@ public class SearchFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-//        //Custom toolbar
-//        Toolbar toolbar = (Toolbar) getView().findViewById(R.id.toolbar);
-//        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-//        // Remove default title text
-//        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
-////
-////        //Support swipe container
-////        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
-////        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-////            @Override
-////            public void onRefresh() {
-////                // Your code to refresh the list here.
-////                // Make sure you call swipeContainer.setRefreshing(false)
-////                // once the network request has completed successfully.
-////                fetchTimelineAsync(0);
-////            }
-////        });
-////        // Configure the refreshing colors
-////        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
-////                android.R.color.holo_green_light,
-////                android.R.color.holo_orange_light,
-////                android.R.color.holo_red_light);
-        // Find the recycler view
     }
 
     @Override
@@ -131,7 +111,8 @@ public class SearchFragment extends Fragment {
         recyclerView = view.findViewById(R.id.rvSearch);
         // Init the list of tweets and adapter
         songs = new ArrayList<>();
-        searchAdapter = new SearchAdapter(getContext(), songs);
+        books = new ArrayList<>();
+        searchAdapter = new SearchAdapter(getContext(), songs, books);
         // Recycler view setup: layout manager and the adapter
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(searchAdapter);
@@ -145,29 +126,58 @@ public class SearchFragment extends Fragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                searchAdapter.clear();
 
+                //MUSIC
                 String url = "https://api.deezer.com/search";
                 AsyncHttpClient client = new AsyncHttpClient();
                 RequestParams params = new RequestParams();
                 params.put("q", query);
 
+
                 client.get(url, params, new JsonHttpResponseHandler() {
                     @Override
-                    public void onSuccess(int statusCode, Header[] headers, JSONObject response){
+                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                         super.onSuccess(statusCode, headers, response);
-                        searchAdapter.clear();
                         try {
-                            JSONArray jsonArray = new JSONArray(response.getString("data"));
-                            songs.addAll(Song.fromJsonArray(jsonArray));
+                            JSONArray jsonArraySongs = new JSONArray(response.getString("data"));
+                            songs.addAll(Song.fromJsonArray(jsonArraySongs));
                             searchAdapter.notifyDataSetChanged();
                         } catch (JSONException | ParseException e) {
-                            Log.e("onSuccess Deezerhandler",e.getMessage());
+                            Log.e("onSuccess Deezerhandler", e.getMessage());
                         }
                     }
+
                     @Override
                     public void onFailure(int statusCode, Header[] headers, String res, Throwable t) {
                         // called when response HTTP status is "4XX" (eg. 401, 403, 404)
-                        Log.e("dsa","AQUI NO");
+                        Log.e("dsa", "AQUI NO");
+                    }
+                });
+
+                //BOOKS
+                String urlBooks = "https://bookmeth1.p.rapidapi.com/";
+                AsyncHttpClient clientBooks = new AsyncHttpClient();
+                clientBooks.addHeader("x-rapidapi-key", BuildConfig.RAPID_APIKEY);
+                clientBooks.addHeader("x-rapidapi-host", "bookmeth1.p.rapidapi.com");
+                RequestParams paramsBooks = new RequestParams();
+                params.put("q", query);
+                clientBooks.get(urlBooks, paramsBooks, new JsonHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                        super.onSuccess(statusCode, headers, response);
+                        try {
+                            books.addAll(Book.fromJsonArray(response));
+                            searchAdapter.notifyDataSetChanged();
+                        } catch (JSONException | ParseException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String res, Throwable t) {
+                        // called when response HTTP status is "4XX" (eg. 401, 403, 404)
+                        Log.e("dsa", "AQUI NO");
                     }
                 });
 

@@ -11,7 +11,7 @@ public class Resource {
     boolean isSaved;
     float rating;
 
-    public Resource () {
+    public Resource() {
 
     }
 

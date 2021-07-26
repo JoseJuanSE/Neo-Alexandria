@@ -34,7 +34,7 @@
                 android:background="@color/white"
                 app:layout_scrollFlags="scroll|enterAlways">
 
-                <!-- here we have out instagram icon -->
+                <!-- here we have out NeoAlexandria icon -->
 
                 <ImageView
                     android:id="@+id/InstagramLogo"

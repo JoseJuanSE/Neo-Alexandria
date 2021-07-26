@@ -19,7 +19,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.MultiTransformation;
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
+import com.example.neo_alexandria_app.DataModels.Book;
 import com.example.neo_alexandria_app.DataModels.Song;
+import com.example.neo_alexandria_app.Handlers.StringsHandler;
 import com.example.neo_alexandria_app.R;
 import com.example.neo_alexandria_app.Activities.Song_Details;
 
@@ -40,11 +42,14 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
     Context context;
     List<Song> songs;
+    List<Book> books;
 
     //Pass in the context and list of Songs
-    public SearchAdapter(Context context, List<Song> songs) {
+    //TODO: get books here is an error, I have to do this following the multiitem adapter way
+    public SearchAdapter(Context context, List<Song> songs, List<Book> books) {
         this.context = context;
         this.songs = songs;
+        this.books = books;
     }
 
 
@@ -54,7 +59,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     @Override
     public ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         //TODO: pay attention to what to do with other styles
-        View view = LayoutInflater.from(context).inflate(R.layout.item_song, parent,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_song, parent, false);
         return new ViewHolder(view);
     }
 
@@ -106,6 +111,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             tvExplicit = itemView.findViewById(R.id.tvExplicit);
 
         }
+
         //Set all the information into the layout, also set the MediaPlayer
         public void bind(Song song) {
             if (!song.getImageLink().isEmpty()) {
@@ -114,13 +120,14 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
                         .transform(new MultiTransformation(new FitCenter(), new RoundedCornersTransformation(40, 5)))
                         .into(ivCover);
             }
-            tvTitle.setText(limited(song.getTitle(),13));
-            tvAlbum.setText(limited(song.getAlbumTitle(),22));
-            tvAuthor.setText(limited(song.getAuthorName(),25));
+            tvTitle.setText(StringsHandler.limited(song.getTitle(), 13));
+            tvAlbum.setText(StringsHandler.limited(song.getAlbumTitle(), 22));
+            tvAuthor.setText(StringsHandler.limited(song.getAuthorName(), 25));
             tvNumCom.setText(String.valueOf(song.getCommentCount()));
             tvNumSav.setText(String.valueOf(song.getSaveCount()));
             rbStars.setRating(song.getRating());
-            if ( song.isExplicitContent() == true) {
+
+            if (song.isExplicitContent() == true) {
                 tvExplicit.setText("Explicit");
             } else {
                 tvExplicit.setText("");
@@ -135,20 +142,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
                 }
             });
         }
-
-        private String limited(String title, int lit) {
-            String ans="";
-
-            for (int i=0; i < Math.min(lit,title.length()); i++) {
-                ans += title.charAt(i);
-            }
-            if (title.length() > lit) {
-                ans += "...";
-            }
-
-            return ans;
-        }
     }
+
     // Clean all elements of the recycler
     public void clear() {
         songs.clear();

@@ -43,7 +43,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String Email = etEmail.getText().toString();
                 String Password = etPassword.getText().toString();
-                Login(Email,Password);
+                Login(Email, Password);
             }
         });
 
@@ -72,10 +72,12 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
     private void goToMainActivity() {
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         TextView tvNeo = findViewById(R.id.tvLogo);
         ImageView ivLogo = findViewById(R.id.ivlogo);
+        //This is for animation transition
         Pair[] pairs = new Pair[2];
         pairs[0] = new Pair<View, String>(ivLogo, "logoImageTrans");
         pairs[1] = new Pair<View, String>(tvNeo, "textTrans");

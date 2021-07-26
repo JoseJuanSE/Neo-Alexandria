@@ -44,7 +44,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_toEndOf="@+id/ivAuthor"
-        android:textColor="@color/black"
+        android:textColor="@color/blue"
         android:textSize="17sp"
         android:textStyle="normal"
         tools:text="author" />
@@ -226,5 +226,17 @@
         android:layout_marginStart="15dp"
         android:layout_marginTop="4dp"
         android:src="@drawable/placeholderprofile" />
+
+    <ImageView
+        android:id="@+id/ivRepeat"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_below="@+id/mediaComponent"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="-101dp"
+        android:layout_marginEnd="22dp"
+        android:layout_marginBottom="158dp"
+        android:src="@drawable/repeat"
+        app:tint="@color/black" />
 
 </RelativeLayout>

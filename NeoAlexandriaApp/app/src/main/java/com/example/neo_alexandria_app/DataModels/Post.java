@@ -14,7 +14,7 @@ public class Post {
     private boolean isLiked;
     private boolean isSaved;
 
-    public Post () {
+    public Post() {
 
     }
 

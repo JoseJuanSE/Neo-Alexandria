@@ -13,5 +13,6 @@ public class User {
     public static final String KEY_NIGHTMODE = "nightMode";
     public static final String KEY_MAINCOLOR = "mainColor";
 
-    public User () {}
+    public User() {
+    }
 }

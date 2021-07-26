@@ -1,6 +1,7 @@
 package com.example.neo_alexandria_app.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.media.MediaPlayer;
@@ -15,10 +16,10 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.ThemedSpinnerAdapter;
 
 import com.bumptech.glide.Glide;
 import com.example.neo_alexandria_app.DataModels.Song;
+import com.example.neo_alexandria_app.Handlers.StringsHandler;
 import com.example.neo_alexandria_app.R;
 
 import org.parceler.Parcels;
@@ -31,7 +32,7 @@ public class Song_Details extends AppCompatActivity {
 
     String externalLink;
 
-    //Not yet
+    //TODO: get this stuff from data base when ready
     int commentCount;
     int saveCount;
     boolean isSaved;
@@ -58,10 +59,12 @@ public class Song_Details extends AppCompatActivity {
     TextView tvSource;
     CircleImageView ivAuthor;
     SeekBar volumeBar;
+    ImageView repeat;
 
     //MediaPlayer
     MediaPlayer mp;
     int totalTime;
+    boolean isRepetitive;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,27 +83,31 @@ public class Song_Details extends AppCompatActivity {
         ivComment = findViewById(R.id.ivComment);
         ivSave = findViewById(R.id.ivSave);
         tvSource = findViewById(R.id.tvSource);
+        repeat = findViewById(R.id.ivRepeat);
+        isRepetitive = false;
 
+        //Here we set all what we are going to need on this activity
         song = Parcels.unwrap(getIntent().getParcelableExtra("song"));
 
-        if ( !song.getImageLink().isEmpty() ) {
-            Glide.with(this).load(song.getImageLink())
+        if (!song.getImageLink().isEmpty()) {
+            Glide.with(this).load(song.getCoverBig())
                     .into(ivCover);
         }
-        tvTitle.setText(limited(song.getTitle(),13));
-        tvAlbumD.setText(limited(song.getAlbumTitle(),22));
-        tvAuthorD.setText(limited(song.getAuthorName(),25));
+
+        tvTitle.setText(StringsHandler.limited(song.getTitle(), 30));
+        tvAlbumD.setText(StringsHandler.limited(song.getAlbumTitle(), 42));
+        tvAuthorD.setText(StringsHandler.limited(song.getAuthorName(), 50));
         tvNumberComments.setText(String.valueOf(song.getCommentCount()));
         tvNumberSaves.setText(String.valueOf(song.getSaveCount()));
         rbStars.setRating(song.getRating());
 
-        if ( song.isExplicitContent() == true) {
+        if (song.isExplicitContent() == true) {
             tvExplicit.setText("Explicit");
         } else {
             tvExplicit.setText("");
         }
-        //ivComment and ivSave set on click listener
-        if ( !song.getArtistPicture().isEmpty() ) {
+        //ivComment and ivSave set on click listener here when available
+        if (!song.getArtistPicture().isEmpty()) {
             Glide.with(this).load(song.getArtistPicture())
                     .into(ivAuthor);
         }
@@ -113,12 +120,21 @@ public class Song_Details extends AppCompatActivity {
             }
         });
 
+        tvAuthorD.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/search?q=" + song.getAuthorName()));
+                startActivity(browserIntent);
+            }
+        });
+
         // Media Player
         positionBar = findViewById(R.id.positionBar);
         elapsedTimeLabel = findViewById(R.id.elapsedTimeLabel);
         remainingTimeLabel = findViewById(R.id.remainingTimeLabel);
         playBtn = findViewById(R.id.playBtn);
 
+        //Here we get the song
         Uri myUri = Uri.parse(song.getMP3Link());
         mp = MediaPlayer.create(this, myUri);
         mp.setLooping(true);
@@ -169,6 +185,20 @@ public class Song_Details extends AppCompatActivity {
                 }
         );
 
+        //Repeat
+        repeat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isRepetitive == false) {
+                    isRepetitive = true;
+                    repeat.setColorFilter(ContextCompat.getColor(Song_Details.this, R.color.blue));
+                } else {
+                    isRepetitive = false;
+                    repeat.setColorFilter(ContextCompat.getColor(Song_Details.this, R.color.black));
+                }
+            }
+        });
+
         // Thread
         new Thread(new Runnable() {
             @Override
@@ -177,25 +207,21 @@ public class Song_Details extends AppCompatActivity {
                     try {
                         Message msg = new Message();
                         msg.what = mp.getCurrentPosition();
+                        Log.e(TAG, String.valueOf(mp.getCurrentPosition()) + " " + String.valueOf(totalTime));
+                        //When the song ends it stops.
+                        if (totalTime - mp.getCurrentPosition() < 1000 && !isRepetitive) {
+                            mp.pause();
+                            mp.seekTo(0);
+                            playBtn.setBackgroundResource(R.drawable.play);
+                        }
                         handler.sendMessage(msg);
                         Thread.sleep(1000);
-                    } catch (InterruptedException ignored) {}
+                    } catch (InterruptedException ignored) {
+                    }
                 }
             }
         }).start();
 
-    }
-    // TODO: I can use just one time this instead of searchadapter and here
-    private String limited(String title, int lit) {
-        String ans="";
-
-        for (int i=0; i < Math.min(lit,title.length()); i++) {
-            ans += title.charAt(i);
-        }
-        if (title.length() > lit) {
-            ans += "...";
-        }
-        return ans;
     }
 
     //Media player auxiliary functions
@@ -207,10 +233,10 @@ public class Song_Details extends AppCompatActivity {
             positionBar.setProgress(currentPosition);
 
             // Update Labels.
-            String elapsedTime = createTimeLabel(currentPosition);
+            String elapsedTime = StringsHandler.createTimeLabel(currentPosition);
             elapsedTimeLabel.setText(elapsedTime);
 
-            String remainingTime = "- " + createTimeLabel(totalTime - currentPosition);
+            String remainingTime = "- " + StringsHandler.createTimeLabel(totalTime - currentPosition);
             remainingTimeLabel.setText(remainingTime);
 
 
@@ -218,20 +244,7 @@ public class Song_Details extends AppCompatActivity {
         }
     });
 
-    public String createTimeLabel(int time) {
-        String timeLabel = "";
-        int min = time / 1000 / 60;
-        int sec = time / 1000 % 60;
-
-        timeLabel = min + ":";
-        if (sec < 10) timeLabel += "0";
-        timeLabel += sec;
-
-        return timeLabel;
-    }
-
     public void playBtnClick(View view) {
-
         if (!mp.isPlaying()) {
             // Stopping
             mp.start();
@@ -243,5 +256,4 @@ public class Song_Details extends AppCompatActivity {
             playBtn.setBackgroundResource(R.drawable.play);
         }
     }
-
 }

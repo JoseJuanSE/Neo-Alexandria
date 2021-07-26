@@ -16,11 +16,11 @@ public class NSFWhandler {
 
     private static double probability;
 
-    public static void get(String image){
+    public static void get(String image) {
 
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("url",image);
+            jsonObject.put("url", image);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -36,12 +36,13 @@ public class NSFWhandler {
                     public void onResponse(JSONObject response) {
                         try {
                             probability = Double.parseDouble(response.get("NSFW_Prob").toString());
-                            Log.e("unique", "NSFW pro: "+Double.toString(probability));
+                            Log.e("unique", "NSFW pro: " + Double.toString(probability));
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Log.e("unique", "Error: "+e);
+                            Log.e("unique", "Error: " + e);
                         }
                     }
+
                     @Override
                     public void onError(ANError anError) {
                         Log.e("unique", anError.getErrorBody());
