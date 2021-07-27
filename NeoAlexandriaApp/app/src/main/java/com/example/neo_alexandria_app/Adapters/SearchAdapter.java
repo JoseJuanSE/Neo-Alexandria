@@ -42,14 +42,12 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
     Context context;
     List<Song> songs;
-    List<Book> books;
 
     //Pass in the context and list of Songs
     //TODO: get books here is an error, I have to do this following the multiitem adapter way
-    public SearchAdapter(Context context, List<Song> songs, List<Book> books) {
+    public SearchAdapter(Context context, List<Song> songs) {
         this.context = context;
         this.songs = songs;
-        this.books = books;
     }
 
 

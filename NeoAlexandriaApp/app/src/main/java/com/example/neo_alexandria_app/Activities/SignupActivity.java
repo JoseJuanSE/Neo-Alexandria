@@ -15,7 +15,7 @@ import android.widget.Toast;
 
 import com.example.neo_alexandria_app.DataModels.User;
 import com.example.neo_alexandria_app.Handlers.NSFWhandler;
-import com.example.neo_alexandria_app.OnNSFWCompleted;
+import com.example.neo_alexandria_app.Interfaces.OnNSFWCompleted;
 import com.example.neo_alexandria_app.R;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.parse.ParseException;
@@ -25,8 +25,6 @@ import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
 
 import java.io.File;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
