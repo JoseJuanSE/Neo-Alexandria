@@ -1,0 +1,2 @@
+rootProject.name = "NewsAPItest"
+include ':app'
