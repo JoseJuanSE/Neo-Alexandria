@@ -37,7 +37,6 @@ public class SplashActivity extends AppCompatActivity {
         tvNeo.setAnimation(animation1);
         ivlogos.setAnimation(animation1);
         tvSearch.setAnimation(animation2);
-        ParseUser.logOut();
 
         new Handler().postDelayed(new Runnable() {
             @Override

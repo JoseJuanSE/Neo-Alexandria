@@ -1,5 +1,7 @@
 package com.example.neo_alexandria_app.DataModels;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,7 +40,7 @@ public class Book extends Resource {
     String editor;
 
     public Book() {
-
+        super();
     }
 
     //Here we received the jsonObject that API send us, and we push all the needed date
@@ -51,24 +53,31 @@ public class Book extends Resource {
 
         JSONObject source = jsonObject.getJSONObject(Book.SOURCE);
         book.title = source.getString(Book.TITLE);
-        book.imageLink = Book.LOCAL_SERVER + source.getString(Book.COVER);
-        book.externalLink = source.getString(Book.LINK);
-        book.pages = source.getInt(Book.PAGES);
-        //round to a decimal
-        book.size = Math.ceil(source.getDouble(Book.SIZE) / 1e5) / 10;
 
-        JSONObject metadata = source.getJSONObject(Book.METADATA);
-        book.authorName = metadata.getString(Book.AUTHOR);
-        book.format = metadata.getString(Book.FORMAT);
-        book.subject = metadata.getString(Book.SUBJECT);
-        book.description = metadata.getString(Book.DESCRIPTION);
-        book.editor = metadata.getString(Book.PRODUCER);
+        if (source.has(Book.AUTHOR)) {
+            book.authorName = source.getString(Book.AUTHOR);
+        }
 
-        //This have to be fill with parse
-        book.commentCount = 0;
-        book.saveCount = 0;
-        book.isSaved = false;
-        book.rating = Math.max(3.5f, 5 * (float) Math.random());
+//        book.imageLink = Book.LOCAL_SERVER + source.getString(Book.COVER);
+//        book.externalLink = source.getString(Book.LINK);
+//        book.pages = source.getInt(Book.PAGES);
+//        //round to a decimal
+//        book.size = Math.ceil(source.getDouble(Book.SIZE) / 1e5) / 10;
+//
+//        JSONObject metadata = source.getJSONObject(Book.METADATA);
+////        book.authorName = metadata.getString(Book.AUTHOR);
+//        book.authorName = "JK rowlling";
+//        book.format = metadata.getString(Book.FORMAT);
+////        book.subject = metadata.getString(Book.SUBJECT);
+////        book.description = metadata.getString(Book.DESCRIPTION);
+//        book.description = "";
+//        book.editor = metadata.getString(Book.PRODUCER);
+//
+//        //This have to be fill with parse
+//        book.commentCount = 0;
+//        book.saveCount = 0;
+//        book.isSaved = false;
+//        book.rating = Math.max(3.5f, 5 * (float) Math.random());
 
         return book;
     }
