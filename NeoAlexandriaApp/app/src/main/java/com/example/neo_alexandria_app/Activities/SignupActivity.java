@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.neo_alexandria_app.DataModels.User;
 import com.example.neo_alexandria_app.Handlers.NSFWhandler;
+import com.example.neo_alexandria_app.OnNSFWCompleted;
 import com.example.neo_alexandria_app.R;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.parse.ParseException;
@@ -29,7 +30,7 @@ import java.util.TimerTask;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
-public class SignupActivity extends AppCompatActivity {
+public class SignupActivity extends AppCompatActivity implements OnNSFWCompleted {
 
     public static final String TAG = "SignupActivity";
 
@@ -41,7 +42,7 @@ public class SignupActivity extends AppCompatActivity {
     private Button btnSignup;
     private File photoFile;
     ParseFile photo;
-    private Timer timer;
+    NSFWhandler nsfWhandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +79,7 @@ public class SignupActivity extends AppCompatActivity {
                         etEmail.getText().toString());
             }
         });
+        nsfWhandler = new NSFWhandler(this, this::taskCompleted);
     }
 
     //We use this method to signup our user and start the main activity
@@ -121,8 +123,7 @@ public class SignupActivity extends AppCompatActivity {
                         return;
                     } else {
                         if (photoFile != null) {
-                            NSFWhandler.get(photo.getUrl());
-                            WaitForAPIresponose();
+                            nsfWhandler.get(photo.getUrl());
                         }
                     }
                 }
@@ -136,29 +137,19 @@ public class SignupActivity extends AppCompatActivity {
 //        return from.getParentFile().exists() && from.exists() && from.renameTo(to);
 //    }
 
-
-    //TODO: This is not the best way to handle async request, then I will figure out the best investigating.
-    void WaitForAPIresponose() {
-        timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (NSFWhandler.getProbability() > 0.9) {
-                            //TODO: if there is time change this kind of sweetalerdialog to this ones https://github.com/pedant/sweet-alert-dialog
-                            new SweetAlertDialog(SignupActivity.this, SweetAlertDialog.WARNING_TYPE)
-                                    .setTitleText("nsfw detected")
-                                    .setContentText("Your profile image was identified as NSFW, select another one.").show();
-                        } else {
-                            ivProfile.setImageURI(Uri.fromFile(photoFile));
-                        }
-                        return;
-                    }
-                });
-            }
-        }, 1500);
+    @Override
+    public void taskCompleted(double result, SweetAlertDialog dialog) {
+        dialog.cancel();
+        if (result > 0.9) {
+            //TODO: if there is time change this kind of sweetalerdialog to this ones https://github.com/pedant/sweet-alert-dialog
+            new SweetAlertDialog(SignupActivity.this, SweetAlertDialog.WARNING_TYPE)
+                    .setTitleText("nsfw detected")
+                    .setContentText("Your profile image was identified as NSFW, select another one.").show();
+        } else {
+            ivProfile.setImageURI(Uri.fromFile(photoFile));
+            new SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
+                    .setTitleText("Picture uploaded!")
+                    .show();
+        }
     }
-
 }
