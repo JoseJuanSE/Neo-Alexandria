@@ -1,14 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.ProfileFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <RelativeLayout
+        android:id="@+id/RelativeLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="PROFILE" />
+        android:layout_height="270dp"
+        android:background="@color/lightblue">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/ivProfile"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/placeholderprofile"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="55dp"/>
+        <TextView
+            android:id="@+id/tvUsername"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Jose Juan Suarez Elizalde"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:layout_below="@+id/ivProfile"
+            android:layout_centerHorizontal="true"
+            android:textSize="17sp"
+            android:layout_marginTop="10dp"
+            />
 
-</FrameLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/RelativeLayout"
+        android:layout_marginTop="-75dp"
+        android:background="@drawable/profile_decoration_shape"
+        />
+
+    <TextView
+        android:id="@+id/tvLogout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="40dp"
+        android:text="@string/log_out"
+        android:textColor="@color/red_btn_bg_color"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+</RelativeLayout>

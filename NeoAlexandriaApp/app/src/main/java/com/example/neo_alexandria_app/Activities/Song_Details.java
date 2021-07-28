@@ -207,7 +207,6 @@ public class Song_Details extends AppCompatActivity {
                     try {
                         Message msg = new Message();
                         msg.what = mp.getCurrentPosition();
-                        Log.e(TAG, String.valueOf(mp.getCurrentPosition()) + " " + String.valueOf(totalTime));
                         //When the song ends it stops.
                         if (totalTime - mp.getCurrentPosition() < 1000 && !isRepetitive) {
                             mp.pause();

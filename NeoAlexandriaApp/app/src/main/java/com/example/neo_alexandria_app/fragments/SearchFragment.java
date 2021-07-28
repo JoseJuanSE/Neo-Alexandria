@@ -22,9 +22,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.neo_alexandria_app.Adapters.MultiSearchAdapter;
 import com.example.neo_alexandria_app.Adapters.SearchAdapter;
 import com.example.neo_alexandria_app.BuildConfig;
 import com.example.neo_alexandria_app.DataModels.Book;
+import com.example.neo_alexandria_app.DataModels.Item;
 import com.example.neo_alexandria_app.DataModels.News;
 import com.example.neo_alexandria_app.DataModels.Song;
 import com.example.neo_alexandria_app.Handlers.Bookhandler;
@@ -62,7 +64,8 @@ public class SearchFragment extends Fragment implements OnBooksCompleted, OnMusi
     List<Song> songs;
     List<Book> books;
     List<String> news;
-    SearchAdapter searchAdapter;
+    List<Item> items;
+    MultiSearchAdapter multiSearchAdapter;
     RecyclerView recyclerView;
 
     Deezerhandler deezerhandler;
@@ -132,10 +135,11 @@ public class SearchFragment extends Fragment implements OnBooksCompleted, OnMusi
         songs = new ArrayList<>();
         books = new ArrayList<>();
         news = new ArrayList<>();
-        searchAdapter = new SearchAdapter(getContext(), songs);
+        items = new ArrayList<>();
+        multiSearchAdapter = new MultiSearchAdapter(getContext(), items);
         // Recycler view setup: layout manager and the adapter
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(searchAdapter);
+        recyclerView.setAdapter(multiSearchAdapter);
 
         //Set all the handlers
         deezerhandler = new Deezerhandler(getContext(), this::musicTaskCompleted);
@@ -152,7 +156,7 @@ public class SearchFragment extends Fragment implements OnBooksCompleted, OnMusi
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                searchAdapter.clear();
+                multiSearchAdapter.clear();
 
                 booksRequest = musicRequest = newsRequest = false;
 
@@ -213,16 +217,21 @@ public class SearchFragment extends Fragment implements OnBooksCompleted, OnMusi
         if (newsRequest && musicRequest && booksRequest) {
             sweetAlertDialog.cancel();
             //Here we do what we need
+            items.clear();
             for (Song song : songs) {
+                Item item = new Item(0, song, 0);
+                items.add(item);
                 Log.e(TAG, song.getTitle() + " song");
             }
             for (Book book : books) {
+                Item item = new Item(1, book, 0);
+                items.add(item);
                 Log.e(TAG, book.getTitle() + " book");
             }
             for (String newstitle : news) {
                 Log.e(TAG, newstitle);
             }
-            searchAdapter.notifyDataSetChanged();
+            multiSearchAdapter.notifyDataSetChanged();
         }
     }
 }

@@ -57,27 +57,45 @@ public class Book extends Resource {
         if (source.has(Book.AUTHOR)) {
             book.authorName = source.getString(Book.AUTHOR);
         }
+        if (source.has(Book.COVER)) {
+            book.imageLink = Book.LOCAL_SERVER + source.getString(Book.COVER);
+        }
+        if (source.has(Book.LINK)) {
+            book.externalLink = source.getString(Book.LINK);
+        }
+        if (source.has(Book.PAGES)) {
+            book.pages = source.getInt(Book.PAGES);
+        }
+        if (source.has(Book.SIZE)) {
+            //round to a decimal
+            book.size = Math.ceil(source.getDouble(Book.SIZE) / 1e5) / 10;
+        }
 
-//        book.imageLink = Book.LOCAL_SERVER + source.getString(Book.COVER);
-//        book.externalLink = source.getString(Book.LINK);
-//        book.pages = source.getInt(Book.PAGES);
-//        //round to a decimal
-//        book.size = Math.ceil(source.getDouble(Book.SIZE) / 1e5) / 10;
-//
-//        JSONObject metadata = source.getJSONObject(Book.METADATA);
-////        book.authorName = metadata.getString(Book.AUTHOR);
-//        book.authorName = "JK rowlling";
-//        book.format = metadata.getString(Book.FORMAT);
-////        book.subject = metadata.getString(Book.SUBJECT);
-////        book.description = metadata.getString(Book.DESCRIPTION);
-//        book.description = "";
-//        book.editor = metadata.getString(Book.PRODUCER);
-//
-//        //This have to be fill with parse
-//        book.commentCount = 0;
-//        book.saveCount = 0;
-//        book.isSaved = false;
-//        book.rating = Math.max(3.5f, 5 * (float) Math.random());
+
+        JSONObject metadata = source.getJSONObject(Book.METADATA);
+        if (metadata.has(Book.AUTHOR)) {
+            book.authorName = metadata.getString(Book.AUTHOR);
+        }
+
+        if (metadata.has(Book.FORMAT)) {
+            book.format = metadata.getString(Book.FORMAT);
+        }
+        if (metadata.has(Book.SUBJECT)) {
+            book.subject = metadata.getString(Book.SUBJECT);
+        }
+
+        if (metadata.has(Book.DESCRIPTION)) {
+            book.description = metadata.getString(Book.DESCRIPTION);
+        }
+        if (metadata.has(Book.PRODUCER)) {
+            book.editor = metadata.getString(Book.PRODUCER);
+        }
+
+        //This have to be fill with parse
+        book.commentCount = (int) Math.max(3, 100 * Math.random());
+        book.saveCount = (int) Math.max(3, 100 * Math.random());
+        book.isSaved = false;
+        book.rating = Math.max(3.5f, 5 * (float) Math.random());
 
         return book;
     }
