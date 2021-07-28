@@ -11,7 +11,6 @@ import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,14 +19,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.RelativeLayout;
 
 import com.example.neo_alexandria_app.Adapters.MultiSearchAdapter;
-import com.example.neo_alexandria_app.Adapters.SearchAdapter;
-import com.example.neo_alexandria_app.BuildConfig;
 import com.example.neo_alexandria_app.DataModels.Book;
 import com.example.neo_alexandria_app.DataModels.Item;
-import com.example.neo_alexandria_app.DataModels.News;
 import com.example.neo_alexandria_app.DataModels.Song;
 import com.example.neo_alexandria_app.Handlers.Bookhandler;
 import com.example.neo_alexandria_app.Handlers.Deezerhandler;
@@ -36,20 +32,11 @@ import com.example.neo_alexandria_app.Interfaces.OnBooksCompleted;
 import com.example.neo_alexandria_app.Interfaces.OnMusicCompleted;
 import com.example.neo_alexandria_app.Interfaces.OnNewsCompleted;
 import com.example.neo_alexandria_app.R;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
-import cz.msebera.android.httpclient.Header;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -162,7 +149,8 @@ public class SearchFragment extends Fragment implements OnBooksCompleted, OnMusi
 
                 //The first that I call should start a SweetDialogAlert Loading.
 
-                deezerhandler.getSongs(query);
+                final View view = getLayoutInflater().inflate(R.layout.animated_loading, null);
+                deezerhandler.getSongs(query, view);
                 bookhandler.getBooks(query);
                 newshandler.getNews(query);
 
@@ -230,6 +218,15 @@ public class SearchFragment extends Fragment implements OnBooksCompleted, OnMusi
             }
             for (String newstitle : news) {
                 Log.e(TAG, newstitle);
+            }
+            // if empty, sorry we couldn't find anything for this query
+            if (items.isEmpty()) {
+                final View view = getLayoutInflater().inflate(R.layout.animated_doggy_error, null);
+                new SweetAlertDialog(getContext(), SweetAlertDialog.NORMAL_TYPE)
+                        .setTitleText("Sorry we couldn't find anything for this query")
+                        .setConfirmText("Ok :C")
+                        .setCustomView(view)
+                        .show();
             }
             multiSearchAdapter.notifyDataSetChanged();
         }

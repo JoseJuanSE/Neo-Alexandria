@@ -84,4 +84,8 @@ dependencies {
 
     //News api
     implementation 'com.github.KwabenBerko:News-API-Java:1.0.0'
+
+    //Lottie
+    def lottieVersion = "3.7.2"
+    implementation "com.airbnb.android:lottie:$lottieVersion"
 }

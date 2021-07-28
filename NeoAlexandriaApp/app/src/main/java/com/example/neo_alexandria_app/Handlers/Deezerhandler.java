@@ -4,11 +4,13 @@ import android.app.DownloadManager;
 import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
+import android.view.View;
 
 import com.example.neo_alexandria_app.Activities.SignupActivity;
 import com.example.neo_alexandria_app.DataModels.Book;
 import com.example.neo_alexandria_app.DataModels.Song;
 import com.example.neo_alexandria_app.Interfaces.OnMusicCompleted;
+import com.example.neo_alexandria_app.R;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -39,12 +41,14 @@ public class Deezerhandler {
         this.context = context;
     }
 
-    public void getSongs(String title) {
+    public void getSongs(String title, View view) {
 
-        SweetAlertDialog pDialog = new SweetAlertDialog(context, SweetAlertDialog.PROGRESS_TYPE);
-        pDialog.getProgressHelper();
-        pDialog.setTitleText("Loading");
+
+        SweetAlertDialog pDialog = new SweetAlertDialog(context, SweetAlertDialog.NORMAL_TYPE);
+        pDialog.setTitleText("Loading...");
         pDialog.setCancelable(false);
+        pDialog.hideConfirmButton();
+        pDialog.setCustomView(view);
         pDialog.show();
 
         String url = "https://api.deezer.com/search";
