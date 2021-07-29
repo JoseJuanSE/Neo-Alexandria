@@ -151,13 +151,13 @@ public class Book_Details extends AppCompatActivity implements OnProgressBarList
     @Override
     public void general(String error, String errorDetails, int viewType) {
         View view;
-        if (viewType == 5) {
+        if (viewType == ErrorHandler.ERROR_GENERAL) {
             view = getLayoutInflater().inflate(R.layout.animated_errorgeneral, null);
-        } else if (viewType == 4) {
+        } else if (viewType == ErrorHandler.ERROR_500) {
             view = getLayoutInflater().inflate(R.layout.animated_error500, null);
-        } else if (viewType == 3) {
+        } else if (viewType == ErrorHandler.ERROR_404) {
             view = getLayoutInflater().inflate(R.layout.animated_error404, null);
-        } else if (viewType == 2) {
+        } else if (viewType == ErrorHandler.ERROR_403) {
             view = getLayoutInflater().inflate(R.layout.animated_error403, null);
         } else {
             view = getLayoutInflater().inflate(R.layout.animated_error401, null);

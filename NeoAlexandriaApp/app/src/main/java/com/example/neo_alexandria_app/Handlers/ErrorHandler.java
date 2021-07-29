@@ -26,28 +26,28 @@ public class ErrorHandler {
     public void error401() {
         String error = "UnAuthorized";
         String errorDetails = "Sorry, this resource is not authorized by author";
-        generalErrorDialog.general(error, errorDetails, 1);
+        generalErrorDialog.general(error, errorDetails, ERROR_401);
     }
 
     public void error403() {
         String error = "Access Denied";
         String errorDetails = "No login opportunity is available";
-        generalErrorDialog.general(error, errorDetails, 2);
+        generalErrorDialog.general(error, errorDetails, ERROR_403);
     }
 
     public void error404() {
         String error = "Not Found";
         String errorDetails = "The resource couldn't be found";
-        generalErrorDialog.general(error, errorDetails, 3);
+        generalErrorDialog.general(error, errorDetails, ERROR_404);
     }
 
     public void error500() {
         String error = "Internal Server Error";
         String errorDetails = "This resource couldn't be reach because of servers";
-        generalErrorDialog.general(error, errorDetails, 4);
+        generalErrorDialog.general(error, errorDetails, ERROR_500);
     }
 
     public void generalError(String error, String errorDetails) {
-        generalErrorDialog.general(error, errorDetails, 5);
+        generalErrorDialog.general(error, errorDetails, ERROR_GENERAL);
     }
 }
