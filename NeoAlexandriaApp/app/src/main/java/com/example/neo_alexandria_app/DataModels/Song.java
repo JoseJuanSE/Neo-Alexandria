@@ -64,10 +64,10 @@ public class Song extends Resource {
         song.coverBig = album.getString(Song.COVER_BIG);
 
         //This have to be fill with parse
-        song.commentCount = 0;
-        song.saveCount = 0;
+        song.commentCount = (int) Math.max(3, 100 * Math.random());
+        song.saveCount = (int) Math.max(3, 100 * Math.random());
         song.isSaved = false;
-        song.rating = Math.max(3.5f, 5 * (float) Math.random());
+        song.rating = Math.max(1f, 5 * (float) Math.random());
 
         return song;
     }

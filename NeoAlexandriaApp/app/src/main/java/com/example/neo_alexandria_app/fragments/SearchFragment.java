@@ -1,6 +1,7 @@
 package com.example.neo_alexandria_app.fragments;
 
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,7 +12,9 @@ import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -33,7 +36,11 @@ import com.example.neo_alexandria_app.Interfaces.OnMusicCompleted;
 import com.example.neo_alexandria_app.Interfaces.OnNewsCompleted;
 import com.example.neo_alexandria_app.R;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -54,6 +61,10 @@ public class SearchFragment extends Fragment implements OnBooksCompleted, OnMusi
     List<Item> items;
     MultiSearchAdapter multiSearchAdapter;
     RecyclerView recyclerView;
+    SwipeRefreshLayout swipeRefreshLayout;
+
+    String globalQuery;
+
 
     Deezerhandler deezerhandler;
     Bookhandler bookhandler;
@@ -118,6 +129,26 @@ public class SearchFragment extends Fragment implements OnBooksCompleted, OnMusi
         activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         recyclerView = view.findViewById(R.id.rvSearch);
+        swipeRefreshLayout = view.findViewById(R.id.swipeContainer);
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener(){
+            @Override
+            public void onRefresh() {
+
+                populateRecyclerView();
+
+                swipeRefreshLayout.setRefreshing(false);
+
+            }
+        });
+        // Configure the refreshing colors
+        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
+
+
         // Init the list of tweets and adapter
         songs = new ArrayList<>();
         books = new ArrayList<>();
@@ -133,6 +164,9 @@ public class SearchFragment extends Fragment implements OnBooksCompleted, OnMusi
         bookhandler = new Bookhandler(this::bookTaskCompleted);
         newshandler = new Newshandler(this::newsTaskCompleted);
 
+//        File myDirectory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "pdfs");
+
+
         return view;
     }
 
@@ -145,14 +179,9 @@ public class SearchFragment extends Fragment implements OnBooksCompleted, OnMusi
             public boolean onQueryTextSubmit(String query) {
                 multiSearchAdapter.clear();
 
-                booksRequest = musicRequest = newsRequest = false;
+                globalQuery = query;
 
-                //The first that I call should start a SweetDialogAlert Loading.
-
-                final View view = getLayoutInflater().inflate(R.layout.animated_loading, null);
-                deezerhandler.getSongs(query, view);
-                bookhandler.getBooks(query);
-                newshandler.getNews(query);
+                populateRecyclerView();
 
                 searchView.clearFocus();
                 return true;
@@ -164,6 +193,17 @@ public class SearchFragment extends Fragment implements OnBooksCompleted, OnMusi
             }
         });
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    private void populateRecyclerView() {
+        booksRequest = musicRequest = newsRequest = false;
+
+        //The first that I call should start a SweetDialogAlert Loading.
+
+        final View view = getLayoutInflater().inflate(R.layout.animated_loading, null);
+        deezerhandler.getSongs(globalQuery, view);
+        bookhandler.getBooks(globalQuery);
+        newshandler.getNews(globalQuery);
     }
 
     @Override
@@ -207,18 +247,16 @@ public class SearchFragment extends Fragment implements OnBooksCompleted, OnMusi
             //Here we do what we need
             items.clear();
             for (Song song : songs) {
-                Item item = new Item(0, song, 0);
+                Item item = new Item(0, song, song.getRating());
                 items.add(item);
-                Log.e(TAG, song.getTitle() + " song");
             }
             for (Book book : books) {
-                Item item = new Item(1, book, 0);
+                Item item = new Item(1, book, book.getRating());
                 items.add(item);
-                Log.e(TAG, book.getTitle() + " book");
             }
-            for (String newstitle : news) {
-                Log.e(TAG, newstitle);
-            }
+//            for (String newstitle : news) {
+//                Log.e(TAG, newstitle);
+//            }
             // if empty, sorry we couldn't find anything for this query
             if (items.isEmpty()) {
                 final View view = getLayoutInflater().inflate(R.layout.animated_doggy_error, null);
@@ -228,7 +266,23 @@ public class SearchFragment extends Fragment implements OnBooksCompleted, OnMusi
                         .setCustomView(view)
                         .show();
             }
+            //Sort by rating higher to smaller
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                items.sort(new Comparator<Item>() {
+                    @Override
+                    public int compare(Item o1, Item o2) {
+                        if (o1.getRating() > o2.getRating()) {
+                            return -1;
+                        }
+                        if (o1.getRating() < o2.getRating()) {
+                            return 1;
+                        }
+                        return 0;
+                    }
+                });
+            }
             multiSearchAdapter.notifyDataSetChanged();
         }
     }
+
 }

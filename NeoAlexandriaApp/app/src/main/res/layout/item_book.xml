@@ -14,13 +14,12 @@
 
     <ImageView
         android:id="@+id/ivCover"
-        android:layout_width="wrap_content"
-        android:layout_height="156dp"
-        android:layout_alignParentTop="true"
+        android:layout_width="156dp"
+        android:layout_height="210dp"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="15dp"
+        android:layout_centerVertical="true"
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
@@ -32,42 +31,83 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="15dp"
         android:textColor="@color/black"
-        android:textSize="25sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         tools:text="Title" />
 
 
     <TextView
-        android:id="@+id/tvAlbum"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvTitle"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="0dp"
-        android:textColor="@color/black"
-        android:textSize="18sp"
-        tools:text="Title" />
-
-    <TextView
         android:id="@+id/tvAuthor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvAlbum"
+        android:layout_below="@+id/rbStars"
         android:layout_alignParentStart="true"
         android:layout_marginStart="20dp"
+        android:layout_marginTop="-15dp"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        tools:text="Author" />
+
+    <TextView
+        android:id="@+id/tvEditorial"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rbStars"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="4dp"
         android:textColor="@color/black"
         android:textSize="12sp"
-        tools:text="Title" />
+        tools:text="Editorial" />
+
+    <TextView
+        android:id="@+id/tvPages"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvEditorial"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        tools:text="Pages" />
+
+    <TextView
+        android:id="@+id/tvDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvPages"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginEnd="10dp"
+        android:layout_toStartOf="@+id/ivCover"
+        android:inputType="textMultiLine"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        tools:text="Description" />
+
+    <TextView
+        android:id="@+id/tvSize"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvEditorial"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_toEndOf="@+id/tvPages"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        android:visibility="visible"
+        tools:text="Size" />
 
     <RatingBar
         android:id="@+id/rbStars"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvAuthor"
+        android:layout_below="@+id/tvTitle"
         android:layout_alignParentStart="true"
-        android:layout_marginStart="-51dp"
-        android:layout_marginTop="-4dp"
+        android:layout_marginStart="-43dp"
+        android:layout_marginTop="-12dp"
         android:layout_marginBottom="-4dp"
         android:numStars="5"
         android:rating="3"
@@ -79,43 +119,43 @@
         android:id="@+id/ivComment"
         android:layout_width="25dp"
         android:layout_height="25dp"
-        android:layout_below="@+id/rbStars"
+        android:layout_below="@+id/tvDescription"
         android:layout_alignParentStart="true"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="-8dp"
+        android:layout_marginTop="30dp"
         app:srcCompat="@drawable/comment_icon"
         app:tint="@color/black" />
-
-    <TextView
-        android:id="@+id/tvNumberComments"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/rbStars"
-        android:layout_marginStart="7dp"
-        android:layout_marginTop="-5dp"
-        android:layout_marginBottom="8dp"
-        android:layout_toEndOf="@+id/ivComment"
-        tools:text="100" />
-
-    <TextView
-        android:id="@+id/tvNumberSaves"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/rbStars"
-        android:layout_marginStart="7dp"
-        android:layout_marginTop="-5dp"
-        android:layout_toEndOf="@+id/ivSave"
-        tools:text="100" />
 
     <ImageView
         android:id="@+id/ivSave"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_below="@+id/rbStars"
+        android:layout_below="@+id/tvDescription"
         android:layout_marginStart="15dp"
-        android:layout_marginTop="-10dp"
+        android:layout_marginTop="30dp"
         android:layout_toEndOf="@+id/tvNumberComments"
         app:srcCompat="@drawable/bookmark_unmark"
         app:tint="@color/black" />
+
+    <TextView
+        android:id="@+id/tvNumberSaves"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvDescription"
+        android:layout_marginStart="7dp"
+        android:layout_marginTop="33dp"
+        android:layout_toEndOf="@+id/ivSave"
+        tools:text="100" />
+
+    <TextView
+        android:id="@+id/tvNumberComments"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvDescription"
+        android:layout_marginStart="7dp"
+        android:layout_marginTop="33dp"
+        android:layout_marginBottom="8dp"
+        android:layout_toEndOf="@+id/ivComment"
+        tools:text="100" />
 
 </RelativeLayout>

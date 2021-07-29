@@ -1,8 +1,9 @@
 package com.example.neo_alexandria_app.DataModels;
 
 public class Item {
+
     private int type;
-    public float rating;
+    private float rating;
     private Object object;
 
     public Item(int type, Object object, float rating) {
@@ -17,5 +18,13 @@ public class Item {
 
     public Object getObject() {
         return object;
+    }
+
+    public float getRating() {
+        return rating;
+    }
+
+    public void setRating (float rating) {
+        this.rating = rating;
     }
 }

@@ -2,7 +2,6 @@ package com.example.neo_alexandria_app.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.MultiTransformation;
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
+import com.example.neo_alexandria_app.Activities.Book_Details;
 import com.example.neo_alexandria_app.Activities.Song_Details;
 import com.example.neo_alexandria_app.DataModels.Book;
 import com.example.neo_alexandria_app.DataModels.Item;
@@ -36,6 +36,10 @@ import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 import static androidx.core.content.ContextCompat.startActivity;
 
 public class MultiSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+    public static final int SONG_TYPE = 0;
+    public static final int BOOK_TYPE = 1;
+    public static final int NEWS_TYPE = 2;
 
     Context context;
     List<Item> items;
@@ -75,10 +79,10 @@ public class MultiSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public void onBindViewHolder(@NonNull @NotNull RecyclerView.ViewHolder holder, int position) {
         holder.itemView.findViewById(R.id.relative).setAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_transition));
-        if (getItemViewType(position) == 0) {
+        if (getItemViewType(position) == SONG_TYPE) {
             Song song = (Song) items.get(position).getObject();
             ((MusicViewHolder) holder).bind(song);
-        } else if (getItemViewType(position) == 1) {
+        } else if (getItemViewType(position) == BOOK_TYPE) {
             Book book = (Book) items.get(position).getObject();
             ((BookViewHolder) holder).bind(book);
         }
@@ -120,8 +124,8 @@ public class MultiSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             tvNumCom = itemView.findViewById(R.id.tvNumberComments);
             tvNumSav = itemView.findViewById(R.id.tvNumberSaves);
             rbStars = itemView.findViewById(R.id.rbStars);
-            tvAlbum = itemView.findViewById(R.id.tvAlbum);
-            tvAuthor = itemView.findViewById(R.id.tvAuthor);
+            tvAlbum = itemView.findViewById(R.id.tvAuthor);
+            tvAuthor = itemView.findViewById(R.id.tvEditorial);
             relative = itemView.findViewById(R.id.relative);
             tvExplicit = itemView.findViewById(R.id.tvExplicit);
         }
@@ -163,11 +167,35 @@ public class MultiSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         ImageView ivCover;
         TextView tvTitle;
+        RatingBar rbStars;
+        TextView tvAuthor;
+        TextView tvEditorial;
+        TextView tvPages;
+        TextView tvSize;
+        TextView tvDescription;
+        ImageView ivComment;
+        TextView tvNumberComments;
+        ImageView ivSave;
+        TextView tvNumberSaves;
+        RelativeLayout relative;
+
 
         BookViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
             ivCover = itemView.findViewById(R.id.ivCover);
             tvTitle = itemView.findViewById(R.id.tvTitle);
+            rbStars = itemView.findViewById(R.id.rbStars);
+            tvAuthor = itemView.findViewById(R.id.tvAuthor);
+            tvEditorial = itemView.findViewById(R.id.tvEditorial);
+            tvPages = itemView.findViewById(R.id.tvPages);
+            tvSize = itemView.findViewById(R.id.tvSize);
+            tvDescription = itemView.findViewById(R.id.tvDescription);
+            ivComment = itemView.findViewById(R.id.ivComment);
+            tvNumberComments = itemView.findViewById(R.id.tvNumberComments);
+            ivSave = itemView.findViewById(R.id.ivSave);
+            tvNumberSaves = itemView.findViewById(R.id.tvNumberSaves);
+            relative = itemView.findViewById(R.id.relative);
+
         }
 
         void bind(Book book) {
@@ -177,7 +205,31 @@ public class MultiSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                         .transform(new MultiTransformation(new FitCenter(), new RoundedCornersTransformation(40, 5)))
                         .into(ivCover);
             }
-            tvTitle.setText(book.getTitle());
+            tvTitle.setText(StringsHandler.limited(book.getTitle(),13));
+            rbStars.setRating(book.getRating());
+            tvAuthor.setText(StringsHandler.limited(book.getAuthorName(),17));
+            tvEditorial.setText(StringsHandler.limited(book.getEditor(),23));
+
+            tvPages.setText("Pages: ?");
+            if (book.getPages() != 0) {
+                tvPages.setText("Pages: "+book.getPages());
+            }
+
+            tvSize.setText("Size: ?");
+            if (book.getSize() != 0d) {
+                tvSize.setText("Size: "+book.getSize()+" MB");
+            }
+            tvDescription.setText(StringsHandler.limited(book.getDescription(), 150));
+            tvNumberComments.setText(String.valueOf(book.getCommentCount()));
+            tvNumberSaves.setText(String.valueOf(book.getSaveCount()));
+            relative.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, Book_Details.class);
+                    intent.putExtra("book", Parcels.wrap(book));
+                    startActivity(context, intent, new Bundle());
+                }
+            });
         }
 
     }

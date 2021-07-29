@@ -27,6 +27,13 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    sourceSets {
+        main {
+            res {
+                srcDirs 'src/main/res', 'src/main/res/layout/activities'
+            }
+        }
+    }
 }
 
 dependencies {
@@ -88,4 +95,11 @@ dependencies {
     //Lottie
     def lottieVersion = "3.7.2"
     implementation "com.airbnb.android:lottie:$lottieVersion"
+
+    //Pdf reader
+    implementation 'com.github.barteksc:android-pdf-viewer:2.8.2'
+    implementation 'com.mindorks.android:prdownloader:0.6.0'
+
+    //This is for our custom progress bar
+    compile 'com.daimajia.numberprogressbar:library:1.4@aar'
 }

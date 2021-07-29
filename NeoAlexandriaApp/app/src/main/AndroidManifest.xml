@@ -14,8 +14,10 @@
         android:label="Neo Alexandria"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:requestLegacyExternalStorage="true"
         android:theme="@style/Theme.NeoAlexandriaApp">
-        <activity android:name=".Activities.Song_Details"></activity>
+        <activity android:name=".Activities.Book_Details"></activity>
+        <activity android:name=".Activities.Song_Details" />
         <activity android:name=".Activities.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
