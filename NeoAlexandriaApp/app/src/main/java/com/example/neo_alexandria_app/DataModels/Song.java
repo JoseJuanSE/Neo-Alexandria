@@ -7,12 +7,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.parceler.Parcel;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Parcel
-public class Song extends Resource {
+public class Song extends Resource implements Serializable {
 
     public static final String TAG = "Song";
 

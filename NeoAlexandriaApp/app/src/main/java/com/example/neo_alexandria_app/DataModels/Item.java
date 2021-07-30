@@ -2,10 +2,11 @@ package com.example.neo_alexandria_app.DataModels;
 
 import androidx.annotation.IntDef;
 
+import java.io.Serializable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-public class Item {
+public class Item implements Serializable {
 
     @IntDef({ItemType.SONG_TYPE, ItemType.BOOK_TYPE, ItemType.NEWS_TYPE})
     @Retention(RetentionPolicy.SOURCE)

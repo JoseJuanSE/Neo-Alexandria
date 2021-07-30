@@ -1,6 +1,8 @@
 package com.example.neo_alexandria_app.DataModels;
 
-public class Resource {
+import java.io.Serializable;
+
+public class Resource implements Serializable {
     String id;
     String title;
     String authorName;

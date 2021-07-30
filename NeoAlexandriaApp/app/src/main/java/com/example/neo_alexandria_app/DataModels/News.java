@@ -1,6 +1,8 @@
 package com.example.neo_alexandria_app.DataModels;
 
-public class News extends Resource {
+import java.io.Serializable;
+
+public class News extends Resource implements Serializable {
 
     public static final String TAG = "News";
 
