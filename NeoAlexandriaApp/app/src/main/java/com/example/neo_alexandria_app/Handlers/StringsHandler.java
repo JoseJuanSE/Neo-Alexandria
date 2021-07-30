@@ -1,6 +1,19 @@
 package com.example.neo_alexandria_app.Handlers;
 
+import android.util.Log;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
 public class StringsHandler {
+
+    public static final String TAG = "StringsHandler";
+    public static final int SECOND_MILLIS = 1000;
+    public static final int MINUTE_MILLIS = 60 * SECOND_MILLIS;
+    public static final int HOUR_MILLIS = 60 * MINUTE_MILLIS;
+    public static final int DAY_MILLIS = 24 * HOUR_MILLIS;
+
     //Here we reuse this code in for some activities.
     public static String limited(String title, int lit) {
         String ans = "";
@@ -24,5 +37,37 @@ public class StringsHandler {
         timeLabel += sec;
 
         return timeLabel;
+    }
+
+    public static String getRelativeTimeAgo(String rawJsonDate) {
+
+        String twitterFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'";
+        SimpleDateFormat sf = new SimpleDateFormat(twitterFormat, Locale.ENGLISH);
+        sf.setLenient(true);
+
+        try {
+
+            long time = sf.parse(rawJsonDate).getTime();
+            long now = System.currentTimeMillis();
+
+            final long diff = now - time;
+            if (diff < MINUTE_MILLIS) {
+                return "just now";
+            } else if (diff < 60 * MINUTE_MILLIS) {
+                return diff / MINUTE_MILLIS + "m";
+            } else if (diff < 24 * HOUR_MILLIS) {
+                return diff / HOUR_MILLIS + "h";
+            } else {
+                return diff / DAY_MILLIS + "d";
+            }
+
+        } catch (ParseException e) {
+
+            Log.i(TAG, "getRelativeTimeAgo failed");
+            e.printStackTrace();
+
+        }
+
+        return "";
     }
 }

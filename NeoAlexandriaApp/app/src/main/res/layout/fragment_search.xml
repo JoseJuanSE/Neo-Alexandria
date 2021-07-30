@@ -63,14 +63,101 @@
             <!--                />-->
         </com.google.android.material.appbar.AppBarLayout>
 
+        <RelativeLayout
+            android:id="@+id/Menu"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            app:layout_anchorGravity="center"
+            android:layout_below="@+id/appBar"
+            android:background="@color/gray_btn_bg_color"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/allButton"
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="7dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/buttonall"
+                android:clickable="true"
+                android:padding="0dp"
+                android:text="@string/all"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                android:textSize="11sp" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/newsButton"
+                android:layout_width="60dp"
+                android:layout_height="30dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_toEndOf="@+id/allButton"
+                android:layout_toRightOf="@+id/allButton"
+                android:background="@drawable/newsbutton"
+                android:clickable="true"
+                android:padding="0dp"
+                android:text="News"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                android:textSize="11sp" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/musicButton"
+                android:layout_width="60dp"
+                android:layout_height="30dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_toEndOf="@+id/booksButton"
+                android:clickable="true"
+                android:background="@drawable/musicbutton"
+                android:padding="0dp"
+                android:text="@string/songs"
+                android:textAllCaps="false"
+
+                android:textColor="@color/black"
+                android:textSize="11sp" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/booksButton"
+                android:layout_width="60dp"
+                android:layout_height="30dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_toEndOf="@+id/newsButton"
+                android:background="@drawable/buttonbook"
+                android:clickable="true"
+                android:padding="0dp"
+                android:text="@string/books"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                android:textSize="11sp" />
+
+        </RelativeLayout>
         <!--   Here we use this layout to let us update by scrolling      -->
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipeContainer"
             android:layout_width="match_parent"
-            android:layout_height="666dp"
-            app:layout_anchor="@+id/swipeContainer"
-            app:layout_anchorGravity="center"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/Menu"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="0dp"
+
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <!--      here we have the design core of our app, the recycle view      -->
@@ -83,7 +170,8 @@
                 android:layout_alignParentTop="false"
                 android:layout_alignParentBottom="false"
                 android:paddingStart="5dp"
-                android:paddingEnd="5dp"/>
+                android:paddingEnd="5dp" />
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </RelativeLayout>

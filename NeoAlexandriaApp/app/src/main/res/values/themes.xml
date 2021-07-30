@@ -28,4 +28,7 @@
         <!-- Customize your theme here. -->
         <item name="android:windowContentTransitions">true</item>
     </style>
+    <style name="Button.All" parent="ThemeOverlay.AppCompat">
+        <item name="colorAccent">@color/all</item>
+    </style>
 </resources>

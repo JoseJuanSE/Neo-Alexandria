@@ -3,7 +3,7 @@
     android:clickable="true"
     android:background="?android:attr/selectableItemBackground">
 
-    <solid android:color="#C3E2FF" />
+    <solid android:color="#FFEEC3" />
 
     <corners
         android:bottomLeftRadius="13dp"

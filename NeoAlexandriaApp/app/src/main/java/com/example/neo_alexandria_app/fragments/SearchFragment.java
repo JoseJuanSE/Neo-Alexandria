@@ -6,15 +6,16 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,11 +23,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.neo_alexandria_app.Adapters.MultiSearchAdapter;
 import com.example.neo_alexandria_app.DataModels.Book;
 import com.example.neo_alexandria_app.DataModels.Item;
+import com.example.neo_alexandria_app.DataModels.News;
 import com.example.neo_alexandria_app.DataModels.Song;
 import com.example.neo_alexandria_app.Handlers.Bookhandler;
 import com.example.neo_alexandria_app.Handlers.Deezerhandler;
@@ -36,11 +39,7 @@ import com.example.neo_alexandria_app.Interfaces.OnMusicCompleted;
 import com.example.neo_alexandria_app.Interfaces.OnNewsCompleted;
 import com.example.neo_alexandria_app.R;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -57,11 +56,22 @@ public class SearchFragment extends Fragment implements OnBooksCompleted, OnMusi
     Toolbar toolbar;
     List<Song> songs;
     List<Book> books;
-    List<String> news;
+    List<News> news;
     List<Item> items;
     MultiSearchAdapter multiSearchAdapter;
     RecyclerView recyclerView;
     SwipeRefreshLayout swipeRefreshLayout;
+
+
+    //filter
+    Button btnAll;
+    Button btnBooks;
+    Button btnSongs;
+    Button btnNews;
+    boolean booksselected;
+    boolean songsselected;
+    boolean newsselected;
+
 
     String globalQuery;
 
@@ -162,9 +172,86 @@ public class SearchFragment extends Fragment implements OnBooksCompleted, OnMusi
         //Set all the handlers
         deezerhandler = new Deezerhandler(getContext(), this::musicTaskCompleted);
         bookhandler = new Bookhandler(this::bookTaskCompleted);
-        newshandler = new Newshandler(this::newsTaskCompleted);
+        newshandler = new Newshandler(news1 -> newsTaskCompleted(news1));
 
-//        File myDirectory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "pdfs");
+        //filters
+        btnAll = (Button) view.findViewById(R.id.allButton);
+        btnBooks = (Button) view.findViewById(R.id.booksButton);
+        btnNews = (Button) view.findViewById(R.id.newsButton);
+        btnSongs = (Button) view.findViewById(R.id.musicButton);
+        btnAll.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
+        btnBooks.setTextColor(ContextCompat.getColor(getContext(), R.color.gray));
+        btnNews.setTextColor(ContextCompat.getColor(getContext(), R.color.gray));
+        btnSongs.setTextColor(ContextCompat.getColor(getContext(), R.color.gray));
+        booksselected = true;
+        newsselected = true;
+        songsselected = true;
+
+        globalQuery = "111111111111";
+
+        btnAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!(booksselected && songsselected && newsselected)) {
+                    btnAll.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
+                    btnBooks.setTextColor(ContextCompat.getColor(getContext(), R.color.gray));
+                    btnNews.setTextColor(ContextCompat.getColor(getContext(), R.color.gray));
+                    btnSongs.setTextColor(ContextCompat.getColor(getContext(), R.color.gray));
+                    booksselected = true;
+                    newsselected = true;
+                    songsselected = true;
+                    checkRequestsFinished();
+                }
+            }
+        });
+
+        btnNews.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!newsselected  || (booksselected && songsselected && newsselected)) {
+                    btnAll.setTextColor(ContextCompat.getColor(getContext(), R.color.gray));
+                    btnBooks.setTextColor(ContextCompat.getColor(getContext(), R.color.gray));
+                    btnNews.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
+                    btnSongs.setTextColor(ContextCompat.getColor(getContext(), R.color.gray));
+                    booksselected = false;
+                    newsselected = true;
+                    songsselected = false;
+                    checkRequestsFinished();
+                }
+            }
+        });
+
+        btnSongs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!songsselected  || (booksselected && songsselected && newsselected)) {
+                    btnAll.setTextColor(ContextCompat.getColor(getContext(), R.color.gray));
+                    btnBooks.setTextColor(ContextCompat.getColor(getContext(), R.color.gray));
+                    btnNews.setTextColor(ContextCompat.getColor(getContext(), R.color.gray));
+                    btnSongs.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
+                    booksselected = false;
+                    newsselected = false;
+                    songsselected = true;
+                    checkRequestsFinished();
+                }
+            }
+        });
+
+        btnBooks.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!booksselected || (booksselected && songsselected && newsselected)) {
+                    btnAll.setTextColor(ContextCompat.getColor(getContext(), R.color.gray));
+                    btnBooks.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
+                    btnNews.setTextColor(ContextCompat.getColor(getContext(), R.color.gray));
+                    btnSongs.setTextColor(ContextCompat.getColor(getContext(), R.color.gray));
+                    booksselected = true;
+                    newsselected = false;
+                    songsselected = false;
+                    checkRequestsFinished();
+                }
+            }
+        });
 
 
         return view;
@@ -196,10 +283,11 @@ public class SearchFragment extends Fragment implements OnBooksCompleted, OnMusi
     }
 
     private void populateRecyclerView() {
+        if (globalQuery == "111111111111") {
+            return ;
+        }
         booksRequest = musicRequest = newsRequest = false;
-
         //The first that I call should start a SweetDialogAlert Loading.
-
         final View view = getLayoutInflater().inflate(R.layout.animated_loading, null);
         deezerhandler.getSongs(globalQuery, view);
         bookhandler.getBooks(globalQuery);
@@ -233,7 +321,7 @@ public class SearchFragment extends Fragment implements OnBooksCompleted, OnMusi
     }
 
     @Override
-    public void newsTaskCompleted(List<String> newsList) {
+    public void newsTaskCompleted(List<News> newsList) {
         newsRequest = true;
         news.clear();
         news.addAll(newsList);
@@ -246,17 +334,24 @@ public class SearchFragment extends Fragment implements OnBooksCompleted, OnMusi
             sweetAlertDialog.cancel();
             //Here we do what we need
             items.clear();
-            for (Song song : songs) {
-                Item item = new Item(Item.ItemType.SONG_TYPE, song, song.getRating());
-                items.add(item);
+            if (songsselected) {
+                for (Song song : songs) {
+                    Item item = new Item(Item.ItemType.SONG_TYPE, song, song.getRating());
+                    items.add(item);
+                }
             }
-            for (Book book : books) {
-                Item item = new Item(Item.ItemType.BOOK_TYPE, book, book.getRating());
-                items.add(item);
+            if (booksselected) {
+                for (Book book : books) {
+                    Item item = new Item(Item.ItemType.BOOK_TYPE, book, book.getRating());
+                    items.add(item);
+                }
             }
-//            for (String newstitle : news) {
-//                Log.e(TAG, newstitle);
-//            }
+            if (newsselected) {
+                for (News new1 : news) {
+                    Item item = new Item(Item.ItemType.NEWS_TYPE, new1, new1.getRating());
+                    items.add(item);
+                }
+            }
             // if empty, sorry we couldn't find anything for this query
             if (items.isEmpty()) {
                 final View view = getLayoutInflater().inflate(R.layout.animated_doggy_error, null);
@@ -268,17 +363,14 @@ public class SearchFragment extends Fragment implements OnBooksCompleted, OnMusi
             }
             //Sort by rating higher to smaller
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                items.sort(new Comparator<Item>() {
-                    @Override
-                    public int compare(Item o1, Item o2) {
-                        if (o1.getRating() > o2.getRating()) {
-                            return -1;
-                        }
-                        if (o1.getRating() < o2.getRating()) {
-                            return 1;
-                        }
-                        return 0;
+                items.sort((o1, o2) -> {
+                    if (o1.getRating() > o2.getRating()) {
+                        return -1;
                     }
+                    if (o1.getRating() < o2.getRating()) {
+                        return 1;
+                    }
+                    return 0;
                 });
             }
             multiSearchAdapter.notifyDataSetChanged();

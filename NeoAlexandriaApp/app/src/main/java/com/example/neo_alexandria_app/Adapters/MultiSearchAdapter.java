@@ -22,6 +22,7 @@ import com.example.neo_alexandria_app.Activities.Book_Details;
 import com.example.neo_alexandria_app.Activities.Song_Details;
 import com.example.neo_alexandria_app.DataModels.Book;
 import com.example.neo_alexandria_app.DataModels.Item;
+import com.example.neo_alexandria_app.DataModels.News;
 import com.example.neo_alexandria_app.DataModels.Song;
 import com.example.neo_alexandria_app.Handlers.StringsHandler;
 import com.example.neo_alexandria_app.R;
@@ -51,7 +52,7 @@ public class MultiSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
 
-        if (viewType == 0) { // Song
+        if (viewType == Item.ItemType.SONG_TYPE) {
             return new MusicViewHolder(
                     LayoutInflater.from(parent.getContext()).inflate(
                             R.layout.item_song,
@@ -59,7 +60,7 @@ public class MultiSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                             false
                     )
             );
-        } else if (viewType == 1) { // Book
+        } else if (viewType == Item.ItemType.BOOK_TYPE) {
             return new BookViewHolder(
                     LayoutInflater.from(parent.getContext()).inflate(
                             R.layout.item_book,
@@ -67,9 +68,16 @@ public class MultiSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                             false
                     )
             );
+        } else {
+            return new NewsViewHolder(
+                    LayoutInflater.from(parent.getContext()).inflate(
+                            R.layout.item_news,
+                            parent,
+                            false
+                    )
+            );
         }
 
-        return null;
     }
 
     @Override
@@ -81,6 +89,9 @@ public class MultiSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         } else if (getItemViewType(position) == Item.ItemType.BOOK_TYPE) {
             Book book = (Book) items.get(position).getObject();
             ((BookViewHolder) holder).bind(book);
+        } else {
+            News new1 = (News) items.get(position).getObject();
+            ((NewsViewHolder) holder).bind(new1);
         }
     }
 
@@ -121,7 +132,7 @@ public class MultiSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             tvNumSav = itemView.findViewById(R.id.tvNumberSaves);
             rbStars = itemView.findViewById(R.id.rbStars);
             tvAlbum = itemView.findViewById(R.id.tvAuthor);
-            tvAuthor = itemView.findViewById(R.id.tvEditorial);
+            tvAuthor = itemView.findViewById(R.id.tvNewsDescription);
             relative = itemView.findViewById(R.id.relative);
             tvExplicit = itemView.findViewById(R.id.tvExplicit);
         }
@@ -182,8 +193,8 @@ public class MultiSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             tvTitle = itemView.findViewById(R.id.tvTitle);
             rbStars = itemView.findViewById(R.id.rbStars);
             tvAuthor = itemView.findViewById(R.id.tvAuthor);
-            tvEditorial = itemView.findViewById(R.id.tvEditorial);
-            tvPages = itemView.findViewById(R.id.tvPages);
+            tvEditorial = itemView.findViewById(R.id.tvNewsDescription);
+            tvPages = itemView.findViewById(R.id.tvDate);
             tvSize = itemView.findViewById(R.id.tvSize);
             tvDescription = itemView.findViewById(R.id.tvDescription);
             ivComment = itemView.findViewById(R.id.ivComment);
@@ -228,6 +239,55 @@ public class MultiSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             });
         }
 
+    }
+
+    public class NewsViewHolder extends RecyclerView.ViewHolder {
+
+        ImageView ivCover;
+        TextView tvDate;
+        TextView tvTitle;
+        TextView tvNewsSource;
+        TextView tvAuthor;
+        TextView tvNewsDescription;
+        RatingBar rbStars;
+        ImageView ivSave;
+        ImageView ivComment;
+        TextView tvNumberComments;
+        TextView tvNumberSaves;
+        RelativeLayout relative;
+
+        public NewsViewHolder(@NonNull @NotNull View itemView) {
+            super(itemView);
+            ivCover = itemView.findViewById(R.id.ivCover);
+            tvDate = itemView.findViewById(R.id.tvDate);
+            tvTitle = itemView.findViewById(R.id.tvTitle);
+            tvNewsSource = itemView.findViewById(R.id.tvNewsSource);
+            tvAuthor = itemView.findViewById(R.id.tvAuthor);
+            tvNewsDescription = itemView.findViewById(R.id.tvNewsDescription);
+            rbStars = itemView.findViewById(R.id.rbStars);
+            ivSave = itemView.findViewById(R.id.ivSave);
+            ivComment = itemView.findViewById(R.id.ivComment);
+            tvNumberComments = itemView.findViewById(R.id.tvNumberComments);
+            tvNumberSaves = itemView.findViewById(R.id.tvNumberSaves);
+            relative = itemView.findViewById(R.id.relative);
+        }
+
+        void bind(News news) {
+            if (!news.getImageLink().isEmpty()) {
+                Glide.with(context)
+                        .load(news.getImageLink())
+                        .transform(new MultiTransformation(new FitCenter(), new RoundedCornersTransformation(40, 5)))
+                        .into(ivCover);
+            }
+            tvDate.setText(news.getDate());
+            tvTitle.setText(StringsHandler.limited(news.getTitle(),23));
+            tvNewsSource.setText(news.getSourceName());
+            tvAuthor.setText(news.getAuthorName());
+            tvNewsDescription.setText(news.getDescription());
+            rbStars.setRating(news.getRating());
+            tvNumberComments.setText(String.valueOf(news.getCommentCount()));
+            tvNumberSaves.setText(String.valueOf(news.getSaveCount()));
+        }
     }
 
     public void clear() {

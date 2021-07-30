@@ -12,4 +12,6 @@
     <color name="blue">#0038FF</color>
     <color name="lightblue">#578CFF</color>
     <color name="yellow">#FFC107</color>
+    <color name="all">#C3E2FF</color>
+    <color name="gray">#8E8E8E</color>
 </resources>

@@ -49,7 +49,7 @@
         tools:text="Author" />
 
     <TextView
-        android:id="@+id/tvEditorial"
+        android:id="@+id/tvNewsDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/rbStars"
@@ -61,10 +61,10 @@
         tools:text="Editorial" />
 
     <TextView
-        android:id="@+id/tvPages"
+        android:id="@+id/tvDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvEditorial"
+        android:layout_below="@+id/tvNewsDescription"
         android:layout_alignParentStart="true"
         android:layout_marginStart="20dp"
         android:layout_marginTop="5dp"
@@ -76,7 +76,7 @@
         android:id="@+id/tvDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvPages"
+        android:layout_below="@+id/tvDate"
         android:layout_alignParentStart="true"
         android:layout_marginStart="20dp"
         android:layout_marginTop="7dp"
@@ -91,10 +91,10 @@
         android:id="@+id/tvSize"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvEditorial"
+        android:layout_below="@+id/tvNewsDescription"
         android:layout_marginStart="20dp"
         android:layout_marginTop="5dp"
-        android:layout_toEndOf="@+id/tvPages"
+        android:layout_toEndOf="@+id/tvDate"
         android:textColor="@color/black"
         android:textSize="12sp"
         android:visibility="visible"

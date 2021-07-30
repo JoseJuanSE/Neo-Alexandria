@@ -1,5 +1,7 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="rectangle">
+    android:shape="rectangle"
+    android:clickable="true"
+    android:background="?android:attr/selectableItemBackground">
 
     <solid android:color="#D3FFC3" />
 

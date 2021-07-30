@@ -13,4 +13,7 @@
     <string name="search_it">Search it!</string>
     <string name="go_to_source"><u>go to source</u></string>
     <string name="log_out"><u>Log out</u></string>
+    <string name="all">All</string>
+    <string name="books">Books</string>
+    <string name="songs">Songs</string>
 </resources>
