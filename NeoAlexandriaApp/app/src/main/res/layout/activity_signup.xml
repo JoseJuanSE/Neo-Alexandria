@@ -72,7 +72,7 @@
         android:textSize="15sp" />
 
     <Button
-        android:id="@+id/btnSignup"
+        android:id="@+id/btnUpdateit"
         android:layout_width="350dp"
         android:layout_height="40dp"
         android:layout_below="@+id/etPassword"

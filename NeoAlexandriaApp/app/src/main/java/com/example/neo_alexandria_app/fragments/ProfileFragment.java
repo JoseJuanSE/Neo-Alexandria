@@ -17,7 +17,10 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.neo_alexandria_app.Activities.LoginActivity;
+import com.example.neo_alexandria_app.Activities.SignupActivity;
+import com.example.neo_alexandria_app.Activities.UpdateProfilePictureActivity;
 import com.example.neo_alexandria_app.R;
+import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.parse.GetFileCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
@@ -36,6 +39,7 @@ public class ProfileFragment extends Fragment {
     public static final String TAG = "ProfileFragment";
 
     ImageView ivProfile;
+    ImageView ivAdd;
     TextView tvName;
     TextView tvLogout;
 
@@ -88,17 +92,20 @@ public class ProfileFragment extends Fragment {
         tvLogout = view.findViewById(R.id.tvLogout);
         tvName = view.findViewById(R.id.tvUsername);
         ivProfile = view.findViewById(R.id.ivProfile);
+        ivAdd = view.findViewById(R.id.ivAdd2);
 
         tvName.setText(ParseUser.getCurrentUser().getUsername());
 
-        if (ParseUser.getCurrentUser().containsKey("profilePicture")) {
-            ParseUser.getCurrentUser().getParseFile("profilePicture").getFileInBackground(new GetFileCallback() {
-                @Override
-                public void done(File file, ParseException e) {
-                    ivProfile.setImageURI(Uri.fromFile(file));
-                }
-            });
-        }
+        checkCurrentPicture();
+
+        ivAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), UpdateProfilePictureActivity.class);
+                startActivity(intent);
+
+            }
+        });
 
         tvLogout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,5 +133,22 @@ public class ProfileFragment extends Fragment {
         });
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        checkCurrentPicture();
+    }
+
+    private void checkCurrentPicture() {
+        if (ParseUser.getCurrentUser().containsKey("profilePicture")) {
+            ParseUser.getCurrentUser().getParseFile("profilePicture").getFileInBackground(new GetFileCallback() {
+                @Override
+                public void done(File file, ParseException e) {
+                    ivProfile.setImageURI(Uri.fromFile(file));
+                }
+            });
+        }
     }
 }

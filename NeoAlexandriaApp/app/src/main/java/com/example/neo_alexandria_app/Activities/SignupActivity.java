@@ -52,7 +52,7 @@ public class SignupActivity extends AppCompatActivity implements OnNSFWCompleted
         etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
         etUsername = findViewById(R.id.etUsername);
-        btnSignup = findViewById(R.id.btnSignup);
+        btnSignup = findViewById(R.id.btnUpdateit);
 
 
         ivAdd.setOnClickListener(new View.OnClickListener() {
