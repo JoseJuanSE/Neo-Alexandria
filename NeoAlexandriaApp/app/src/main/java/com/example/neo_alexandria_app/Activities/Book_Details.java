@@ -101,13 +101,13 @@ public class Book_Details extends AppCompatActivity implements OnProgressBarList
                         public void onError(Error error) {
                             Log.e(TAG, String.valueOf(error.getResponseCode()));
                             int errorCode = error.getResponseCode();
-                            if (errorCode == ErrorHandler.ERROR_401) {
+                            if (errorCode == ErrorHandler.ErrorType.ERROR_401) {
                                 errorHandler.error401();
-                            } else if (errorCode == ErrorHandler.ERROR_403) {
+                            } else if (errorCode == ErrorHandler.ErrorType.ERROR_403) {
                                 errorHandler.error403();
-                            } else if (errorCode == ErrorHandler.ERROR_404) {
+                            } else if (errorCode == ErrorHandler.ErrorType.ERROR_404) {
                                 errorHandler.error404();
-                            } else if (errorCode == ErrorHandler.ERROR_500) {
+                            } else if (errorCode == ErrorHandler.ErrorType.ERROR_500) {
                                 errorHandler.error500();
                             } else{
                                 if (error.isConnectionError()) {
@@ -151,13 +151,13 @@ public class Book_Details extends AppCompatActivity implements OnProgressBarList
     @Override
     public void general(String error, String errorDetails, int viewType) {
         View view;
-        if (viewType == ErrorHandler.ERROR_GENERAL) {
+        if (viewType == ErrorHandler.ErrorType.ERROR_GENERAL) {
             view = getLayoutInflater().inflate(R.layout.animated_errorgeneral, null);
-        } else if (viewType == ErrorHandler.ERROR_500) {
+        } else if (viewType == ErrorHandler.ErrorType.ERROR_500) {
             view = getLayoutInflater().inflate(R.layout.animated_error500, null);
-        } else if (viewType == ErrorHandler.ERROR_404) {
+        } else if (viewType == ErrorHandler.ErrorType.ERROR_404) {
             view = getLayoutInflater().inflate(R.layout.animated_error404, null);
-        } else if (viewType == ErrorHandler.ERROR_403) {
+        } else if (viewType == ErrorHandler.ErrorType.ERROR_403) {
             view = getLayoutInflater().inflate(R.layout.animated_error403, null);
         } else {
             view = getLayoutInflater().inflate(R.layout.animated_error401, null);

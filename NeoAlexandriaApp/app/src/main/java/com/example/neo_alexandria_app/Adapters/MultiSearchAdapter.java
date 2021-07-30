@@ -37,10 +37,6 @@ import static androidx.core.content.ContextCompat.startActivity;
 
 public class MultiSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    public static final int SONG_TYPE = 0;
-    public static final int BOOK_TYPE = 1;
-    public static final int NEWS_TYPE = 2;
-
     Context context;
     List<Item> items;
 
@@ -79,10 +75,10 @@ public class MultiSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public void onBindViewHolder(@NonNull @NotNull RecyclerView.ViewHolder holder, int position) {
         holder.itemView.findViewById(R.id.relative).setAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_transition));
-        if (getItemViewType(position) == SONG_TYPE) {
+        if (getItemViewType(position) == Item.ItemType.SONG_TYPE) {
             Song song = (Song) items.get(position).getObject();
             ((MusicViewHolder) holder).bind(song);
-        } else if (getItemViewType(position) == BOOK_TYPE) {
+        } else if (getItemViewType(position) == Item.ItemType.BOOK_TYPE) {
             Book book = (Book) items.get(position).getObject();
             ((BookViewHolder) holder).bind(book);
         }

@@ -247,11 +247,11 @@ public class SearchFragment extends Fragment implements OnBooksCompleted, OnMusi
             //Here we do what we need
             items.clear();
             for (Song song : songs) {
-                Item item = new Item(0, song, song.getRating());
+                Item item = new Item(Item.ItemType.SONG_TYPE, song, song.getRating());
                 items.add(item);
             }
             for (Book book : books) {
-                Item item = new Item(1, book, book.getRating());
+                Item item = new Item(Item.ItemType.BOOK_TYPE, book, book.getRating());
                 items.add(item);
             }
 //            for (String newstitle : news) {
