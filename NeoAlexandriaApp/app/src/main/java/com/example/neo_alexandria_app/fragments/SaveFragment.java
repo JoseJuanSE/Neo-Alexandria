@@ -233,7 +233,13 @@ public class SaveFragment extends Fragment {
             }
         });
 
-
+        try {
+            populateRecyclerView();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         return view;
     }
 

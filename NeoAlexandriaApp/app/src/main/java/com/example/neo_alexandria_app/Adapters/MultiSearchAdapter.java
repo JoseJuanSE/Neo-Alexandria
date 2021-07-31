@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
@@ -43,7 +45,6 @@ import java.util.List;
 
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
-import static androidx.core.content.ContextCompat.getDrawable;
 import static androidx.core.content.ContextCompat.startActivity;
 
 public class MultiSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -170,19 +171,35 @@ public class MultiSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 tvExplicit.setText("");
             }
 
-            relative.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(context, Song_Details.class);
-                    intent.putExtra("song", Parcels.wrap(song));
-                    startActivity(context, intent, new Bundle());
-                }
-            });
             if (song.isSaved()) {
                 ivSave.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.bookmark_marked));
             } else {
                 ivSave.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.bookmark_unmark));
             }
+
+            relative.setOnTouchListener(new View.OnTouchListener() {
+                private GestureDetector gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
+                    @Override
+                    public boolean onDoubleTap(MotionEvent e) {
+                        ivSave.callOnClick();
+                        return super.onDoubleTap(e);
+                    }
+                    @Override
+                    public boolean onSingleTapConfirmed(MotionEvent event) {
+                        Intent intent = new Intent(context, Song_Details.class);
+                        intent.putExtra("song", Parcels.wrap(song));
+                        startActivity(context, intent, new Bundle());
+                        return false;
+                    }
+                });
+
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+
+                    gestureDetector.onTouchEvent(event);
+                    return true;
+                }
+            });
 
             File myDirectory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath(), "saves");
 
@@ -286,12 +303,27 @@ public class MultiSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             tvDescription.setText(StringsHandler.limited(book.getDescription(), 150));
             tvNumberComments.setText(String.valueOf(book.getCommentCount()));
             tvNumberSaves.setText(String.valueOf(book.getSaveCount()));
-            relative.setOnClickListener(new View.OnClickListener() {
+            relative.setOnTouchListener(new View.OnTouchListener() {
+                private GestureDetector gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
+                    @Override
+                    public boolean onDoubleTap(MotionEvent e) {
+                        ivSave.callOnClick();
+                        return super.onDoubleTap(e);
+                    }
+                    @Override
+                    public boolean onSingleTapConfirmed(MotionEvent event) {
+                        Intent intent = new Intent(context, Book_Details.class);
+                        intent.putExtra("book", Parcels.wrap(book));
+                        startActivity(context, intent, new Bundle());
+                        return false;
+                    }
+                });
+
                 @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(context, Book_Details.class);
-                    intent.putExtra("book", Parcels.wrap(book));
-                    startActivity(context, intent, new Bundle());
+                public boolean onTouch(View v, MotionEvent event) {
+
+                    gestureDetector.onTouchEvent(event);
+                    return true;
                 }
             });
             if (book.isSaved()) {
@@ -299,6 +331,7 @@ public class MultiSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             } else {
                 ivSave.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.bookmark_unmark));
             }
+
             File myDirectory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath(), "saves");
 
             if (!myDirectory.exists()) {
@@ -395,6 +428,27 @@ public class MultiSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             } else {
                 ivSave.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.bookmark_unmark));
             }
+            relative.setOnTouchListener(new View.OnTouchListener() {
+                private GestureDetector gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
+                    @Override
+                    public boolean onDoubleTap(MotionEvent e) {
+                        ivSave.callOnClick();
+                        return super.onDoubleTap(e);
+                    }
+                    @Override
+                    public boolean onSingleTapConfirmed(MotionEvent event) {
+
+                        return false;
+                    }
+                });
+
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+
+                    gestureDetector.onTouchEvent(event);
+                    return true;
+                }
+            });
 
             File myDirectory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath(), "saves");
 
