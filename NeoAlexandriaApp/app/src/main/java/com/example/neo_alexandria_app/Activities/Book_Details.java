@@ -1,6 +1,7 @@
 package com.example.neo_alexandria_app.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -39,6 +40,7 @@ public class Book_Details extends AppCompatActivity implements OnProgressBarList
 
     private PDFView pdfView;
     private File myDirectory;
+    private File saveDirectory;
     private NumberProgressBar npb;
     private ErrorHandler errorHandler;
 
@@ -72,7 +74,22 @@ public class Book_Details extends AppCompatActivity implements OnProgressBarList
         npb.setVisibility(View.VISIBLE);
         npb.setMax(100);
 
+        //Here we save for offline queries
+        if (book.isSaved()) {
+            saveDirectory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath(), "savedpdfs");
+            if (!saveDirectory.exists()) {
+                saveDirectory.mkdirs();
+            }
+            myDirectory = saveDirectory;
+        }
+
         File bookFile = new File(myDirectory.getPath() + File.separator + "a" + book.getId());
+        File booksaved = new File(saveDirectory.getPath() + File.separator + "a"+ book.getId());
+
+        if (booksaved.exists()) {
+            bookFile = booksaved;
+        }
+
         if (bookFile.exists()) {
             npb.setVisibility(View.GONE);
             npb.setProgress(0);
