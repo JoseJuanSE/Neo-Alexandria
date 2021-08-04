@@ -1,5 +1,6 @@
 package com.example.neo_alexandria_app.fragments;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Environment;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -117,6 +119,21 @@ public class SaveFragment extends Fragment {
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+        if(!Environment.isExternalStorageManager())
+        {
+            Intent permissionIntent = new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
+            new SweetAlertDialog(getContext(), SweetAlertDialog.NORMAL_TYPE)
+                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            startActivity(permissionIntent);
+                        }
+                    })
+                    .setTitleText("Please let us manage your storage")
+                    .setConfirmText("Go to permissions")
+                    .setContentText("We need access to your storage to be able to save and erase the files that your are saving on the app").show();
+
         }
     }
 
@@ -319,6 +336,7 @@ public class SaveFragment extends Fragment {
                                             Log.e(TAG, finalFile.getAbsolutePath());
                                         } catch (IOException ioException) {
                                             ioException.printStackTrace();
+                                            Log.e(TAG, ioException.getMessage());
                                         }
                                         Log.e(TAG + "file name: ", file.getAbsolutePath());
                                     }
