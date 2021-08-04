@@ -30,6 +30,7 @@ import com.example.neo_alexandria_app.Adapters.MultiSearchAdapter;
 import com.example.neo_alexandria_app.DataModels.Book;
 import com.example.neo_alexandria_app.DataModels.Item;
 import com.example.neo_alexandria_app.DataModels.News;
+import com.example.neo_alexandria_app.DataModels.Resource;
 import com.example.neo_alexandria_app.DataModels.Song;
 import com.example.neo_alexandria_app.Handlers.Bookhandler;
 import com.example.neo_alexandria_app.Handlers.Deezerhandler;
@@ -38,6 +39,10 @@ import com.example.neo_alexandria_app.Interfaces.OnBooksCompleted;
 import com.example.neo_alexandria_app.Interfaces.OnMusicCompleted;
 import com.example.neo_alexandria_app.Interfaces.OnNewsCompleted;
 import com.example.neo_alexandria_app.R;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -140,7 +145,7 @@ public class SearchFragment extends Fragment implements OnBooksCompleted, OnMusi
         recyclerView = view.findViewById(R.id.rvSearch);
         swipeRefreshLayout = view.findViewById(R.id.swipeContainer);
 
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener(){
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
 
@@ -155,7 +160,6 @@ public class SearchFragment extends Fragment implements OnBooksCompleted, OnMusi
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
-
 
 
         // Init the list of tweets and adapter
@@ -207,7 +211,7 @@ public class SearchFragment extends Fragment implements OnBooksCompleted, OnMusi
         btnNews.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!newsselected  || (booksselected && songsselected && newsselected)) {
+                if (!newsselected || (booksselected && songsselected && newsselected)) {
                     btnAll.setTextColor(ContextCompat.getColor(getContext(), R.color.gray));
                     btnBooks.setTextColor(ContextCompat.getColor(getContext(), R.color.gray));
                     btnNews.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
@@ -223,7 +227,7 @@ public class SearchFragment extends Fragment implements OnBooksCompleted, OnMusi
         btnSongs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!songsselected  || (booksselected && songsselected && newsselected)) {
+                if (!songsselected || (booksselected && songsselected && newsselected)) {
                     btnAll.setTextColor(ContextCompat.getColor(getContext(), R.color.gray));
                     btnBooks.setTextColor(ContextCompat.getColor(getContext(), R.color.gray));
                     btnNews.setTextColor(ContextCompat.getColor(getContext(), R.color.gray));
@@ -283,7 +287,7 @@ public class SearchFragment extends Fragment implements OnBooksCompleted, OnMusi
 
     private void populateRecyclerView() {
         if (globalQuery == "111111111111") {
-            return ;
+            return;
         }
         booksRequest = musicRequest = newsRequest = false;
         //The first that I call should start a SweetDialogAlert Loading.
@@ -335,19 +339,22 @@ public class SearchFragment extends Fragment implements OnBooksCompleted, OnMusi
             items.clear();
             if (songsselected) {
                 for (Song song : songs) {
-                    Item item = new Item(Item.ItemType.SONG_TYPE, song, song.getRating());
+                    isSaved(song.getId(), (Resource) song, Item.ItemType.SONG_TYPE);
+                    Item item = new Item(Item.ItemType.SONG_TYPE, (Resource) song, song.getRating());
                     items.add(item);
                 }
             }
             if (booksselected) {
                 for (Book book : books) {
-                    Item item = new Item(Item.ItemType.BOOK_TYPE, book, book.getRating());
+                    isSaved(book.getId(), (Resource) book, Item.ItemType.BOOK_TYPE);
+                    Item item = new Item(Item.ItemType.BOOK_TYPE, (Resource) book, book.getRating());
                     items.add(item);
                 }
             }
             if (newsselected) {
                 for (News new1 : news) {
-                    Item item = new Item(Item.ItemType.NEWS_TYPE, new1, new1.getRating());
+                    isSaved(new1.getId(), (Resource) new1, Item.ItemType.NEWS_TYPE);
+                    Item item = new Item(Item.ItemType.NEWS_TYPE, (Resource) new1, new1.getRating());
                     items.add(item);
                 }
             }
@@ -374,6 +381,30 @@ public class SearchFragment extends Fragment implements OnBooksCompleted, OnMusi
             }
             multiSearchAdapter.notifyDataSetChanged();
         }
+    }
+
+    void isSaved(String itemID, Resource object, @Item.ItemType int itemType) {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("SavedItem");
+        query.whereEqualTo("UserId", ParseUser.getCurrentUser());
+        query.whereEqualTo("ItemId", itemID);
+
+
+        query.countInBackground((count, e) -> {
+            if (e == null) {
+                if (itemType == Item.ItemType.SONG_TYPE) {
+                    Song item = (Song) object;
+                    item.setSaved(count > 0);
+                } else if (itemType == Item.ItemType.BOOK_TYPE) {
+                    Book item = (Book) object;
+                    item.setSaved(count > 0);
+                } else {
+                    News item = (News) object;
+                    item.setSaved(count > 0);
+                }
+            } else {
+                Log.e(TAG + "isSaved", e.getMessage());
+            }
+        });
     }
 
 }

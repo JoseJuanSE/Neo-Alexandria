@@ -18,9 +18,9 @@ public class Item implements Serializable {
     @ItemType
     private int type;
     private float rating;
-    private Object object;
+    private Resource object;
 
-    public Item(@ItemType int type, Object object, float rating) {
+    public Item(@ItemType int type, Resource object, float rating) {
         this.type = type;
         this.object = object;
         this.rating = rating;
@@ -30,7 +30,7 @@ public class Item implements Serializable {
         return type;
     }
 
-    public Object getObject() {
+    public Resource getObject() {
         return object;
     }
 

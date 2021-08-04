@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -28,9 +29,16 @@ import com.example.neo_alexandria_app.Activities.Song_Details;
 import com.example.neo_alexandria_app.DataModels.Book;
 import com.example.neo_alexandria_app.DataModels.Item;
 import com.example.neo_alexandria_app.DataModels.News;
+import com.example.neo_alexandria_app.DataModels.Resource;
 import com.example.neo_alexandria_app.DataModels.Song;
 import com.example.neo_alexandria_app.Handlers.StringsHandler;
 import com.example.neo_alexandria_app.R;
+import com.parse.ParseException;
+import com.parse.ParseFile;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import org.jetbrains.annotations.NotNull;
 import org.parceler.Parcels;
@@ -53,10 +61,16 @@ public class MultiSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     Context context;
     List<Item> items;
+    public File myDyrectory;
 
     public MultiSearchAdapter(Context context, List<Item> items) {
         this.context = context;
         this.items = items;
+        this.myDyrectory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath(), "saves");
+
+        if (!this.myDyrectory.exists()) {
+            this.myDyrectory.mkdirs();
+        }
     }
 
 
@@ -184,6 +198,7 @@ public class MultiSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                         ivSave.callOnClick();
                         return super.onDoubleTap(e);
                     }
+
                     @Override
                     public boolean onSingleTapConfirmed(MotionEvent event) {
                         Intent intent = new Intent(context, Song_Details.class);
@@ -201,19 +216,20 @@ public class MultiSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 }
             });
 
-            File myDirectory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath(), "saves");
 
-            if (!myDirectory.exists()) {
-                myDirectory.mkdirs();
-            }
+            // TODO: I think some of these we can do refactor to avoid duplicated code in the other kind of items
             ivSave.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (song.isSaved()) {
                         song.setSaved(false);
                         ivSave.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.bookmark_unmark));
-                        //Delete element saved
-                        File object = new File(myDirectory.getPath() + File.separator + song.getId() + ".txt");
+
+                        //Delete element saved from cloud
+                        deleteSave(song.getId());
+
+                        //Delete element saved from local
+                        File object = new File(myDyrectory.getPath() + File.separator + song.getId() + ".txt");
                         try {
                             ObjectInputStream in = new ObjectInputStream(new FileInputStream(object.getAbsolutePath()));
                             Item itemaux = (Item) in.readObject();
@@ -229,14 +245,9 @@ public class MultiSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     } else {
                         ivSave.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.bookmark_marked));
                         song.setSaved(true);
-                        //Store element
-                        try {
-                            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(myDirectory.getPath() + File.separator + song.getId() + ".txt"));
-                            Item auxItem = new Item(Item.ItemType.SONG_TYPE, song, song.getRating());
-                            out.writeObject(auxItem);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+
+                        //Store element on local
+                        storeItemOnLocal(song.getId(), (Object) song, Item.ItemType.SONG_TYPE);
                     }
                 }
             });
@@ -310,6 +321,7 @@ public class MultiSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                         ivSave.callOnClick();
                         return super.onDoubleTap(e);
                     }
+
                     @Override
                     public boolean onSingleTapConfirmed(MotionEvent event) {
                         Intent intent = new Intent(context, Book_Details.class);
@@ -344,7 +356,11 @@ public class MultiSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     if (book.isSaved()) {
                         book.setSaved(false);
                         ivSave.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.bookmark_unmark));
-                        //Delete element saved
+
+                        //Delete element saved from cloud
+                        deleteSave(book.getId());
+
+                        //Delete element saved from Local
                         File object = new File(myDirectory.getPath() + File.separator + book.getId() + ".txt");
                         try {
                             ObjectInputStream in = new ObjectInputStream(new FileInputStream(object.getAbsolutePath()));
@@ -362,14 +378,9 @@ public class MultiSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     } else {
                         ivSave.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.bookmark_marked));
                         book.setSaved(true);
-                        //Store element
-                        try {
-                            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(myDirectory.getPath() + File.separator + book.getId() + ".txt"));
-                            Item auxItem = new Item(Item.ItemType.BOOK_TYPE, book, book.getRating());
-                            out.writeObject(auxItem);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+
+                        //Store element on Local
+                        storeItemOnLocal(book.getId(), (Object) book, Item.ItemType.BOOK_TYPE);
                     }
                 }
             });
@@ -435,6 +446,7 @@ public class MultiSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                         ivSave.callOnClick();
                         return super.onDoubleTap(e);
                     }
+
                     @Override
                     public boolean onSingleTapConfirmed(MotionEvent event) {
 
@@ -462,7 +474,10 @@ public class MultiSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     if (news.isSaved()) {
                         news.setSaved(false);
                         ivSave.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.bookmark_unmark));
-                        //Delete element saved
+                        //Delete element on cloud
+                        deleteSave(news.getId());
+
+                        //Delete element saved on local
                         File object = new File(myDirectory.getPath() + File.separator + news.getId() + ".txt");
                         try {
                             ObjectInputStream in = new ObjectInputStream(new FileInputStream(object.getAbsolutePath()));
@@ -479,14 +494,10 @@ public class MultiSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     } else {
                         ivSave.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.bookmark_marked));
                         news.setSaved(true);
-                        //Store element
-                        try {
-                            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(myDirectory.getPath() + File.separator + news.getId() + ".txt"));
-                            Item auxItem = new Item(Item.ItemType.NEWS_TYPE, news, news.getRating());
-                            out.writeObject(auxItem);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                        //Store element on cloud
+//                        storeItem(news.getId());
+                        //Store element on local
+                        storeItemOnLocal(news.getId(), (Object) news, Item.ItemType.NEWS_TYPE);
                     }
                 }
             });
@@ -498,4 +509,85 @@ public class MultiSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         notifyDataSetChanged();
     }
 
+    public void deleteSave(String itemId) {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("SavedItem");
+        query.whereEqualTo("UserId", ParseUser.getCurrentUser());
+        query.whereEqualTo("ItemId", itemId);
+
+        query.getFirstInBackground((object, e) -> {
+            if (e == null) {
+                try {
+                    object.delete();
+                } catch (ParseException parseException) {
+                    parseException.printStackTrace();
+                }
+            } else {
+                Log.e(TAG, e.getMessage());
+            }
+        });
+    }
+
+    public void storeItem(String itemId) {
+        ParseObject saveSong = new ParseObject("SavedItem");
+        saveSong.put("ItemId", itemId);
+        saveSong.put("UserId", ParseUser.getCurrentUser());
+
+        saveSong.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Error while saving song ", e);
+                }
+            }
+        });
+    }
+
+    private void storeItemOnLocal(String itemID, Object object, @Item.ItemType int itemType) {
+        try {
+            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(myDyrectory.getPath() + File.separator + itemID + ".txt"));
+
+            Item auxItem;
+            ParseObject objectItem = new ParseObject("Item");
+
+            if (itemType == Item.ItemType.SONG_TYPE) {
+                Song item = (Song) object;
+                auxItem = new Item(itemType, item, item.getRating());
+            } else if (itemType == Item.ItemType.BOOK_TYPE) {
+                Book item = (Book) object;
+                auxItem = new Item(itemType, item, item.getRating());
+            } else {
+                News item = (News) object;
+                auxItem = new Item(itemType, item, item.getRating());
+            }
+            out.writeObject(auxItem);
+            //Add this to Items if doesn't exist
+            File file = new File(myDyrectory.getPath() + File.separator + itemID + ".txt");
+            ParseFile parseFile = new ParseFile(file);
+            parseFile.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    if (e == null) {
+                        //Success
+                        objectItem.put("ItemFile", parseFile);
+                        objectItem.put("LocalId", itemID);
+                        objectItem.saveInBackground(ex -> {
+                            if (ex == null) {
+                                Log.e(TAG, "Item uploaded");
+                                //Store element on cloud
+                                storeItem(itemID);
+                            } else {
+                                Log.e(TAG, "here " + ex.getMessage());
+                            }
+                        });
+                    } else {
+                        Log.e("saving parsefile", e.getMessage());
+                    }
+                }
+            });
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

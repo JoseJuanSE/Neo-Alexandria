@@ -27,12 +27,24 @@ import com.example.neo_alexandria_app.Handlers.Bookhandler;
 import com.example.neo_alexandria_app.Handlers.Deezerhandler;
 import com.example.neo_alexandria_app.Handlers.Newshandler;
 import com.example.neo_alexandria_app.R;
+import com.parse.FindCallback;
+import com.parse.GetCallback;
+import com.parse.GetFileCallback;
+import com.parse.ParseException;
+import com.parse.ParseFile;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -244,11 +256,13 @@ public class SaveFragment extends Fragment {
     }
 
     private void populateRecyclerView() throws IOException, ClassNotFoundException {
+        LoadSavedContent();
         songs.clear();
         books.clear();
         news.clear();
 
         File myDirectory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath(), "saves");
+//        File myDirectory = new File(Environment.getDataDirectory(Environment.).getAbsolutePath()+ File.separator + "user/0/com.example.neo_alexandria_app/cache/com.parse/files/");
 
         if (!myDirectory.exists()) {
             myDirectory.mkdirs();
@@ -273,6 +287,50 @@ public class SaveFragment extends Fragment {
             Log.e(TAG, song.getTitle());
         }
         checkRequestsFinished();
+    }
+
+    private void LoadSavedContent() {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("SavedItem");
+        query.whereEqualTo("UserId", ParseUser.getCurrentUser());
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+                if (e == null) {
+                    for (ParseObject parseObject: objects) {
+                        ParseQuery<ParseObject> getItemSaved = ParseQuery.getQuery("Item");
+                        getItemSaved.whereEqualTo("LocalId", parseObject.get("ItemId"));
+                        getItemSaved.getFirstInBackground(new GetCallback<ParseObject>() {
+                            @Override
+                            public void done(ParseObject object, ParseException e) {
+                                File myDirectory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath(), "saves");
+                                if (!myDirectory.exists()) {
+                                    myDirectory.mkdir();
+                                }
+                                ParseFile parseFile = object.getParseFile("ItemFile");
+                                parseFile.getFileInBackground(new GetFileCallback() {
+                                    @Override
+                                    public void done(File file, ParseException e) {
+                                        File finalFile = new File(myDirectory + File.separator + file.getName());
+                                        try {
+                                            copy(file, finalFile);
+                                            file.setReadable(true);
+                                            finalFile.setWritable(true);
+                                            Log.e(TAG, String.valueOf(file.renameTo(finalFile)));
+                                            Log.e(TAG, finalFile.getAbsolutePath());
+                                        } catch (IOException ioException) {
+                                            ioException.printStackTrace();
+                                        }
+                                        Log.e(TAG + "file name: ", file.getAbsolutePath());
+                                    }
+                                });
+                            }
+                        });
+                    }
+                } else {
+                    Log.e(TAG, e.getMessage());
+                }
+            }
+        });
     }
 
     private void checkRequestsFinished() {
@@ -319,5 +377,17 @@ public class SaveFragment extends Fragment {
         }
         multiSearchAdapter.notifyDataSetChanged();
 
+    }
+    public void copy(File src, File dst) throws IOException {
+        try (InputStream in = new FileInputStream(src)) {
+            try (OutputStream out = new FileOutputStream(dst)) {
+                // Transfer bytes from in to out
+                byte[] buf = new byte[1024];
+                int len;
+                while ((len = in.read(buf)) > 0) {
+                    out.write(buf, 0, len);
+                }
+            }
+        }
     }
 }

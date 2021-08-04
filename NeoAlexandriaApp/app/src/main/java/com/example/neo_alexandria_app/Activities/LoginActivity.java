@@ -53,7 +53,6 @@ public class LoginActivity extends AppCompatActivity {
                 goToSignupActivity();
             }
         });
-
     }
 
     private void Login(String email, String password) {
@@ -72,6 +71,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
 
     private void goToMainActivity() {
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
