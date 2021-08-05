@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
@@ -15,16 +16,21 @@ import android.widget.Toast;
 
 import com.example.neo_alexandria_app.R;
 import com.github.dhaval2404.imagepicker.ImagePicker;
+import com.google.android.material.textfield.TextInputLayout;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
+import static com.example.neo_alexandria_app.Handlers.StringsHandler.validateField;
 
 public class LoginActivity extends AppCompatActivity {
 
     public static final String TAG = "LoginActivity";
 
-    private EditText etEmail;
-    private EditText etPassword;
+    private TextInputLayout tiEmail, tiPassword;
+    private EditText etEmail, etPassword;
     private Button btnLogin;
     private TextView tvSignup;
 
@@ -33,6 +39,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
 
+        tiEmail = findViewById(R.id.tiEmail);
+        tiPassword = findViewById(R.id.tiPassword);
         etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
         btnLogin = findViewById(R.id.btnLogin);
@@ -41,9 +49,25 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String Email = etEmail.getText().toString();
-                String Password = etPassword.getText().toString();
-                Login(Email, Password);
+
+                int count = 0;
+
+                if (validateField(tiEmail, etEmail)) {
+                    count++;
+                }
+                if (validateField(tiPassword, etPassword)) {
+                    count++;
+                }
+                if (count == 2) {
+                    String Email = etEmail.getText().toString();
+                    String Password = etPassword.getText().toString();
+                    Login(Email, Password);
+                } else {
+                    new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.ERROR_TYPE)
+                            .setTitleText("Empty fields")
+                            .setContentText("Please verify that all the fields are filled")
+                            .show();
+                }
             }
         });
 

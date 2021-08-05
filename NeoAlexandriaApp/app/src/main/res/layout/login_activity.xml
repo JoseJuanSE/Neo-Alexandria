@@ -31,41 +31,58 @@
         android:textColor="@color/black"
         android:textSize="40sp"/>
 
-    <EditText
-        android:id="@+id/etEmail"
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.Design.TextInputLayout"
+        android:id="@+id/tiEmail"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvLogo"
-        android:layout_centerHorizontal="true"
         android:layout_marginTop="40dp"
-        android:background="@drawable/custom_edittext"
+        app:startIconDrawable="@drawable/profile"
+        android:layout_centerHorizontal="true"
         android:hint="@string/email"
-        android:padding="10sp"
-        android:inputType="textEmailAddress"
-        android:paddingStart="15dp"
-        android:textSize="15sp"/>
+        android:background="@drawable/custom_edittext">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etEmail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="textEmailAddress"
+            android:textSize="15sp"
+            >
+        </com.google.android.material.textfield.TextInputEditText>
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <EditText
-        android:id="@+id/etPassword"
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.Design.TextInputLayout"
+        android:id="@+id/tiPassword"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/etEmail"
-        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/tiEmail"
         android:layout_marginTop="30dp"
-        android:background="@drawable/custom_edittext"
+        app:endIconMode="password_toggle"
+        app:startIconDrawable="@drawable/lock"
+        android:layout_centerHorizontal="true"
         android:hint="@string/password"
-        android:inputType="textPassword"
-        android:padding="10sp"
-        android:paddingStart="15dp"
-        android:textSize="15sp" />
+        android:background="@drawable/custom_edittext">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etPassword"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="textPassword"
+            android:padding="10sp"
+            android:paddingStart="10sp"
+            android:textSize="15sp"
+            >
+        </com.google.android.material.textfield.TextInputEditText>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
         android:id="@+id/tvforgotpass"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/etPassword"
+        android:layout_below="@+id/tiPassword"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="7dp"
+        android:layout_marginTop="10dp"
         android:text="@string/forgot_your_password"
         android:textColor="@color/blue"
         android:textSize="12sp"

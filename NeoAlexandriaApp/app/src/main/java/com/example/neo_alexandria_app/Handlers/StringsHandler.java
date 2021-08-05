@@ -1,6 +1,9 @@
 package com.example.neo_alexandria_app.Handlers;
 
 import android.util.Log;
+import android.widget.EditText;
+
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -69,5 +72,14 @@ public class StringsHandler {
         }
 
         return "";
+    }
+    public static boolean validateField(TextInputLayout textInputLayout, EditText editText) {
+        if(editText.getText().toString().isEmpty()) {
+            textInputLayout.setError("Field can't be empty");
+            return false;
+        } else {
+            textInputLayout.setError(null);
+            return true;
+        }
     }
 }

@@ -74,6 +74,8 @@ public class Book_Details extends AppCompatActivity implements OnProgressBarList
         npb.setVisibility(View.VISIBLE);
         npb.setMax(100);
 
+        File bookFile = new File(myDirectory.getPath() + File.separator + "a" + book.getId());
+        File booksaved;
         //Here we save for offline queries
         if (book.isSaved()) {
             saveDirectory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath(), "savedpdfs");
@@ -81,14 +83,12 @@ public class Book_Details extends AppCompatActivity implements OnProgressBarList
                 saveDirectory.mkdirs();
             }
             myDirectory = saveDirectory;
+            booksaved = new File(saveDirectory.getPath() + File.separator + "a" + book.getId());
+            if (booksaved.exists()) {
+                bookFile = booksaved;
+            }
         }
 
-        File bookFile = new File(myDirectory.getPath() + File.separator + "a" + book.getId());
-        File booksaved = new File(saveDirectory.getPath() + File.separator + "a"+ book.getId());
-
-        if (booksaved.exists()) {
-            bookFile = booksaved;
-        }
 
         if (bookFile.exists()) {
             npb.setVisibility(View.GONE);

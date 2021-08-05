@@ -123,8 +123,7 @@ public class SaveFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        if(!Environment.isExternalStorageManager())
-        {
+        if (!Environment.isExternalStorageManager()) {
             Intent permissionIntent = new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
             SweetAlertDialog alert = new SweetAlertDialog(getContext(), SweetAlertDialog.NORMAL_TYPE)
                     .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
@@ -294,11 +293,9 @@ public class SaveFragment extends Fragment {
 
     private void DeleteLocal() {
         File dir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "saves");
-        if (dir.isDirectory())
-        {
+        if (dir.isDirectory()) {
             String[] children = dir.list();
-            for (int i = 0; i < children.length; i++)
-            {
+            for (int i = 0; i < children.length; i++) {
                 new File(dir, children[i]).delete();
             }
         }
@@ -311,7 +308,7 @@ public class SaveFragment extends Fragment {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
                 if (e == null) {
-                    for (ParseObject parseObject: objects) {
+                    for (ParseObject parseObject : objects) {
                         ParseQuery<ParseObject> getItemSaved = ParseQuery.getQuery("Item");
                         getItemSaved.whereEqualTo("LocalId", parseObject.get("ItemId"));
                         getItemSaved.getFirstInBackground(new GetCallback<ParseObject>() {
@@ -387,7 +384,7 @@ public class SaveFragment extends Fragment {
             }
         }
         int lenght = songs.size() + books.size() + news.size();
-        Log.e(TAG + "number", "ITEMS: "+lenght);
+        Log.e(TAG + "number", "ITEMS: " + lenght);
         checkRequestsFinished();
     }
 
@@ -436,6 +433,7 @@ public class SaveFragment extends Fragment {
         multiSearchAdapter.notifyDataSetChanged();
 
     }
+
     public void copy(File src, File dst) throws IOException {
         try (InputStream in = new FileInputStream(src)) {
             try (OutputStream out = new FileOutputStream(dst)) {
