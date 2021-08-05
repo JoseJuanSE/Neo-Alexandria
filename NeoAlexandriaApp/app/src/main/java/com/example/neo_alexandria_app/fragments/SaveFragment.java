@@ -1,6 +1,9 @@
 package com.example.neo_alexandria_app.fragments;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -123,16 +126,18 @@ public class SaveFragment extends Fragment {
         if(!Environment.isExternalStorageManager())
         {
             Intent permissionIntent = new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
-            new SweetAlertDialog(getContext(), SweetAlertDialog.NORMAL_TYPE)
+            SweetAlertDialog alert = new SweetAlertDialog(getContext(), SweetAlertDialog.NORMAL_TYPE)
                     .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
                             startActivity(permissionIntent);
+                            sweetAlertDialog.cancel();
                         }
                     })
                     .setTitleText("Please let us manage your storage")
                     .setConfirmText("Go to permissions")
-                    .setContentText("We need access to your storage to be able to save and erase the files that your are saving on the app").show();
+                    .setContentText("We need access to your storage to be able to save and erase the files that your are saving on the app");
+            alert.show();
 
         }
     }
@@ -153,7 +158,6 @@ public class SaveFragment extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-
                 try {
                     populateRecyclerView();
                 } catch (IOException e) {
@@ -161,7 +165,6 @@ public class SaveFragment extends Fragment {
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 }
-
                 swipeRefreshLayout.setRefreshing(false);
 
             }
@@ -273,37 +276,32 @@ public class SaveFragment extends Fragment {
     }
 
     private void populateRecyclerView() throws IOException, ClassNotFoundException {
-        LoadSavedContent();
-        songs.clear();
-        books.clear();
-        news.clear();
-
-        File myDirectory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath(), "saves");
-//        File myDirectory = new File(Environment.getDataDirectory(Environment.).getAbsolutePath()+ File.separator + "user/0/com.example.neo_alexandria_app/cache/com.parse/files/");
-
-        if (!myDirectory.exists()) {
-            myDirectory.mkdirs();
-        }
-        if (myDirectory.isDirectory()) {
-            String[] children = myDirectory.list();
-            for (int i = 0; i < children.length; i++) {
-                File object = new File(myDirectory, children[i]);
-                ObjectInputStream in = new ObjectInputStream(new FileInputStream(object.getAbsolutePath()));
-                Item itemaux = (Item) in.readObject();
-                Log.e(TAG, String.valueOf(itemaux.getType()));
-                if (itemaux.getType() == Item.ItemType.SONG_TYPE) {
-                    songs.add((Song) itemaux.getObject());
-                } else if (itemaux.getType() == Item.ItemType.BOOK_TYPE) {
-                    books.add((Book) itemaux.getObject());
-                } else {
-                    news.add((News) itemaux.getObject());
-                }
+        ConnectivityManager manager = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = manager.getActiveNetworkInfo();
+        if (activeNetwork != null) {
+            DeleteLocal();
+        } else {
+            try {
+                DisplayData();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            } catch (ClassNotFoundException classNotFoundException) {
+                classNotFoundException.printStackTrace();
             }
         }
-        for (Song song: songs){
-            Log.e(TAG, song.getTitle());
+        LoadSavedContent();
+    }
+
+    private void DeleteLocal() {
+        File dir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "saves");
+        if (dir.isDirectory())
+        {
+            String[] children = dir.list();
+            for (int i = 0; i < children.length; i++)
+            {
+                new File(dir, children[i]).delete();
+            }
         }
-        checkRequestsFinished();
     }
 
     private void LoadSavedContent() {
@@ -332,13 +330,17 @@ public class SaveFragment extends Fragment {
                                             copy(file, finalFile);
                                             file.setReadable(true);
                                             finalFile.setWritable(true);
-                                            Log.e(TAG, String.valueOf(file.renameTo(finalFile)));
-                                            Log.e(TAG, finalFile.getAbsolutePath());
+                                            try {
+                                                DisplayData();
+                                            } catch (IOException ioException) {
+                                                ioException.printStackTrace();
+                                            } catch (ClassNotFoundException classNotFoundException) {
+                                                classNotFoundException.printStackTrace();
+                                            }
                                         } catch (IOException ioException) {
                                             ioException.printStackTrace();
                                             Log.e(TAG, ioException.getMessage());
                                         }
-                                        Log.e(TAG + "file name: ", file.getAbsolutePath());
                                     }
                                 });
                             }
@@ -347,8 +349,46 @@ public class SaveFragment extends Fragment {
                 } else {
                     Log.e(TAG, e.getMessage());
                 }
+
             }
         });
+    }
+
+    private void DisplayData() throws IOException, ClassNotFoundException {
+        songs.clear();
+        books.clear();
+        news.clear();
+
+        File myDirectory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath(), "saves");
+
+        if (!myDirectory.exists()) {
+            myDirectory.mkdirs();
+        }
+        if (myDirectory.isDirectory()) {
+            String[] children = myDirectory.list();
+            for (int i = 0; i < children.length; i++) {
+
+                File object = new File(myDirectory, children[i]);
+                ObjectInputStream in = new ObjectInputStream(new FileInputStream(object.getAbsolutePath()));
+                Item itemaux = (Item) in.readObject();
+                Log.e(TAG, String.valueOf(itemaux.getType()));
+                if (itemaux.getType() == Item.ItemType.SONG_TYPE) {
+                    songs.add((Song) itemaux.getObject());
+                } else if (itemaux.getType() == Item.ItemType.BOOK_TYPE) {
+                    books.add((Book) itemaux.getObject());
+                } else {
+                    news.add((News) itemaux.getObject());
+                }
+                //Parse give us the file with a random name, so we need to change that to the name that we want.
+//                File realNameFile = new File(myDirectory, itemaux.getObject().getId()+".txt");
+//                if (!object.renameTo(realNameFile)) {
+//                    object.delete();
+//                }
+            }
+        }
+        int lenght = songs.size() + books.size() + news.size();
+        Log.e(TAG + "number", "ITEMS: "+lenght);
+        checkRequestsFinished();
     }
 
     private void checkRequestsFinished() {

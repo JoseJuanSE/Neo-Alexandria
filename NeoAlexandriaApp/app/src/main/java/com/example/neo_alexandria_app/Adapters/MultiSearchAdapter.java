@@ -2,6 +2,7 @@ package com.example.neo_alexandria_app.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -33,6 +34,7 @@ import com.example.neo_alexandria_app.DataModels.Resource;
 import com.example.neo_alexandria_app.DataModels.Song;
 import com.example.neo_alexandria_app.Handlers.StringsHandler;
 import com.example.neo_alexandria_app.R;
+import com.parse.CountCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
@@ -230,15 +232,15 @@ public class MultiSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
                         //Delete element saved from local
                         File object = new File(myDyrectory.getPath() + File.separator + song.getId() + ".txt");
-                        try {
-                            ObjectInputStream in = new ObjectInputStream(new FileInputStream(object.getAbsolutePath()));
-                            Item itemaux = (Item) in.readObject();
-                            Song songaux = (Song) itemaux.getObject();
-                            Log.e(TAG, songaux.getTitle());
-                        } catch (IOException | ClassNotFoundException e) {
-                            e.printStackTrace();
-                            Log.e(TAG, e.getMessage());
-                        }
+//                        try {
+//                            ObjectInputStream in = new ObjectInputStream(new FileInputStream(object.getAbsolutePath()));
+//                            Item itemaux = (Item) in.readObject();
+//                            Song songaux = (Song) itemaux.getObject();
+//                            Log.e(TAG, songaux.getTitle());
+//                        } catch (IOException | ClassNotFoundException e) {
+//                            e.printStackTrace();
+//                            Log.e(TAG, e.getMessage());
+//                        }
                         if (object.exists()) {
                             object.delete();
                         }
@@ -449,7 +451,8 @@ public class MultiSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
                     @Override
                     public boolean onSingleTapConfirmed(MotionEvent event) {
-
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(news.getExternalLink()));
+                        startActivity(context, browserIntent, new Bundle());
                         return false;
                     }
                 });
@@ -525,6 +528,12 @@ public class MultiSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 Log.e(TAG, e.getMessage());
             }
         });
+        deleteOnLocal(itemId);
+    }
+
+    private void deleteOnLocal(String itemId) {
+        File itemOnLocal = new File(myDyrectory + File.separator + itemId + ".txt");
+        itemOnLocal.delete();
     }
 
     public void storeItem(String itemId) {
@@ -567,18 +576,29 @@ public class MultiSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 @Override
                 public void done(ParseException e) {
                     if (e == null) {
-                        //Success
-                        objectItem.put("ItemFile", parseFile);
-                        objectItem.put("LocalId", itemID);
-                        objectItem.saveInBackground(ex -> {
-                            if (ex == null) {
-                                Log.e(TAG, "Item uploaded");
-                                //Store element on cloud
-                                storeItem(itemID);
-                            } else {
-                                Log.e(TAG, "here " + ex.getMessage());
+                        ParseQuery<ParseObject> query = ParseQuery.getQuery("Item");
+                        query.whereEqualTo("LocalId", itemID);
+
+                        query.countInBackground(new CountCallback() {
+                            @Override
+                            public void done(int count, ParseException e) {
+                                if (count == 0) {
+                                    //Success
+                                    objectItem.put("ItemFile", parseFile);
+                                    objectItem.put("LocalId", itemID);
+                                    objectItem.saveInBackground(ex -> {
+                                        if (ex == null) {
+                                            Log.e(TAG, "Item uploaded");
+                                            //Store element on cloud
+                                            storeItem(itemID);
+                                        } else {
+                                            Log.e(TAG, "here " + ex.getMessage());
+                                        }
+                                    });
+                                }
                             }
                         });
+
                     } else {
                         Log.e("saving parsefile", e.getMessage());
                     }
