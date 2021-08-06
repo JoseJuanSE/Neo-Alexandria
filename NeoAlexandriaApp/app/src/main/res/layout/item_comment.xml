@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relative"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="5dp"
+    android:layout_marginTop="20dp"
+    android:layout_marginRight="10dp"
+    android:paddingBottom="15dp"
+    android:background="@drawable/song_itemshape"
+    android:clickable="true"
+    android:theme="@style/items">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/ivAuthor"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="18dp"
+        android:src="@drawable/profile" />
+
+
+    <TextView
+        android:id="@+id/tvAuthor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_toEndOf="@+id/ivAuthor"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        tools:text="Jose Juan Suarez Elizalde" />
+
+    <TextView
+        android:id="@+id/tvTimeStamp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvAuthor"
+        android:layout_marginStart="15dp"
+        android:layout_toEndOf="@+id/ivAuthor"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        tools:text="3d ago" />
+
+    <TextView
+        android:id="@+id/tvContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvTimeStamp"
+        android:layout_toEndOf="@+id/ivAuthor"
+        android:text="This is an example test to see how does that looks like"
+        android:textColor="@color/black"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="5dp"
+        android:textSize="13sp" />
+
+    <ImageView
+        android:id="@+id/btnLike"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="13dp"
+        android:layout_marginEnd="17dp"
+        app:srcCompat="@drawable/ufi_heart" />
+
+</RelativeLayout>

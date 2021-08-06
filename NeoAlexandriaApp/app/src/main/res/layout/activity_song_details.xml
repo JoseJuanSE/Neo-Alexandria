@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="1000dp"
+    android:layout_height="match_parent"
     android:layout_marginLeft="10dp"
     android:layout_marginTop="20dp"
     android:layout_marginRight="10dp"
@@ -13,259 +13,324 @@
     android:theme="@style/items"
     android:visibility="visible">
 
-
-    <RelativeLayout
-        android:id="@+id/musicItem"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/song_itemshape"
-        >
-        <ImageView
-            android:id="@+id/ivCover"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="0dp"
-            tools:srcCompat="@tools:sample/avatars" />
-
-        <TextView
-            android:id="@+id/tvTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/ivCover"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="15dp"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            tools:text="Title" />
-
-        <TextView
-            android:id="@+id/tvAuthorD"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tvTitle"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_toEndOf="@+id/ivAuthor"
-            android:textColor="@color/blue"
-            android:textSize="17sp"
-            android:textStyle="normal"
-            tools:text="author" />
-
-        <TextView
-            android:id="@+id/tvAlbumD"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/ivAuthor"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="5dp"
-            android:textColor="@color/black"
-            android:textSize="14sp"
-            android:textStyle="normal"
-            tools:text="album" />
-
-        <TextView
-            android:id="@+id/tvSource"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tvAlbumD"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="2dp"
-            android:text="@string/go_to_source"
-            android:textColor="@color/blue"
-            android:textSize="10sp"
-            android:textStyle="normal" />
-
-        <TextView
-            android:id="@+id/tvExplicitD"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/ivCover"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="0dp"
-            android:layout_marginEnd="10dp"
-            android:text="Explicit"
-            android:textColor="@color/red_btn_bg_color"
-            android:textSize="14sp"
-            android:textStyle="bold" />
-
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
         <RelativeLayout
-            android:id="@+id/mediaComponent"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tvSource"
-            android:layout_alignParentStart="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="2dp"
-            android:layout_marginTop="10dp"
-            android:layout_toEndOf="@+id/ivCover">
+            android:layout_height="match_parent">
+            <RelativeLayout
+                android:id="@+id/musicItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/song_itemshape"
+                >
+                <ImageView
+                    android:id="@+id/ivCover"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="0dp"
+                    tools:srcCompat="@tools:sample/avatars" />
 
-            <SeekBar
-                android:id="@+id/positionBar"
+                <TextView
+                    android:id="@+id/tvTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/ivCover"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="15dp"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    tools:text="Title" />
+
+                <TextView
+                    android:id="@+id/tvAuthorD"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvTitle"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_toEndOf="@+id/ivAuthor"
+                    android:textColor="@color/blue"
+                    android:textSize="17sp"
+                    android:textStyle="normal"
+                    tools:text="author" />
+
+                <TextView
+                    android:id="@+id/tvAlbumD"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/ivAuthor"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="5dp"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:textStyle="normal"
+                    tools:text="album" />
+
+                <TextView
+                    android:id="@+id/tvAlbumD3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/ivAuthor"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="5dp"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:textStyle="normal"
+                    tools:text="album" />
+
+                <TextView
+                    android:id="@+id/tvSource"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvAlbumD"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="2dp"
+                    android:text="@string/go_to_source"
+                    android:textColor="@color/blue"
+                    android:textSize="10sp"
+                    android:textStyle="normal" />
+
+                <TextView
+                    android:id="@+id/tvExplicitD"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/ivCover"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginEnd="10dp"
+                    android:text="Explicit"
+                    android:textColor="@color/red_btn_bg_color"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <RelativeLayout
+                    android:id="@+id/mediaComponent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvSource"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_toEndOf="@+id/ivCover">
+
+                    <SeekBar
+                        android:id="@+id/positionBar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp" />
+
+                    <TextView
+                        android:id="@+id/elapsedTimeLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/positionBar"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginStart="20dp"
+                        android:text="0:11" />
+
+                    <TextView
+                        android:id="@+id/remainingTimeLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/positionBar"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="20dp"
+                        android:text="-1:49" />
+
+                    <Button
+                        android:id="@+id/playBtn"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_below="@+id/remainingTimeLabel"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="-5dp"
+                        android:background="@drawable/play"
+                        android:onClick="playBtnClick" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/volume"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/mediaComponent"
+                    android:layout_marginTop="30dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/sound" />
+
+                    <SeekBar
+                        android:id="@+id/volumeBar"
+                        android:layout_width="280dp"
+                        android:layout_height="wrap_content"
+                        android:max="100"
+                        android:progress="50" />
+
+                    <ImageView
+                        android:layout_width="26dp"
+                        android:layout_height="26dp"
+                        android:src="@drawable/sound2" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvNumberSaves"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/volume"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="35dp"
+                    android:layout_toEndOf="@+id/ivSave"
+                    tools:text="100" />
+
+                <RatingBar
+                    android:id="@+id/rbStars"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/volume"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="-20dp"
+                    android:layout_marginTop="18dp"
+                    android:numStars="5"
+                    android:rating="3"
+                    android:scaleX="0.8"
+                    android:scaleY="0.8"
+                    android:stepSize="0.5" />
+
+                <TextView
+                    android:id="@+id/tvNumberComments"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/volume"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="35dp"
+                    android:layout_toEndOf="@+id/ivComment"
+                    tools:text="100" />
+
+                <ImageView
+                    android:id="@+id/ivSave"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_below="@+id/volume"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="31dp"
+                    android:layout_toEndOf="@+id/tvNumberComments"
+                    app:srcCompat="@drawable/bookmark_unmark"
+                    app:tint="@color/black" />
+
+                <ImageView
+                    android:id="@+id/ivComment"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_below="@+id/volume"
+                    android:layout_marginStart="-6dp"
+                    android:layout_marginTop="33dp"
+                    android:layout_toEndOf="@+id/rbStars"
+                    app:srcCompat="@drawable/comment_icon"
+                    app:tint="@color/black" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/ivAuthor"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_below="@+id/tvTitle"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="4dp"
+                    android:src="@drawable/placeholderprofile" />
+
+                <ImageView
+                    android:id="@+id/ivRepeat"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_below="@+id/mediaComponent"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="-101dp"
+                    android:layout_marginEnd="22dp"
+                    android:layout_marginBottom="158dp"
+                    android:src="@drawable/repeat"
+                    app:tint="@color/black" />
+            </RelativeLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp" />
-
-            <TextView
-                android:id="@+id/elapsedTimeLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/positionBar"
+                android:layout_below="@+id/textView"
                 android:layout_alignParentStart="true"
-                android:layout_marginStart="20dp"
-                android:text="0:11" />
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="1dp"
+                />
 
             <TextView
-                android:id="@+id/remainingTimeLabel"
+                android:id="@+id/textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/positionBar"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="20dp"
-                android:text="-1:49" />
+                android:layout_below="@+id/musicItem"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginTop="8dp"
+                android:text="Comments:"
+                android:textColor="@color/black" />
 
-            <Button
-                android:id="@+id/playBtn"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_below="@+id/remainingTimeLabel"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="-5dp"
-                android:background="@drawable/play"
-                android:onClick="playBtnClick" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@+id/recyclerView"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/musicbutton">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/ivUser"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:src="@drawable/placeholderprofile"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="8dp"/>
+
+                <EditText
+                    android:id="@+id/etComment"
+                    android:layout_width="250dp"
+                    android:layout_height="30dp"
+                    android:paddingTop="0dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="14dp"
+                    android:layout_toStartOf="@+id/btnSend"
+                    android:layout_toEndOf="@+id/ivUser"
+                    android:hint="Write a comment"
+                    android:inputType="textMultiLine"
+                    android:textSize="10sp" />
+
+                <Button
+                    android:id="@+id/btnSend"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/send"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="10dp"
+                    />
+            </RelativeLayout>
         </RelativeLayout>
 
-        <LinearLayout
-            android:id="@+id/volume"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/mediaComponent"
-            android:layout_marginTop="30dp"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:src="@drawable/sound" />
-
-            <SeekBar
-                android:id="@+id/volumeBar"
-                android:layout_width="280dp"
-                android:layout_height="wrap_content"
-                android:max="100"
-                android:progress="50" />
-
-            <ImageView
-                android:layout_width="26dp"
-                android:layout_height="26dp"
-                android:src="@drawable/sound2" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/tvNumberSaves"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/volume"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="35dp"
-            android:layout_toEndOf="@+id/ivSave"
-            tools:text="100" />
-
-        <RatingBar
-            android:id="@+id/rbStars"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/volume"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="-20dp"
-            android:layout_marginTop="18dp"
-            android:numStars="5"
-            android:rating="3"
-            android:scaleX="0.8"
-            android:scaleY="0.8"
-            android:stepSize="0.5" />
-
-        <TextView
-            android:id="@+id/tvNumberComments"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/volume"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="35dp"
-            android:layout_toEndOf="@+id/ivComment"
-            tools:text="100" />
-
-        <ImageView
-            android:id="@+id/ivSave"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_below="@+id/volume"
-            android:layout_marginStart="21dp"
-            android:layout_marginTop="31dp"
-            android:layout_toEndOf="@+id/tvNumberComments"
-            app:srcCompat="@drawable/bookmark_unmark"
-            app:tint="@color/black" />
-
-        <ImageView
-            android:id="@+id/ivComment"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_below="@+id/volume"
-            android:layout_marginStart="-6dp"
-            android:layout_marginTop="33dp"
-            android:layout_toEndOf="@+id/rbStars"
-            app:srcCompat="@drawable/comment_icon"
-            app:tint="@color/black" />
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/ivAuthor"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_below="@+id/tvTitle"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="4dp"
-            android:src="@drawable/placeholderprofile" />
-
-        <ImageView
-            android:id="@+id/ivRepeat"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_below="@+id/mediaComponent"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="-101dp"
-            android:layout_marginEnd="22dp"
-            android:layout_marginBottom="158dp"
-            android:src="@drawable/repeat"
-            app:tint="@color/black" />
-    </RelativeLayout>
-
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:layout_below="@+id/musicItem"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="167dp"
-        android:layout_marginBottom="-1dp" />
-
-    <!--    <RelativeLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="10dp"-->
-<!--        android:background="@drawable/musicbutton"-->
-<!--        android:layout_alignTop="@+id/musicItem"-->
-<!--        android:layout_alignParentBottom="true">-->
-
-<!--    </RelativeLayout>-->
+    </ScrollView>
 </RelativeLayout>

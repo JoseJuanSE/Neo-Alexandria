@@ -451,7 +451,18 @@ public class MultiSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             tvAuthor.setText(news.getAuthorName());
             tvNewsDescription.setText(news.getDescription());
             rbStars.setRating(news.getRating());
-            tvNumberComments.setText(String.valueOf(news.getCommentCount()));
+
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("Comments");
+            query.whereEqualTo("ItemId", news.getId());
+            query.countInBackground(new CountCallback() {
+                @Override
+                public void done(int count, com.parse.ParseException e) {
+                    if (e == null) {
+                        tvNumberComments.setText(String.valueOf(count));
+                    }
+                }
+            });
+
             tvNumberSaves.setText(String.valueOf(news.getSaveCount()));
             if (news.isSaved()) {
                 ivSave.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.bookmark_marked));

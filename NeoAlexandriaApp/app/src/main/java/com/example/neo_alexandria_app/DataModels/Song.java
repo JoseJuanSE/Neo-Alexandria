@@ -2,6 +2,10 @@ package com.example.neo_alexandria_app.DataModels;
 
 import android.util.Log;
 
+import com.parse.CountCallback;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -65,7 +69,17 @@ public class Song extends Resource implements Serializable {
         song.coverBig = album.getString(Song.COVER_BIG);
 
         //This have to be fill with parse
-        song.commentCount = (int) Math.max(3, 100 * Math.random());
+        song.commentCount = 0;
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Comments");
+        query.whereEqualTo("ItemId", song.id);
+        query.countInBackground(new CountCallback() {
+            @Override
+            public void done(int count, com.parse.ParseException e) {
+                if (e == null) {
+                    song.commentCount = count;
+                }
+            }
+        });
         song.saveCount = (int) Math.max(3, 100 * Math.random());
         song.isSaved = false;
         song.rating = Math.max(1f, 5 * (float) Math.random());

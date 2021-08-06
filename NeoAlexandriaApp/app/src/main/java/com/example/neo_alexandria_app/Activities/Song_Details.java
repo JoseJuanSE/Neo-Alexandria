@@ -3,6 +3,8 @@ package com.example.neo_alexandria_app.Activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DownloadManager;
 import android.content.Context;
@@ -18,6 +20,7 @@ import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.SeekBar;
@@ -27,9 +30,17 @@ import com.bumptech.glide.Glide;
 import com.downloader.Error;
 import com.downloader.OnDownloadListener;
 import com.downloader.PRDownloader;
+import com.example.neo_alexandria_app.Adapters.CommentsAdapter;
+import com.example.neo_alexandria_app.DataModels.Comment;
 import com.example.neo_alexandria_app.DataModels.Song;
 import com.example.neo_alexandria_app.Handlers.StringsHandler;
 import com.example.neo_alexandria_app.R;
+import com.parse.FindCallback;
+import com.parse.GetFileCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import org.parceler.Parcels;
 
@@ -39,6 +50,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -46,15 +59,8 @@ public class Song_Details extends AppCompatActivity {
 
     public static final String TAG = "Song_Details";
 
-    String externalLink;
-
-    //TODO: get this stuff from data base when ready
-    int commentCount;
-    int saveCount;
-    boolean isSaved;
-    float rating;
-    String id;
-    String albumTracksLinkAPIQuery;
+    List<Comment> comments;
+    CommentsAdapter adapter;
 
     Song song;
 
@@ -76,6 +82,10 @@ public class Song_Details extends AppCompatActivity {
     CircleImageView ivAuthor;
     SeekBar volumeBar;
     ImageView repeat;
+    ImageView ivUser;
+    Button btnSend;
+    EditText etComment;
+    RecyclerView rvComments;
 
     //MediaPlayer
     MediaPlayer mp;
@@ -100,10 +110,55 @@ public class Song_Details extends AppCompatActivity {
         ivSave = findViewById(R.id.ivSave);
         tvSource = findViewById(R.id.tvSource);
         repeat = findViewById(R.id.ivRepeat);
+        ivUser = findViewById(R.id.ivUser);
+        btnSend = findViewById(R.id.btnSend);
+        etComment = findViewById(R.id.etComment);
         isRepetitive = false;
+        comments = new ArrayList<>();
+        rvComments = findViewById(R.id.recyclerView);
 
         //Here we set all what we are going to need on this activity
         song = Parcels.unwrap(getIntent().getParcelableExtra("song"));
+
+        //Adapter
+        adapter = new CommentsAdapter(this, comments);
+
+        rvComments.setAdapter(adapter);
+
+        rvComments.setLayoutManager(new LinearLayoutManager(this));
+
+        populateComments();
+
+        btnSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String content = etComment.getText().toString();
+                if (!content.isEmpty()) {
+                    ParseObject parseObject = new ParseObject("Comments");
+                    parseObject.put("author", ParseUser.getCurrentUser());
+                    parseObject.put("ItemId", song.getId());
+                    parseObject.put("comment", content);
+                    parseObject.saveInBackground(ex -> {
+                        if (ex == null) {
+                            Log.e(TAG, "Comment uploaded");
+                            etComment.setText("");
+                            populateComments();
+                        } else {
+                            Log.e(TAG, "here " + ex.getMessage());
+                        }
+                    });
+                }
+            }
+        });
+
+        if (ParseUser.getCurrentUser().containsKey("profilePicture")) {
+            ParseUser.getCurrentUser().getParseFile("profilePicture").getFileInBackground(new GetFileCallback() {
+                @Override
+                public void done(File file, ParseException e) {
+                    ivUser.setImageURI(Uri.fromFile(file));
+                }
+            });
+        }
 
         if (!song.getImageLink().isEmpty()) {
             Glide.with(this).load(song.getCoverBig())
@@ -262,6 +317,42 @@ public class Song_Details extends AppCompatActivity {
             }
         }).start();
 
+    }
+
+    private void populateComments() {
+        comments.clear();
+        //TODO: complete this
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Comments");
+        // Fetches data synchronously
+        query.whereEqualTo("ItemId", song.getId());
+
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+                if (e!=null) {
+                    Log.e(TAG, e.getMessage());
+                    return ;
+                }
+                for (ParseObject comment: objects) {
+                    Comment comment1 = new Comment();
+                    comment1.setContent(comment.getString("comment"));
+                    ParseUser user = null;
+                    try {
+                        user = comment.getParseUser("author").fetch();
+                        String imageurl = user.getParseFile("profilePicture").getUrl();
+                        String userName = user.getUsername();
+                        comment1.setUserName(userName);
+                        comment1.setIvProfileURL(imageurl);
+                    } catch (ParseException parseException) {
+                        parseException.printStackTrace();
+                    }
+                    String date = StringsHandler.calculateTimeAgo(comment.getCreatedAt());
+                    comment1.setDate(date);
+                    comments.add(comment1);
+                }
+                adapter.notifyDataSetChanged();
+            }
+        });
     }
 
     //Media player auxiliary functions

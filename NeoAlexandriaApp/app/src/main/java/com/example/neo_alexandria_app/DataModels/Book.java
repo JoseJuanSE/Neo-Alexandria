@@ -4,6 +4,10 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.parse.CountCallback;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -123,7 +127,19 @@ public class Book extends Resource implements Serializable {
         }
 
         //This have to be fill with parse
-        book.commentCount = (int) Math.max(3, 100 * Math.random());
+
+        book.commentCount = 0;
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Comments");
+        query.whereEqualTo("ItemId", book.id);
+        query.countInBackground(new CountCallback() {
+            @Override
+            public void done(int count, com.parse.ParseException e) {
+                if (e == null) {
+                    book.commentCount = count;
+                }
+            }
+        });
+
         book.saveCount = (int) Math.max(3, 100 * Math.random());
         book.isSaved = false;
         book.rating = Math.max(1f, 5 * (float) Math.random());
