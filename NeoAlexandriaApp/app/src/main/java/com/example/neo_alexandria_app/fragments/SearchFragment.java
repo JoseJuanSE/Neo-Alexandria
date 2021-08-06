@@ -167,7 +167,7 @@ public class SearchFragment extends Fragment implements OnBooksCompleted, OnMusi
         books = new ArrayList<>();
         news = new ArrayList<>();
         items = new ArrayList<>();
-        multiSearchAdapter = new MultiSearchAdapter(getContext(), items);
+        multiSearchAdapter = new MultiSearchAdapter(getContext(), items, "search");
         // Recycler view setup: layout manager and the adapter
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(multiSearchAdapter);

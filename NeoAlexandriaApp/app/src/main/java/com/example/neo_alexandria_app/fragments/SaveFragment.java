@@ -180,7 +180,7 @@ public class SaveFragment extends Fragment {
         books = new ArrayList<>();
         news = new ArrayList<>();
         items = new ArrayList<>();
-        multiSearchAdapter = new MultiSearchAdapter(getContext(), items);
+        multiSearchAdapter = new MultiSearchAdapter(getContext(), items, "saved");
         // Recycler view setup: layout manager and the adapter
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(multiSearchAdapter);

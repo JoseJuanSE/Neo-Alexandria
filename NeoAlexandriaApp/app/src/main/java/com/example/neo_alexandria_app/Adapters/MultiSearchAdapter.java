@@ -34,6 +34,7 @@ import com.example.neo_alexandria_app.DataModels.Resource;
 import com.example.neo_alexandria_app.DataModels.Song;
 import com.example.neo_alexandria_app.Handlers.StringsHandler;
 import com.example.neo_alexandria_app.R;
+import com.example.neo_alexandria_app.fragments.SaveFragment;
 import com.parse.CountCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -62,12 +63,14 @@ public class MultiSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public static final String TAG = "MultiSearchAdapter";
 
     Context context;
+    String origin;
     List<Item> items;
     public File myDyrectory;
 
-    public MultiSearchAdapter(Context context, List<Item> items) {
+    public MultiSearchAdapter(Context context, List<Item> items, String origin) {
         this.context = context;
         this.items = items;
+        this.origin = origin;
         this.myDyrectory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath(), "saves");
 
         if (!this.myDyrectory.exists()) {
@@ -230,6 +233,13 @@ public class MultiSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                         //Delete element saved from cloud
                         deleteSave(song.getId());
 
+                        if (origin == "saved") {
+                            items.remove(getAdapterPosition());
+
+                            notifyItemRemoved(getAdapterPosition());
+                            notifyItemRangeChanged(getAdapterPosition(), items.size());
+                        }
+
                         //Delete element saved from local
                         File object = new File(myDyrectory.getPath() + File.separator + song.getId() + ".txt");
 //                        try {
@@ -359,6 +369,13 @@ public class MultiSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                         book.setSaved(false);
                         ivSave.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.bookmark_unmark));
 
+                        if (origin == "saved") {
+                            items.remove(getAdapterPosition());
+
+                            notifyItemRemoved(getAdapterPosition());
+                            notifyItemRangeChanged(getAdapterPosition(), items.size());
+                        }
+
                         //Delete element saved from cloud
                         deleteSave(book.getId());
 
@@ -479,6 +496,13 @@ public class MultiSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                         ivSave.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.bookmark_unmark));
                         //Delete element on cloud
                         deleteSave(news.getId());
+
+                        if (origin == "saved") {
+                            items.remove(getAdapterPosition());
+
+                            notifyItemRemoved(getAdapterPosition());
+                            notifyItemRangeChanged(getAdapterPosition(), items.size());
+                        }
 
                         //Delete element saved on local
                         File object = new File(myDirectory.getPath() + File.separator + news.getId() + ".txt");

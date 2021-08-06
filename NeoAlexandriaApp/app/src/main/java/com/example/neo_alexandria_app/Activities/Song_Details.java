@@ -2,11 +2,17 @@ package com.example.neo_alexandria_app.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 
+import android.app.DownloadManager;
+import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -18,11 +24,21 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.downloader.Error;
+import com.downloader.OnDownloadListener;
+import com.downloader.PRDownloader;
 import com.example.neo_alexandria_app.DataModels.Song;
 import com.example.neo_alexandria_app.Handlers.StringsHandler;
 import com.example.neo_alexandria_app.R;
 
 import org.parceler.Parcels;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -134,8 +150,33 @@ public class Song_Details extends AppCompatActivity {
         remainingTimeLabel = findViewById(R.id.remainingTimeLabel);
         playBtn = findViewById(R.id.playBtn);
 
-        //Here we get the song
+        File myDyrectory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath(), "musicSaved");
+        File myFile = new File(myDyrectory.getPath() + File.separator + song.getId() + ".mp3");
+
+        if (!myDyrectory.exists()) {
+            myDyrectory.mkdir();
+        }
+
         Uri myUri = Uri.parse(song.getMP3Link());
+
+
+        ConnectivityManager manager = (ConnectivityManager) Song_Details.this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = manager.getActiveNetworkInfo();
+        if (activeNetwork != null && song.isSaved()) {
+            DownloadManager downloadmanager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+
+            DownloadManager.Request request = new DownloadManager.Request(Uri.parse(song.getMP3Link()));
+            request.setTitle(song.getTitle() + " Downloading");
+            request.setDescription("Downloading");
+            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+            request.setDestinationUri(Uri.fromFile(myFile));
+            downloadmanager.enqueue(request);
+        } else if (song.isSaved()) {
+            myUri = Uri.fromFile(myFile);
+            Log.e(TAG + "File name: ", myUri.getPath());
+        }
+        //Here we get the song
+
         mp = MediaPlayer.create(this, myUri);
         mp.setLooping(true);
         mp.seekTo(0);
