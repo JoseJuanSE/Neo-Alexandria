@@ -5,6 +5,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.app.DownloadManager;
 import android.content.Context;
@@ -35,6 +36,8 @@ import com.example.neo_alexandria_app.DataModels.Comment;
 import com.example.neo_alexandria_app.DataModels.Song;
 import com.example.neo_alexandria_app.Handlers.StringsHandler;
 import com.example.neo_alexandria_app.R;
+import com.omadahealth.github.swipyrefreshlayout.library.SwipyRefreshLayout;
+import com.omadahealth.github.swipyrefreshlayout.library.SwipyRefreshLayoutDirection;
 import com.parse.FindCallback;
 import com.parse.GetFileCallback;
 import com.parse.ParseException;
@@ -128,6 +131,23 @@ public class Song_Details extends AppCompatActivity {
         rvComments.setLayoutManager(new LinearLayoutManager(this));
 
         populateComments();
+
+        SwipyRefreshLayout swipyRefreshLayout = findViewById(R.id.swipeContainer);
+
+        swipyRefreshLayout.setOnRefreshListener(new SwipyRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh(SwipyRefreshLayoutDirection direction) {
+                populateComments();
+
+                swipyRefreshLayout.setRefreshing(false);
+            }
+        });
+
+        // Configure the refreshing colors
+//        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
+//                android.R.color.holo_green_light,
+//                android.R.color.holo_orange_light,
+//                android.R.color.holo_red_light);
 
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -12,7 +12,14 @@
     android:paddingBottom="5dp"
     android:theme="@style/items"
     android:visibility="visible">
-
+<com.omadahealth.github.swipyrefreshlayout.library.SwipyRefreshLayout
+                android:id="@+id/swipeContainer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="10dp"
+                app:srl_direction="bottom"
+                >
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -265,15 +272,31 @@
                     app:tint="@color/black" />
             </RelativeLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/textView"
-                android:layout_alignParentStart="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginStart="1dp"
-                />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:id="@+id/recyclerView"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/textView"
+                    />
+
+<!--            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout-->
+<!--                android:id="@+id/swipeContainer"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="300dp"-->
+<!--                android:layout_below="@+id/textView"-->
+<!--                android:layout_alignParentEnd="true"-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                app:layout_behavior="@string/appbar_scrolling_view_behavior">-->
+<!--                <androidx.recyclerview.widget.RecyclerView-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:id="@+id/recyclerView"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_alignParentStart="true"-->
+<!--                    />-->
+<!--            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>-->
+
 
             <TextView
                 android:id="@+id/textView"
@@ -333,4 +356,5 @@
         </RelativeLayout>
 
     </ScrollView>
+</com.omadahealth.github.swipyrefreshlayout.library.SwipyRefreshLayout>
 </RelativeLayout>

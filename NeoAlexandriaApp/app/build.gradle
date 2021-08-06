@@ -102,4 +102,7 @@ dependencies {
 
     //This is for our custom progress bar
     compile 'com.daimajia.numberprogressbar:library:1.4@aar'
+
+    //SwipyRefreshLayout
+    compile 'com.github.omadahealth:swipy:1.2.3@aar'
 }
