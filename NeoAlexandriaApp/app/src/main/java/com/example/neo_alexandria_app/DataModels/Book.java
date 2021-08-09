@@ -193,7 +193,7 @@ public class Book extends Resource implements Serializable {
         ans += " id: " + this.id;
         ans += " size: " + this.size;
         return ans;
-
-
     }
+
+
 }

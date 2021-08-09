@@ -15,7 +15,7 @@ public class ErrorHandler {
     public @interface ErrorType {
         int ERROR_401 = 401;
         int ERROR_403 = 403;
-         int ERROR_404 = 404;
+        int ERROR_404 = 404;
         int ERROR_500 = 500;
         int ERROR_GENERAL = 0;
     }

@@ -65,19 +65,17 @@ public class MultiSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     Context context;
     String origin;
     List<Item> items;
-    public File myDyrectory;
+    File myDirectory;
 
     public MultiSearchAdapter(Context context, List<Item> items, String origin) {
         this.context = context;
-        this.items = items;
         this.origin = origin;
-        this.myDyrectory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath(), "saves");
-
-        if (!this.myDyrectory.exists()) {
-            this.myDyrectory.mkdirs();
+        this.items = items;
+        this.myDirectory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath(), "saves");
+        if (!this.myDirectory.exists()) {
+            this.myDirectory.mkdirs();
         }
     }
-
 
     @NonNull
     @NotNull
@@ -114,6 +112,7 @@ public class MultiSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull RecyclerView.ViewHolder holder, int position) {
+
         holder.itemView.findViewById(R.id.relative).setAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_transition));
         if (getItemViewType(position) == Item.ItemType.SONG_TYPE) {
             Song song = (Song) items.get(position).getObject();
@@ -125,6 +124,7 @@ public class MultiSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             News new1 = (News) items.get(position).getObject();
             ((NewsViewHolder) holder).bind(new1);
         }
+
     }
 
     @Override
@@ -137,7 +137,6 @@ public class MultiSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         return items.get(position).getType();
     }
 
-    //should be static
     public class MusicViewHolder extends RecyclerView.ViewHolder {
 
         ImageView ivCover;
@@ -241,7 +240,7 @@ public class MultiSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                         }
 
                         //Delete element saved from local
-                        File object = new File(myDyrectory.getPath() + File.separator + song.getId() + ".txt");
+                        File object = new File(myDirectory.getPath() + File.separator + song.getId() + ".txt");
 //                        try {
 //                            ObjectInputStream in = new ObjectInputStream(new FileInputStream(object.getAbsolutePath()));
 //                            Item itemaux = (Item) in.readObject();
@@ -542,53 +541,9 @@ public class MultiSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
     }
 
-    public void clear() {
-        items.clear();
-        notifyDataSetChanged();
-    }
-
-    public void deleteSave(String itemId) {
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("SavedItem");
-        query.whereEqualTo("UserId", ParseUser.getCurrentUser());
-        query.whereEqualTo("ItemId", itemId);
-
-        query.getFirstInBackground((object, e) -> {
-            if (e == null) {
-                try {
-                    object.delete();
-                } catch (ParseException parseException) {
-                    parseException.printStackTrace();
-                }
-            } else {
-                Log.e(TAG, e.getMessage());
-            }
-        });
-        deleteOnLocal(itemId);
-    }
-
-    private void deleteOnLocal(String itemId) {
-        File itemOnLocal = new File(myDyrectory + File.separator + itemId + ".txt");
-        itemOnLocal.delete();
-    }
-
-    public void storeItem(String itemId) {
-        ParseObject saveSong = new ParseObject("SavedItem");
-        saveSong.put("ItemId", itemId);
-        saveSong.put("UserId", ParseUser.getCurrentUser());
-
-        saveSong.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e != null) {
-                    Log.e(TAG, "Error while saving song ", e);
-                }
-            }
-        });
-    }
-
     private void storeItemOnLocal(String itemID, Object object, @Item.ItemType int itemType) {
         try {
-            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(myDyrectory.getPath() + File.separator + itemID + ".txt"));
+            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(myDirectory.getPath() + File.separator + itemID + ".txt"));
 
             Item auxItem;
             ParseObject objectItem = new ParseObject("Item");
@@ -603,9 +558,10 @@ public class MultiSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 News item = (News) object;
                 auxItem = new Item(itemType, item, item.getRating());
             }
+
             out.writeObject(auxItem);
             //Add this to Items if doesn't exist
-            File file = new File(myDyrectory.getPath() + File.separator + itemID + ".txt");
+            File file = new File(myDirectory.getPath() + File.separator + itemID + ".txt");
             ParseFile parseFile = new ParseFile(file);
             parseFile.saveInBackground(new SaveCallback() {
                 @Override
@@ -645,4 +601,49 @@ public class MultiSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             e.printStackTrace();
         }
     }
+
+    public void clear() {
+        items.clear();
+        notifyDataSetChanged();
+    }
+
+    public void deleteSave(String itemId) {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("SavedItem");
+        query.whereEqualTo("UserId", ParseUser.getCurrentUser());
+        query.whereEqualTo("ItemId", itemId);
+
+        query.getFirstInBackground((object, e) -> {
+            if (e == null) {
+                try {
+                    object.delete();
+                } catch (ParseException parseException) {
+                    parseException.printStackTrace();
+                }
+            } else {
+                Log.e(TAG, e.getMessage());
+            }
+        });
+        deleteOnLocal(itemId);
+    }
+
+    private void deleteOnLocal(String itemId) {
+        File itemOnLocal = new File(myDirectory + File.separator + itemId + ".txt");
+        itemOnLocal.delete();
+    }
+
+    public void storeItem(String itemId) {
+        ParseObject saveSong = new ParseObject("SavedItem");
+        saveSong.put("ItemId", itemId);
+        saveSong.put("UserId", ParseUser.getCurrentUser());
+
+        saveSong.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Error while saving song ", e);
+                }
+            }
+        });
+    }
+
 }

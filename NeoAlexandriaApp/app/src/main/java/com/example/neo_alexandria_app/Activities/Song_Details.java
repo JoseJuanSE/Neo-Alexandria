@@ -2,10 +2,8 @@ package com.example.neo_alexandria_app.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.app.DownloadManager;
 import android.content.Context;
@@ -28,9 +26,6 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.downloader.Error;
-import com.downloader.OnDownloadListener;
-import com.downloader.PRDownloader;
 import com.example.neo_alexandria_app.Adapters.CommentsAdapter;
 import com.example.neo_alexandria_app.DataModels.Comment;
 import com.example.neo_alexandria_app.DataModels.Song;
@@ -48,11 +43,6 @@ import com.parse.ParseUser;
 import org.parceler.Parcels;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -125,9 +115,7 @@ public class Song_Details extends AppCompatActivity {
 
         //Adapter
         adapter = new CommentsAdapter(this, comments);
-
         rvComments.setAdapter(adapter);
-
         rvComments.setLayoutManager(new LinearLayoutManager(this));
 
         populateComments();
@@ -138,7 +126,6 @@ public class Song_Details extends AppCompatActivity {
             @Override
             public void onRefresh(SwipyRefreshLayoutDirection direction) {
                 populateComments();
-
                 swipyRefreshLayout.setRefreshing(false);
             }
         });
@@ -366,7 +353,7 @@ public class Song_Details extends AppCompatActivity {
                     } catch (ParseException parseException) {
                         parseException.printStackTrace();
                     }
-                    String date = StringsHandler.calculateTimeAgo(comment.getCreatedAt());
+                    String date = StringsHandler.calculateTimeAgoFromDate(comment.getCreatedAt());
                     comment1.setDate(date);
                     comments.add(comment1);
                 }

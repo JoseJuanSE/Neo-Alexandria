@@ -36,47 +36,38 @@ import java.io.File;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class Book_Details extends AppCompatActivity implements OnProgressBarListener, GeneralErrorDialog {
+
     public static final String TAG = "Book_Details";
 
     private PDFView pdfView;
-    private File myDirectory;
-    private File saveDirectory;
+    private File myDirectory, saveDirectory;
     private NumberProgressBar npb;
-    private ErrorHandler errorHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_details);
 
+        //Here we set the number progress bar
         npb = (NumberProgressBar) findViewById(R.id.progressBar);
         npb.setOnProgressBarListener(this::onProgressChange);
-
-        errorHandler = new ErrorHandler(this);
+        npb.setVisibility(View.VISIBLE);
+        npb.setMax(100);
 
         Book book = Parcels.unwrap(getIntent().getParcelableExtra("book"));
 
         pdfView = findViewById(R.id.pdfView);
-
-
         PRDownloader.initialize(this);
 
         myDirectory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath(), "pdfs");
-
         if (!myDirectory.exists()) {
             myDirectory.mkdirs();
         }
-        Log.e(TAG, book.toString());
-        Log.e(TAG, book.getExternalLink());
-        Log.e(TAG, myDirectory.getPath());
-        Log.e(TAG, book.getId() + ".pdf");
-
-        npb.setVisibility(View.VISIBLE);
-        npb.setMax(100);
 
         File bookFile = new File(myDirectory.getPath() + File.separator + "a" + book.getId());
         File booksaved;
-        //Here we save for offline queries
+
+        //Here we save for offline queries if needed
         if (book.isSaved()) {
             saveDirectory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath(), "savedpdfs");
             if (!saveDirectory.exists()) {
@@ -89,10 +80,9 @@ public class Book_Details extends AppCompatActivity implements OnProgressBarList
             }
         }
 
-
+        //If the book was already saved, just display it, if not, save it
         if (bookFile.exists()) {
-            npb.setVisibility(View.GONE);
-            npb.setProgress(0);
+            hideProgressBar();
             showFile(bookFile);
 
         } else {
@@ -101,7 +91,7 @@ public class Book_Details extends AppCompatActivity implements OnProgressBarList
                     .setOnProgressListener(new OnProgressListener() {
                         @Override
                         public void onProgress(Progress progress) {
-                            int per =  (int)progress.currentBytes * 100 / (int)progress.totalBytes;
+                            int per = (int) progress.currentBytes * 100 / (int) progress.totalBytes;
                             npb.setProgress(per);
                         }
                     })
@@ -110,13 +100,13 @@ public class Book_Details extends AppCompatActivity implements OnProgressBarList
                         public void onDownloadComplete() {
                             File downloadedFile = new File(myDirectory.getPath() + File.separator + "a" + book.getId());
                             showFile(downloadedFile);
-                            npb.setVisibility(View.GONE);
-                            npb.setProgress(0);
+                            hideProgressBar();
                         }
 
                         @Override
                         public void onError(Error error) {
-                            Log.e(TAG, String.valueOf(error.getResponseCode()));
+                            ErrorHandler errorHandler;
+                            errorHandler = new ErrorHandler(Book_Details.this::general);
                             int errorCode = error.getResponseCode();
                             if (errorCode == ErrorHandler.ErrorType.ERROR_401) {
                                 errorHandler.error401();
@@ -126,7 +116,7 @@ public class Book_Details extends AppCompatActivity implements OnProgressBarList
                                 errorHandler.error404();
                             } else if (errorCode == ErrorHandler.ErrorType.ERROR_500) {
                                 errorHandler.error500();
-                            } else{
+                            } else {
                                 if (error.isConnectionError()) {
                                     Log.e(TAG, "Connection error");
                                     Log.e(TAG, error.getConnectionException().getMessage());
@@ -134,7 +124,7 @@ public class Book_Details extends AppCompatActivity implements OnProgressBarList
                                 } else if (error.isServerError()) {
                                     Log.e(TAG, "server error");
                                     Log.e(TAG, error.getServerErrorMessage());
-                                    errorHandler.generalError( "Server error", error.getServerErrorMessage());
+                                    errorHandler.generalError("Server error", error.getServerErrorMessage());
                                 }
                             }
                         }
@@ -160,8 +150,7 @@ public class Book_Details extends AppCompatActivity implements OnProgressBarList
     @Override
     public void onProgressChange(int current, int max) {
         if (current == max) {
-            npb.setProgress(0);
-            npb.setVisibility(View.INVISIBLE);
+            hideProgressBar();
         }
     }
 
@@ -195,5 +184,9 @@ public class Book_Details extends AppCompatActivity implements OnProgressBarList
                 .showContentText(true)
                 .setContentText(errorDetails)
                 .show();
+    }
+    private void hideProgressBar() {
+        npb.setVisibility(View.GONE);
+        npb.setProgress(0);
     }
 }

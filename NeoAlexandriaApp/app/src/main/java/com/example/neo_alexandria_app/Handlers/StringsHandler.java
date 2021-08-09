@@ -18,7 +18,7 @@ public class StringsHandler {
     public static final int HOUR_MILLIS = 60 * MINUTE_MILLIS;
     public static final int DAY_MILLIS = 24 * HOUR_MILLIS;
 
-    //Here we reuse this code in for some activities.
+    //In this function I limit the size of the string to size lit
     public static String limited(String title, int lit) {
         String ans = "";
 
@@ -43,7 +43,7 @@ public class StringsHandler {
         return timeLabel;
     }
 
-    public static String getRelativeTimeAgo(String rawJsonDate) {
+    public static String getRelativeTimeAgoFromString(String rawJsonDate) {
 
         String twitterFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'";
         SimpleDateFormat sf = new SimpleDateFormat(twitterFormat, Locale.ENGLISH);
@@ -75,7 +75,7 @@ public class StringsHandler {
         return "";
     }
 
-    public static String calculateTimeAgo(Date createdAt) {
+    public static String calculateTimeAgoFromDate(Date createdAt) {
 
         int SECOND_MILLIS = 1000;
         int MINUTE_MILLIS = 60 * SECOND_MILLIS;
@@ -112,7 +112,7 @@ public class StringsHandler {
     }
 
     public static boolean validateField(TextInputLayout textInputLayout, EditText editText) {
-        if(editText.getText().toString().isEmpty()) {
+        if (editText.getText().toString().isEmpty()) {
             textInputLayout.setError("Field can't be empty");
             return false;
         } else {

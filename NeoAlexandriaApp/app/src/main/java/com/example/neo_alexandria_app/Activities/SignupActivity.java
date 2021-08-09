@@ -32,11 +32,8 @@ public class SignupActivity extends AppCompatActivity implements OnNSFWCompleted
 
     public static final String TAG = "SignupActivity";
 
-    private ImageView ivProfile;
-    private ImageView ivAdd;
-    private EditText etUsername;
-    private EditText etEmail;
-    private EditText etPassword;
+    private ImageView ivProfile, ivAdd;
+    private EditText etUsername, etEmail, etPassword;
     private Button btnSignup;
     private File photoFile;
     ParseFile photo;
@@ -77,6 +74,7 @@ public class SignupActivity extends AppCompatActivity implements OnNSFWCompleted
                         etEmail.getText().toString());
             }
         });
+
         nsfWhandler = new NSFWhandler(this, this::taskCompleted);
     }
 
@@ -95,7 +93,7 @@ public class SignupActivity extends AppCompatActivity implements OnNSFWCompleted
             public void done(ParseException e) {
                 if (e != null) {
                     Toast.makeText(SignupActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
-                    Log.e(TAG, "error find: " + e);
+                    Log.e(TAG, "error found: " + e);
                 } else {
                     Toast.makeText(SignupActivity.this, "User successful signed up", Toast.LENGTH_LONG).show();
                     finish();
@@ -130,16 +128,10 @@ public class SignupActivity extends AppCompatActivity implements OnNSFWCompleted
 
     }
 
-//    I created this function to rename internal files, but I realize I won't need it
-//    private boolean rename(File from, File to) {
-//        return from.getParentFile().exists() && from.exists() && from.renameTo(to);
-//    }
-
     @Override
     public void taskCompleted(double result, SweetAlertDialog dialog) {
         dialog.cancel();
         if (result > 0.9) {
-            //TODO: if there is time change this kind of sweetalerdialog to this ones https://github.com/pedant/sweet-alert-dialog
             new SweetAlertDialog(SignupActivity.this, SweetAlertDialog.WARNING_TYPE)
                     .setTitleText("nsfw detected")
                     .setContentText("Your profile image was identified as NSFW, select another one.").show();
@@ -150,4 +142,5 @@ public class SignupActivity extends AppCompatActivity implements OnNSFWCompleted
                     .show();
         }
     }
+
 }

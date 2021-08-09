@@ -32,12 +32,11 @@ public class UpdateProfilePictureActivity extends AppCompatActivity implements O
 
     public static final String TAG = "UpdateProfile";
 
-    ImageView ivProfile;
-    private File photoFile;
+    ImageView ivProfile, ivAdd;
+    File photoFile;
     ParseFile photo;
     NSFWhandler nsfWhandler;
     TextView tvName;
-    ImageView ivAdd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +48,7 @@ public class UpdateProfilePictureActivity extends AppCompatActivity implements O
         tvName.setText(ParseUser.getCurrentUser().getUsername());
         nsfWhandler = new NSFWhandler(this, this::taskCompleted);
         ivAdd = findViewById(R.id.ivAdd2);
+
         ivAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,11 +64,10 @@ public class UpdateProfilePictureActivity extends AppCompatActivity implements O
                 }
             });
         }
-
         uploadPhoto();
     }
 
-    private void uploadPhoto(){
+    private void uploadPhoto() {
         photoFile = null;
         photo = null;
         //This is possible thanks to https://github.com/Dhaval2404/ImagePicker
@@ -120,14 +119,12 @@ public class UpdateProfilePictureActivity extends AppCompatActivity implements O
                 }
             });
         }
-
     }
 
     @Override
     public void taskCompleted(double result, SweetAlertDialog dialog) {
         dialog.cancel();
         if (result > 0.9) {
-            //TODO: if there is time change this kind of sweetalerdialog to this ones https://github.com/pedant/sweet-alert-dialog
             new SweetAlertDialog(UpdateProfilePictureActivity.this, SweetAlertDialog.WARNING_TYPE)
                     .setTitleText("nsfw detected")
                     .setContentText("Your profile image was identified as NSFW, select another one.")

@@ -46,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnLogin);
         tvSignup = findViewById(R.id.tvSignUp);
 
+
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,20 +84,18 @@ public class LoginActivity extends AppCompatActivity {
         ParseUser.logInInBackground(email, password, new LogInCallback() {
             @Override
             public void done(ParseUser user, ParseException e) {
-                //Display the error message when e is null, other case user go to main activity
                 if (e != null) {
                     Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     return;
                 } else {
                     goToMainActivity();
-                    Toast.makeText(LoginActivity.this, "Success!", Toast.LENGTH_SHORT).show();
                     finish();
                 }
             }
         });
     }
 
-
+    //In this function we go to main activity doing the transition animation
     private void goToMainActivity() {
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         TextView tvNeo = findViewById(R.id.tvLogo);

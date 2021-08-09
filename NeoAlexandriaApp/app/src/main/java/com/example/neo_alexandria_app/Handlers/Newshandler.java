@@ -1,7 +1,5 @@
 package com.example.neo_alexandria_app.Handlers;
 
-import android.util.Log;
-
 import com.example.neo_alexandria_app.BuildConfig;
 import com.example.neo_alexandria_app.DataModels.News;
 import com.example.neo_alexandria_app.Interfaces.OnNewsCompleted;
@@ -38,7 +36,7 @@ public class Newshandler {
                             News new1 = new News();
                             Article article = response.getArticles().get(i);
 
-                            new1.setDate(StringsHandler.getRelativeTimeAgo(article.getPublishedAt()));
+                            new1.setDate(StringsHandler.getRelativeTimeAgoFromString(article.getPublishedAt()));
                             if (article.getDescription() != null) {
                                 new1.setDescription(article.getDescription());
                             } else {
