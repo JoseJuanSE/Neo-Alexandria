@@ -241,15 +241,7 @@ public class MultiSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
                         //Delete element saved from local
                         File object = new File(myDirectory.getPath() + File.separator + song.getId() + ".txt");
-//                        try {
-//                            ObjectInputStream in = new ObjectInputStream(new FileInputStream(object.getAbsolutePath()));
-//                            Item itemaux = (Item) in.readObject();
-//                            Song songaux = (Song) itemaux.getObject();
-//                            Log.e(TAG, songaux.getTitle());
-//                        } catch (IOException | ClassNotFoundException e) {
-//                            e.printStackTrace();
-//                            Log.e(TAG, e.getMessage());
-//                        }
+
                         if (object.exists()) {
                             object.delete();
                         }
@@ -531,9 +523,6 @@ public class MultiSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     } else {
                         ivSave.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.bookmark_marked));
                         news.setSaved(true);
-                        //Store element on cloud
-//                        storeItem(news.getId());
-                        //Store element on local
                         storeItemOnLocal(news.getId(), (Object) news, Item.ItemType.NEWS_TYPE);
                     }
                 }
