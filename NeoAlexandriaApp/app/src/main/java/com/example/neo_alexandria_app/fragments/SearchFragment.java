@@ -192,26 +192,8 @@ public class SearchFragment extends Fragment implements OnBooksCompleted, OnMusi
     }
 
     private void showBaseSelected(int _case) {
-        if (_case == 1) {
-            btnAll.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
-        } else {
-            btnAll.setTextColor(ContextCompat.getColor(getContext(), R.color.gray));
-        }
-        if (_case == 2) {
-            btnNews.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
-        } else {
-            btnNews.setTextColor(ContextCompat.getColor(getContext(), R.color.gray));
-        }
-        if (_case == 3) {
-            btnSongs.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
-        } else {
-            btnSongs.setTextColor(ContextCompat.getColor(getContext(), R.color.gray));
-        }
-        if (_case == 4) {
-            btnBooks.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
-        } else {
-            btnBooks.setTextColor(ContextCompat.getColor(getContext(), R.color.gray));
-        }
+
+        turnOnTheButtonSelected(_case);
 
         if (_case == 1) {
             booksselected = true;
@@ -235,6 +217,32 @@ public class SearchFragment extends Fragment implements OnBooksCompleted, OnMusi
             }
         }
         checkRequestsFinished();
+    }
+
+    private void turnOnTheButtonSelected(int aCase) {
+
+        btnBooks.setTextColor(ContextCompat.getColor(getContext(), R.color.gray));
+        btnNews.setTextColor(ContextCompat.getColor(getContext(), R.color.gray));
+        btnSongs.setTextColor(ContextCompat.getColor(getContext(), R.color.gray));
+        btnAll.setTextColor(ContextCompat.getColor(getContext(), R.color.gray));
+
+        Button button;
+        switch (aCase) {
+            case 1:
+                button = btnAll;
+                break;
+            case 2:
+                button = btnNews;
+                break;
+            case 3:
+                button = btnSongs;
+                break;
+            default:
+                button = btnBooks;
+                break;
+        }
+        
+        button.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
     }
 
     @Override
