@@ -37,35 +37,30 @@ public class Newshandler {
                             Article article = response.getArticles().get(i);
 
                             new1.setDate(StringsHandler.getRelativeTimeAgoFromString(article.getPublishedAt()));
+                            new1.setDescription("");
+                            new1.setAuthorName("");
+                            new1.setTitle("");
+                            new1.setImageLink("");
+                            new1.setExternalLink("");
+                            new1.setSourceName("");
+
                             if (article.getDescription() != null) {
                                 new1.setDescription(article.getDescription());
-                            } else {
-                                new1.setDescription("");
                             }
                             if (article.getAuthor() != null) {
                                 new1.setAuthorName(article.getAuthor());
-                            } else {
-                                new1.setAuthorName("");
                             }
                             if (article.getTitle() != null) {
                                 new1.setTitle(article.getTitle());
-                            } else {
-                                new1.setTitle("");
                             }
                             if (article.getUrlToImage() != null) {
                                 new1.setImageLink(article.getUrlToImage());
-                            } else {
-                                new1.setImageLink("");
                             }
                             if (article.getUrl() != null) {
                                 new1.setExternalLink(article.getUrl());
-                            } else {
-                                new1.setExternalLink("");
                             }
                             if (article.getSource().getName() != null) {
                                 new1.setSourceName(article.getSource().getName());
-                            } else {
-                                new1.setSourceName("");
                             }
 
 

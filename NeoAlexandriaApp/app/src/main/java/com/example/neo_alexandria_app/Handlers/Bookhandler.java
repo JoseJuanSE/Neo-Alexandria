@@ -21,8 +21,8 @@ import cz.msebera.android.httpclient.Header;
 
 public class Bookhandler {
 
-
     public static final String TAG = "Bookhandler";
+
     OnBooksCompleted bookListener;
 
     public Bookhandler(OnBooksCompleted listener) {
@@ -30,13 +30,15 @@ public class Bookhandler {
     }
 
     public void getBooks(String query) {
-        //BOOKS
+
         String urlBooks = "https://bookmeth1.p.rapidapi.com/";
+
         AsyncHttpClient clientBooks = new AsyncHttpClient();
         clientBooks.addHeader("x-rapidapi-key", BuildConfig.RAPID_APIKEY);
         clientBooks.addHeader("x-rapidapi-host", "bookmeth1.p.rapidapi.com");
         RequestParams params = new RequestParams();
         params.put("q", query);
+
         clientBooks.get(urlBooks, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
@@ -46,7 +48,6 @@ public class Bookhandler {
                     Log.e(TAG, "success on books request");
                     bookListener.bookTaskCompleted(books);
                 } catch (JSONException | ParseException e) {
-                    e.printStackTrace();
                     Log.e(TAG, e.getMessage());
                 }
             }
