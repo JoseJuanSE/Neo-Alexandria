@@ -200,20 +200,17 @@ public class SearchFragment extends Fragment implements OnBooksCompleted, OnMusi
             newsselected = true;
             songsselected = true;
         } else {
+            newsselected = false;
+            booksselected = false;
+            songsselected = false;
             if (_case == 2) {
                 newsselected = true;
-            } else {
-                newsselected = false;
             }
             if (_case == 3) {
                 songsselected = true;
-            } else {
-                songsselected = false;
             }
             if (_case == 4) {
                 booksselected = true;
-            } else {
-                booksselected = false;
             }
         }
         checkRequestsFinished();
@@ -241,7 +238,7 @@ public class SearchFragment extends Fragment implements OnBooksCompleted, OnMusi
                 button = btnBooks;
                 break;
         }
-        
+
         button.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
     }
 
