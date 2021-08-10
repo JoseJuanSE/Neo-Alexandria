@@ -28,9 +28,6 @@ import com.example.neo_alexandria_app.DataModels.Book;
 import com.example.neo_alexandria_app.DataModels.Item;
 import com.example.neo_alexandria_app.DataModels.News;
 import com.example.neo_alexandria_app.DataModels.Song;
-import com.example.neo_alexandria_app.Handlers.Bookhandler;
-import com.example.neo_alexandria_app.Handlers.Deezerhandler;
-import com.example.neo_alexandria_app.Handlers.Newshandler;
 import com.example.neo_alexandria_app.R;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
@@ -43,23 +40,16 @@ import com.parse.ParseUser;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link SaveFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class SaveFragment extends Fragment {
 
     public static final String TAG = "SaveFragment";
@@ -85,28 +75,17 @@ public class SaveFragment extends Fragment {
 
     SweetAlertDialog sweetAlertDialog;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
     public SaveFragment() {
-        // Required empty public constructor
+
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SaveFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static SaveFragment newInstance(String param1, String param2) {
         SaveFragment fragment = new SaveFragment();
         Bundle args = new Bundle();
@@ -123,6 +102,7 @@ public class SaveFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        //Here we ask for permission to modified storage
         if (!Environment.isExternalStorageManager()) {
             Intent permissionIntent = new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
             SweetAlertDialog alert = new SweetAlertDialog(getContext(), SweetAlertDialog.NORMAL_TYPE)
@@ -147,13 +127,14 @@ public class SaveFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_save, container, false);
         AppCompatActivity activity = (AppCompatActivity) getActivity();
+
+        //setting toolbar
         toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         activity.setSupportActionBar(toolbar);
         activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        recyclerView = view.findViewById(R.id.rvSearch);
+        //Setting swipe refresh
         swipeRefreshLayout = view.findViewById(R.id.swipeContainer);
-
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -168,23 +149,22 @@ public class SaveFragment extends Fragment {
 
             }
         });
-        // Configure the refreshing colors
         swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
 
 
-        // Init the list of tweets and adapter
+        // Init the lists and adapter
         songs = new ArrayList<>();
         books = new ArrayList<>();
         news = new ArrayList<>();
         items = new ArrayList<>();
         multiSearchAdapter = new MultiSearchAdapter(getContext(), items, "saved");
         // Recycler view setup: layout manager and the adapter
+        recyclerView = view.findViewById(R.id.rvSearch);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(multiSearchAdapter);
-
 
         //filters
         btnAll = (Button) view.findViewById(R.id.allButton);
@@ -200,6 +180,7 @@ public class SaveFragment extends Fragment {
         songsselected = true;
 
 
+        //Here we do the necessary to show all the items
         btnAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -216,6 +197,7 @@ public class SaveFragment extends Fragment {
             }
         });
 
+        //Here we do the necessary to show just news items
         btnNews.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -232,6 +214,7 @@ public class SaveFragment extends Fragment {
             }
         });
 
+        //Here we do the necessary to show just songs items
         btnSongs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -248,6 +231,7 @@ public class SaveFragment extends Fragment {
             }
         });
 
+        //Here we do the necessary to show just books items
         btnBooks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -277,7 +261,9 @@ public class SaveFragment extends Fragment {
     private void populateRecyclerView() throws IOException, ClassNotFoundException {
         ConnectivityManager manager = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = manager.getActiveNetworkInfo();
+        //We check what to display depending on connectivity status: online or offline status
         if (activeNetwork != null) {
+            //If there is connection, we delete all the items saved to update the list with the new items that may be saved in other devices.
             DeleteLocal();
         } else {
             try {
@@ -367,8 +353,9 @@ public class SaveFragment extends Fragment {
 
                 File object = new File(myDirectory, children[i]);
                 ObjectInputStream in = new ObjectInputStream(new FileInputStream(object.getAbsolutePath()));
+
                 Item itemaux = (Item) in.readObject();
-                Log.e(TAG, String.valueOf(itemaux.getType()));
+
                 if (itemaux.getType() == Item.ItemType.SONG_TYPE) {
                     songs.add((Song) itemaux.getObject());
                 } else if (itemaux.getType() == Item.ItemType.BOOK_TYPE) {
@@ -376,20 +363,12 @@ public class SaveFragment extends Fragment {
                 } else {
                     news.add((News) itemaux.getObject());
                 }
-                //Parse give us the file with a random name, so we need to change that to the name that we want.
-//                File realNameFile = new File(myDirectory, itemaux.getObject().getId()+".txt");
-//                if (!object.renameTo(realNameFile)) {
-//                    object.delete();
-//                }
             }
         }
-        int lenght = songs.size() + books.size() + news.size();
-        Log.e(TAG + "number", "ITEMS: " + lenght);
         checkRequestsFinished();
     }
 
     private void checkRequestsFinished() {
-        //Here we do what we need
         items.clear();
         if (songsselected) {
             for (Song song : songs) {
@@ -409,7 +388,7 @@ public class SaveFragment extends Fragment {
                 items.add(item);
             }
         }
-        // if empty, sorry we couldn't find anything for this query
+        // if empty, I display a 404 animation
         if (items.isEmpty()) {
             final View view = getLayoutInflater().inflate(R.layout.animated_doggy_error, null);
             new SweetAlertDialog(getContext(), SweetAlertDialog.NORMAL_TYPE)
@@ -431,9 +410,9 @@ public class SaveFragment extends Fragment {
             });
         }
         multiSearchAdapter.notifyDataSetChanged();
-
     }
 
+    //We use this function to copy all the content in a file to another one
     public void copy(File src, File dst) throws IOException {
         try (InputStream in = new FileInputStream(src)) {
             try (OutputStream out = new FileOutputStream(dst)) {

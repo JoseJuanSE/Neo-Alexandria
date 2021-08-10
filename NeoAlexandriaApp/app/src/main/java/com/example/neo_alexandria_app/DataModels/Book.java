@@ -4,6 +4,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.google.gson.JsonObject;
 import com.parse.CountCallback;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -49,6 +50,17 @@ public class Book extends Resource implements Serializable {
 
     public Book() {
         super();
+        this.imageLink = "https://memegenerator.net/img/images/16143029/generic-book-cover.jpg";
+        this.externalLink = "http://dl.icdst.org/pdfs/files4/03948a33521a6af4bdbabe24697ee875.pdf";
+        this.authorName = "unknown";
+        this.pages = 0;
+        this.format = "pdf";
+        this.size = 0d;
+        this.subject = "general topics";
+        this.editor = "unknown";
+        this.description = "";
+        this.title = "unknown";
+        this.id = "-1";
     }
 
     //Here we received the jsonObject that API send us, and we push all the needed date
@@ -59,71 +71,45 @@ public class Book extends Resource implements Serializable {
 
         if (jsonObject.has(Book.ID)) {
             book.id = jsonObject.getString(Book.ID);
-        } else {
-            book.id = "-1";
         }
 
         JSONObject source = jsonObject.getJSONObject(Book.SOURCE);
         if (source.has(Book.TITLE)) {
             book.title = source.getString(Book.TITLE);
-        } else {
-            book.title = "unknown";
         }
-
-
         if (source.has(Book.AUTHOR)) {
             book.authorName = source.getString(Book.AUTHOR);
-        } else {
-            book.authorName = "unknown";
         }
         if (source.has(Book.COVER)) {
             book.imageLink = Book.LOCAL_SERVER + source.getString(Book.COVER);
-        } else {
-            book.imageLink = "https://memegenerator.net/img/images/16143029/generic-book-cover.jpg";
         }
         if (source.has(Book.LINK)) {
             book.externalLink = source.getString(Book.LINK);
-        } else {
-            book.externalLink = "http://dl.icdst.org/pdfs/files4/03948a33521a6af4bdbabe24697ee875.pdf";
         }
         if (source.has(Book.PAGES)) {
             book.pages = source.getInt(Book.PAGES);
-        } else {
-            book.pages = 0;
         }
         if (source.has(Book.SIZE)) {
             //round to a decimal
             book.size = Math.ceil(source.getDouble(Book.SIZE) / 1e5) / 10;
-        } else {
-            book.size = 0d;
         }
-
 
         JSONObject metadata = source.getJSONObject(Book.METADATA);
         if (metadata.has(Book.AUTHOR) && book.authorName == "unknown") {
             book.authorName = metadata.getString(Book.AUTHOR);
         }
-
         if (metadata.has(Book.FORMAT)) {
             book.format = metadata.getString(Book.FORMAT);
-        } else {
-            book.format = "pdf";
         }
         if (metadata.has(Book.SUBJECT)) {
             book.subject = metadata.getString(Book.SUBJECT);
-        } else {
-            book.subject = "general topics";
         }
 
         if (metadata.has(Book.DESCRIPTION)) {
             book.description = metadata.getString(Book.DESCRIPTION);
-        } else {
-            book.description = "";
         }
         if (metadata.has(Book.PRODUCER)) {
             book.editor = metadata.getString(Book.PRODUCER);
-        } else {
-            book.editor = "unknown";
         }
 
         //This have to be fill with parse
@@ -194,6 +180,5 @@ public class Book extends Resource implements Serializable {
         ans += " size: " + this.size;
         return ans;
     }
-
 
 }

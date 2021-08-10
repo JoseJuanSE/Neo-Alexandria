@@ -51,6 +51,7 @@ public class Song extends Resource implements Serializable {
     public static Song fromJson(JSONObject jsonObject) throws JSONException, ParseException {
 
         Song song = new Song();
+
         song.id = String.valueOf(jsonObject.getLong(Song.ID));
         song.title = jsonObject.getString(Song.TITLE);
 
@@ -80,6 +81,7 @@ public class Song extends Resource implements Serializable {
                 }
             }
         });
+
         song.saveCount = (int) Math.max(3, 100 * Math.random());
         song.isSaved = false;
         song.rating = Math.max(1f, 5 * (float) Math.random());

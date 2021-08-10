@@ -1,12 +1,10 @@
 package com.example.neo_alexandria_app.fragments;
 
-import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
@@ -24,7 +22,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.example.neo_alexandria_app.Adapters.MultiSearchAdapter;
 import com.example.neo_alexandria_app.DataModels.Book;
@@ -39,7 +36,6 @@ import com.example.neo_alexandria_app.Interfaces.OnBooksCompleted;
 import com.example.neo_alexandria_app.Interfaces.OnMusicCompleted;
 import com.example.neo_alexandria_app.Interfaces.OnNewsCompleted;
 import com.example.neo_alexandria_app.R;
-import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -49,11 +45,6 @@ import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link SearchFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class SearchFragment extends Fragment implements OnBooksCompleted, OnMusicCompleted, OnNewsCompleted {
 
     public static final String TAG = "SearchFragment";
@@ -69,17 +60,10 @@ public class SearchFragment extends Fragment implements OnBooksCompleted, OnMusi
 
 
     //filter
-    Button btnAll;
-    Button btnBooks;
-    Button btnSongs;
-    Button btnNews;
-    boolean booksselected;
-    boolean songsselected;
-    boolean newsselected;
-
+    Button btnAll, btnBooks, btnSongs, btnNews;
+    boolean booksselected, songsselected, newsselected;
 
     String globalQuery;
-
 
     Deezerhandler deezerhandler;
     Bookhandler bookhandler;
@@ -87,33 +71,18 @@ public class SearchFragment extends Fragment implements OnBooksCompleted, OnMusi
 
     SweetAlertDialog sweetAlertDialog;
 
-    boolean booksRequest;
-    boolean musicRequest;
-    boolean newsRequest;
+    boolean booksRequest, musicRequest, newsRequest;
 
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    //Predefined
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
     public SearchFragment() {
-        // Required empty public constructor
+
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SearchFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static SearchFragment newInstance(String param1, String param2) {
         SearchFragment fragment = new SearchFragment();
         Bundle args = new Bundle();
@@ -132,6 +101,7 @@ public class SearchFragment extends Fragment implements OnBooksCompleted, OnMusi
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
+    //--------------
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -143,26 +113,23 @@ public class SearchFragment extends Fragment implements OnBooksCompleted, OnMusi
         activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         recyclerView = view.findViewById(R.id.rvSearch);
-        swipeRefreshLayout = view.findViewById(R.id.swipeContainer);
 
+        //Set swipe refresh
+        swipeRefreshLayout = view.findViewById(R.id.swipeContainer);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-
                 populateRecyclerView();
-
                 swipeRefreshLayout.setRefreshing(false);
-
             }
         });
-        // Configure the refreshing colors
         swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
 
 
-        // Init the list of tweets and adapter
+        // Init the lists and adapter
         songs = new ArrayList<>();
         books = new ArrayList<>();
         news = new ArrayList<>();
@@ -190,74 +157,84 @@ public class SearchFragment extends Fragment implements OnBooksCompleted, OnMusi
         newsselected = true;
         songsselected = true;
 
-        globalQuery = "111111111111";
+        globalQuery = "uZfclZEW8MNc4pbhAHbi8HeGPYxfyj";
 
         btnAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!(booksselected && songsselected && newsselected)) {
-                    btnAll.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
-                    btnBooks.setTextColor(ContextCompat.getColor(getContext(), R.color.gray));
-                    btnNews.setTextColor(ContextCompat.getColor(getContext(), R.color.gray));
-                    btnSongs.setTextColor(ContextCompat.getColor(getContext(), R.color.gray));
-                    booksselected = true;
-                    newsselected = true;
-                    songsselected = true;
-                    checkRequestsFinished();
-                }
+                showBaseSelected(1);
             }
         });
 
         btnNews.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!newsselected || (booksselected && songsselected && newsselected)) {
-                    btnAll.setTextColor(ContextCompat.getColor(getContext(), R.color.gray));
-                    btnBooks.setTextColor(ContextCompat.getColor(getContext(), R.color.gray));
-                    btnNews.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
-                    btnSongs.setTextColor(ContextCompat.getColor(getContext(), R.color.gray));
-                    booksselected = false;
-                    newsselected = true;
-                    songsselected = false;
-                    checkRequestsFinished();
-                }
+                showBaseSelected(2);
             }
         });
 
         btnSongs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!songsselected || (booksselected && songsselected && newsselected)) {
-                    btnAll.setTextColor(ContextCompat.getColor(getContext(), R.color.gray));
-                    btnBooks.setTextColor(ContextCompat.getColor(getContext(), R.color.gray));
-                    btnNews.setTextColor(ContextCompat.getColor(getContext(), R.color.gray));
-                    btnSongs.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
-                    booksselected = false;
-                    newsselected = false;
-                    songsselected = true;
-                    checkRequestsFinished();
-                }
+                showBaseSelected(3);
             }
         });
 
         btnBooks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!booksselected || (booksselected && songsselected && newsselected)) {
-                    btnAll.setTextColor(ContextCompat.getColor(getContext(), R.color.gray));
-                    btnBooks.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
-                    btnNews.setTextColor(ContextCompat.getColor(getContext(), R.color.gray));
-                    btnSongs.setTextColor(ContextCompat.getColor(getContext(), R.color.gray));
-                    booksselected = true;
-                    newsselected = false;
-                    songsselected = false;
-                    checkRequestsFinished();
-                }
+                showBaseSelected(4);
             }
         });
 
 
         return view;
+    }
+
+    private void showBaseSelected(int _case) {
+        if (_case == 1) {
+            btnAll.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
+        } else {
+            btnAll.setTextColor(ContextCompat.getColor(getContext(), R.color.gray));
+        }
+        if (_case == 2) {
+            btnNews.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
+        } else {
+            btnNews.setTextColor(ContextCompat.getColor(getContext(), R.color.gray));
+        }
+        if (_case == 3) {
+            btnSongs.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
+        } else {
+            btnSongs.setTextColor(ContextCompat.getColor(getContext(), R.color.gray));
+        }
+        if (_case == 4) {
+            btnBooks.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
+        } else {
+            btnBooks.setTextColor(ContextCompat.getColor(getContext(), R.color.gray));
+        }
+
+        if (_case == 1) {
+            booksselected = true;
+            newsselected = true;
+            songsselected = true;
+        } else {
+            if (_case == 2) {
+                newsselected = true;
+            } else {
+                newsselected = false;
+            }
+            if (_case == 3) {
+                songsselected = true;
+            } else {
+                songsselected = false;
+            }
+            if (_case == 4) {
+                booksselected = true;
+            } else {
+                booksselected = false;
+            }
+        }
+        checkRequestsFinished();
     }
 
     @Override
@@ -286,7 +263,8 @@ public class SearchFragment extends Fragment implements OnBooksCompleted, OnMusi
     }
 
     private void populateRecyclerView() {
-        if (globalQuery == "111111111111") {
+        //we use this to avoid empty strings and then infinity loops.
+        if (globalQuery == "uZfclZEW8MNc4pbhAHbi8HeGPYxfyj") {
             return;
         }
         booksRequest = musicRequest = newsRequest = false;

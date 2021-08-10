@@ -130,12 +130,7 @@ public class Song_Details extends AppCompatActivity {
             }
         });
 
-        // Configure the refreshing colors
-//        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
-//                android.R.color.holo_green_light,
-//                android.R.color.holo_orange_light,
-//                android.R.color.holo_red_light);
-
+        //Here a comment is posted
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -158,6 +153,7 @@ public class Song_Details extends AppCompatActivity {
             }
         });
 
+        //Here the profile image of user is displayed in the create comment section
         if (ParseUser.getCurrentUser().containsKey("profilePicture")) {
             ParseUser.getCurrentUser().getParseFile("profilePicture").getFileInBackground(new GetFileCallback() {
                 @Override
@@ -167,6 +163,7 @@ public class Song_Details extends AppCompatActivity {
             });
         }
 
+        //Here we display the album cover
         if (!song.getImageLink().isEmpty()) {
             Glide.with(this).load(song.getCoverBig())
                     .into(ivCover);
@@ -184,6 +181,7 @@ public class Song_Details extends AppCompatActivity {
         } else {
             tvExplicit.setText("");
         }
+
         //ivComment and ivSave set on click listener here when available
         if (!song.getArtistPicture().isEmpty()) {
             Glide.with(this).load(song.getArtistPicture())
@@ -328,7 +326,6 @@ public class Song_Details extends AppCompatActivity {
 
     private void populateComments() {
         comments.clear();
-        //TODO: complete this
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Comments");
         // Fetches data synchronously
         query.whereEqualTo("ItemId", song.getId());
@@ -336,11 +333,11 @@ public class Song_Details extends AppCompatActivity {
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
-                if (e!=null) {
+                if (e != null) {
                     Log.e(TAG, e.getMessage());
-                    return ;
+                    return;
                 }
-                for (ParseObject comment: objects) {
+                for (ParseObject comment : objects) {
                     Comment comment1 = new Comment();
                     comment1.setContent(comment.getString("comment"));
                     ParseUser user = null;

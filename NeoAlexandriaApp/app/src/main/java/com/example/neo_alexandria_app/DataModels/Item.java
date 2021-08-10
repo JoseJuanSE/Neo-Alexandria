@@ -15,6 +15,7 @@ public class Item implements Serializable {
         int BOOK_TYPE = 1;
         int NEWS_TYPE = 2;
     }
+
     @ItemType
     private int type;
     private float rating;
@@ -25,6 +26,7 @@ public class Item implements Serializable {
         this.object = object;
         this.rating = rating;
     }
+
     @ItemType
     public int getType() {
         return type;
@@ -38,7 +40,7 @@ public class Item implements Serializable {
         return rating;
     }
 
-    public void setRating (float rating) {
+    public void setRating(float rating) {
         this.rating = rating;
     }
 }
